@@ -1,0 +1,160 @@
+const { Client, Intents, Collection, DMChannel } = require("discord.js")
+const client = new Client({partials: ["CHANNEL", "MESSAGE"] ,intents: [ Intents.FLAGS.GUILD_INVITES, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, Intents.FLAGS.GUILD_MEMBERS,Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_PRESENCES] })
+const fs = require("fs")
+const Config = require("./config.json")
+const sqlite3 = require("sqlite3")
+const schedule = require('node-schedule');
+require('./deploy_commands').build();
+
+let db = new sqlite3.Database("./lmt-bot.db", (err) => {
+    if (err) {
+        console.log(err);
+    }
+})
+
+console.log("------- SCHEDULE ---------")
+// !! BIRTHDAY
+const addAnniv = schedule.scheduleJob('0 0 0 * * *', function() {
+    db.each("SELECT * FROM anniversaires INNER JOIN servers ON anniversaires.guild_id = servers.guild_id", async (err, res) => {
+        if (err || !res) {
+            return;
+        }
+        let date = new Date();
+        if (res.anniv_id !== 1) {
+            return;
+        }
+        let dates = res.date.split('/');
+        let guild = client.guilds.cache.get(res.guild_id);
+        const role = guild.roles.cache.find(role => role.id === res.anniv_role_id);
+        const channel = guild.channels.cache.find(channel => channel.id === res.anniv_channel_id);
+        if (dates[0] == date.getDate() && dates[1] == date.getMonth() + 1) {
+            let user = await guild.members.fetch(res.user_id);
+            user.roles.add(role).catch(err => console.log(err)).then(user => {
+                const anniv = new MessageEmbed()
+                    .setColor('#2f3136')
+                    .setDescription(`<a:LMT_arrow:831817537388937277> **C\'est l\'anniversaire de ${user} !**\nSouhaitez lui un bon anniversaire !`)
+                    .setThumbnail('https://cdn.discordapp.com/attachments/708012118619717783/901498201629143120/882249649736527892.gif')
+                    .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
+                return channel.send({embeds:[anniv]});
+            })
+        }
+    })
+});
+console.log(`| addAnniv ✅`)
+const removeAnniv = schedule.scheduleJob('0 59 23 * * *', function() {
+    db.each("SELECT * FROM anniversaires INNER JOIN servers ON anniversaires.guild_id = servers.guild_id", async (err, res) => {
+        if (err || !res) {
+            return;
+        }
+        if (res.anniv_id !== 1) {
+            return
+        }
+        let date = new Date();
+        let dates = res.date.split('/');
+        let guild = client.guilds.cache.get(res.guild_id);
+        const role = guild.roles.cache.find(role => role.id === res.anniv_role_id)
+        if (dates[0] == date.getDate() && dates[1] == date.getMonth()+1) {
+            let user = await guild.members.fetch(res.user_id)
+            user.roles.remove(role).catch(err => console.log(err))
+        }
+    });
+});
+console.log(`| removeAnniv ✅`)
+
+// SERVER STATS
+const job3 = schedule.scheduleJob('*/5 * * * *', async function() {
+    require(`./events/interraction/event_stats.js`).execute(client, db);
+});
+console.log(`| serverStats ✅\n`)
+
+const eventDiscord = fs.readdirSync('./events/discord').filter(file => file.endsWith('.js'));
+console.log("------- EVENTS DISCORD ---------")
+for (const file of eventDiscord) {
+    const event = require(`./events/discord/${file}`);
+    if (event.once) {
+        client.once(event.name, (...args) => event.execute(...args,db));
+    } else {
+        client.on(event.name, (...args) => event.execute(...args,client,Config,db));
+    }
+    console.log(`| ${file} ✅`)
+}
+console.log("--------------------------------\n")
+
+
+const eventLogs = fs.readdirSync('./events/logs').filter(file => file.endsWith('.js'));
+console.log("------- EVENTS LOGS ---------")
+for (const file of eventLogs) {
+    const event = require(`./events/logs/${file}`);
+    if (event.once) {
+        client.once(event.name, (...args) => event.execute(...args,db));
+    } else {
+        client.on(event.name, (...args) => event.execute(...args,db,client));
+    }
+    console.log(`| ${file} ✅`)
+}
+console.log("--------------------------------\n")
+
+
+
+// COMMANDS //
+// client.commands = new Collection()
+// let commandArray = [];
+// const commandFiless = fs.readdirSync("./commands").filter(file => !file.endsWith('.js'));
+// for (const dossiers of commandFiless) {
+//     const allFiless = fs.readdirSync(`./commands/${dossiers}`).filter(file => file.endsWith('.js'));
+//     for (const files of allFiless) {
+//         const command = require(`./commands/${dossiers}/${files}`)
+// 		if (!(files === 'dm.js' || files === 'dm2.js')) commandArray.push({'name':command.name, 'description':command.description});
+//         client.commands.set(command.name, command)
+//     }
+// }
+
+// DM
+client.commands = new Collection()
+const commandFiles = fs.readdirSync("./dm").filter(file => file.endsWith('.js'));
+console.log("------------ DM ------------")
+for (const file of commandFiles) {
+    const command = require(`./dm/${file}`)
+    client.commands.set(command.name, command)
+    console.log(`| ${file} ✅`)
+}
+console.log("--------------------------------\n")
+// DM
+
+client.events = new Collection()
+const eventsFiles = fs.readdirSync("./events").filter(file => !file.endsWith('.js') && file !== 'discord');
+console.log("----------- EVENTS ------------")
+for (const dossier of eventsFiles) {
+    const allFiles = fs.readdirSync(`./events/${dossier}`).filter(file => file.endsWith('.js'));
+    for (const file of allFiles) {
+        const command = require(`./events/${dossier}/${file}`)
+        client.events.set(command.name, command)
+        console.log(`| ${file} ✅`)
+    }
+}
+console.log("--------------------------------\n")
+// COMMANDS //
+
+
+
+// SLASH COMMANDS //
+client.slash_commands = new Collection()
+const slashFiles = fs.readdirSync("./commands_slash").filter(file => !file.endsWith('.js'));
+console.log("-------- SLASH COMMANDS --------")
+for (const dossier of slashFiles) {
+    const allFiles = fs.readdirSync(`./commands_slash/${dossier}`).filter(file => file.endsWith('.js'));
+    for (const file of allFiles) {
+        const command = require(`./commands_slash/${dossier}/${file}`);
+        client.slash_commands.set(command.data.name,command)
+        console.log(`| ${file} ✅`)
+    }
+}
+console.log("--------------------------------")
+
+console.log("----------- LG -----------")
+const command = require(`./werewolf/werewolf`);
+client.slash_commands.set(command.data.name,command)
+console.log(`| werewolf.js ✅`)
+console.log("--------------------------------\n")
+
+client.login(Config.token)

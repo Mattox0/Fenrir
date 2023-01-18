@@ -1,0 +1,140 @@
+const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+
+module.exports = {
+    async execute(interaction, date, db) {
+        let listemois = ["janvier","février","mars","avril","mai","juin","juillet","aout","septembre","novembre","octobre","décembre"];
+        let pages = [];
+        let nbpage = 1;
+        db.all('SELECT * FROM anniversaires WHERE guild_id = ?',interaction.member.guild.id, async (err,res) => {
+            if (err || !res) {
+                console.log(err);
+                const error = new MessageEmbed()
+                    .setColor('#2f3136')
+                    .setDescription('<a:LMT__arrow:831817537388937277> **Il n\'y aucun anniversaire sur ce serveur !**')
+                    .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
+                return interaction.reply({ embeds : [error]});
+            };
+            count = 0;
+            description = "";
+            let dates = [];
+            res.forEach(async (item) => {
+                count++;
+                dates = item.date.split('/');
+                description += `<@!${item.user_id}> <a:LMT__arrow:831817537388937277> **${dates[0]} ${listemois[parseInt(dates[1]) - 1]}**\n\n`;
+                if (count === 10) {
+                    count = 0;
+                    const page = new MessageEmbed()
+                        .setColor('#2f3136')
+                        .setTitle('Voici la liste des anniversaires :')
+                        .setDescription(description)
+                        .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)} ・ ${nbpage}/${pages.length}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
+                    pages.push(page);
+                    nbpage++;
+                }
+            })
+            if (nbpage === 1) {
+                const page = new MessageEmbed()
+                    .setColor('#2f3136')
+                    .setDescription(description)
+                    .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
+                return interaction.reply({ embeds : [page]});
+            }
+            const row = new MessageActionRow()
+                .addComponents(
+                    new MessageButton()
+                        .setCustomId('1')
+                        .setEmoji('⏮️')
+                        .setStyle('PRIMARY')
+                        .setDisabled(true),
+                    new MessageButton()
+                        .setCustomId('-1')
+                        .setEmoji('◀️')
+                        .setStyle('PRIMARY')
+                        .setDisabled(true),
+                    new MessageButton()
+                        .setCustomId('+1')
+                        .setEmoji('▶️')
+                        .setStyle('PRIMARY')
+                        .setDisabled(true),
+                    new MessageButton()
+                        .setCustomId('2')
+                        .setEmoji('⏭️')
+                        .setStyle('PRIMARY')
+                        .setDisabled(true),
+                )
+            let isComponent = false;
+            await interaction.deferReply();
+            interaction.editReply({embeds : [pages[0]],components:[row]}).then(msg => {
+                count = 0
+                if (pages.length > 1) {
+                    isComponent = true
+                    msg.components[0].components[3].setDisabled(false)
+                    msg.components[0].components[2].setDisabled(false)
+                }
+                const filter = interaction => interaction.message.id === msg.id
+                const collector = msg.channel.createMessageComponentCollector({ filter, time:60000})
+                collector.on('collect', collected => {
+                    switch (collected.customId) {
+                        case '1':
+                            count = 0
+                            if (isComponent) {
+                                msg.components[0].components[0].setDisabled(true)
+                                msg.components[0].components[1].setDisabled(true)
+                                msg.components[0].components[3].setDisabled(false)
+                                msg.components[0].components[2].setDisabled(false)
+                            }
+                            msg.edit({embeds:[pages[count]],components:[row]})
+                            break
+                        case '-1':
+                            count = count - 1
+                            if (isComponent) {
+                                if (count === 0) {
+                                    msg.components[0].components[0].setDisabled(true)
+                                    msg.components[0].components[1].setDisabled(true)
+                                    msg.components[0].components[3].setDisabled(false)
+                                    msg.components[0].components[2].setDisabled(false)
+                                } else {
+                                    msg.components[0].components[0].setDisabled(false)
+                                    msg.components[0].components[1].setDisabled(false)
+                                    msg.components[0].components[3].setDisabled(true)
+                                    msg.components[0].components[2].setDisabled(true)
+                                }
+                            }
+                            msg.edit({embeds:[pages[count]],components:[row]})
+                            break
+                        case '+1':
+                            count = count + 1
+                            if (isComponent) {
+                                if (count === pages.length - 1) {
+                                    msg.components[0].components[3].setDisabled(true)
+                                    msg.components[0].components[2].setDisabled(true)
+                                    msg.components[0].components[1].setDisabled(false)
+                                    msg.components[0].components[0].setDisabled(false)
+                                } else {
+                                    msg.components[0].components[3].setDisabled(false)
+                                    msg.components[0].components[2].setDisabled(false)
+                                    msg.components[0].components[1].setDisabled(true)
+                                    msg.components[0].components[0].setDisabled(true)
+                                }
+                            }
+                            msg.edit({embeds:[pages[count]],components:[row]})
+                            break
+                        case '2':
+                            count = pages.length - 1
+                            if (isComponent) {
+                                msg.components[0].components[3].setDisabled(true)
+                                msg.components[0].components[2].setDisabled(true)
+                                msg.components[0].components[0].setDisabled(false)
+                                msg.components[0].components[1].setDisabled(false)
+                            }
+                            msg.edit({embeds:[pages[count]],components:[row]})
+                            break
+                    }
+                })
+                collector.on('end', () => {
+                    msg.edit({embeds:[pages[count]],components:[]})
+                })
+            })
+        })
+    }
+}

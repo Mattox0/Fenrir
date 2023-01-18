@@ -1,0 +1,642 @@
+{
+    "Setup": {
+        "/setup infos" : {
+            "description" : "Un résumé des systèmes activés ou non dans votre serveur",
+            "usage" : "/setup infos"
+        },
+        "/setup anniversaire": {
+            "description" : "Un système d'anniversaire complet",
+            "usage" : "/setup anniversaire"
+        },
+        "/setup bumps": {
+            "description" : "Un classement des bumps (avec Disboard)",
+            "usage" : "/setup bumps"
+        },
+        "/setup logs": {
+            "description" : "Un système de logs avec choix des parametres",
+            "usage" : "/setup logs"
+        },
+        "/setup prison" : {
+            "description" : "Un système de prison pour aider à la modération",
+            "usage" : "/setup prison"
+        },
+        "/setup privateroom" : {
+            "description" : "Un système de salons vocaux personalisés",
+            "usage" : "/setup privateroom"
+        },
+        "/setup stats" : {
+            "description" : "Un système de comptage de membres",
+            "usage" : "/setup stats"
+        },
+        "/setup suggestion" : {
+            "description" : "Un système de suggestions",
+            "usage" : "/setup suggestion"
+        },
+        "/setup ticket" : {
+            "description" : "Un système de tickets",
+            "usage" : "/setup ticket"
+        }
+    },
+    "Disable" : {
+        "/disable anniversaire": {
+            "description" : "Désactive le système d'anniversaire",
+            "usage" : "/disable anniversaire"
+        },
+        "/disable bumps": {
+            "description" : "Désactive le comptage et le classement des bumps",
+            "usage" : "/disable bumps"
+        },
+        "/disable logs": {
+            "description" : "Désactive le système de logs",
+            "usage" : "/disable logs"
+        },
+        "/disable prison" : {
+            "description" : "Désactive le système de prison",
+            "usage" : "/disable prison"
+        },
+        "/disable privateroom" : {
+            "description" : "Désactive le système de salons vocaux personalisé",
+            "usage" : "/disable privateroom"
+        },
+        "/disable stats" : {
+            "description" : "Désactive le système de comptage de membres",
+            "usage" : "/disable stats"
+        },
+        "/disable suggestion" : {
+            "description" : "Désactive le système de suggestions",
+            "usage" : "/disable suggestion"
+        },
+        "/disable ticket" : {
+            "description" : "Désactive le système de ticket",
+            "usage" : "/disable ticket"
+        }
+    },
+    "Social" : {
+        "/bite" : {
+            "description" : "Pour mordre quelqu'un",
+            "usage" : "/bite <user>"
+        },
+        "/blush" : {
+            "description" : "Te fait rougir",
+            "usage" : "/blush"
+        },
+        "/bully" : {
+            "description" : "Intimide quelqu'un",
+            "usage" : "/bully <user>"
+        },
+        "/cry" : {
+            "description" : "Pleure auprès de quelqu'un",
+            "usage" : "/cry <user>"
+        },
+        "/dance" : {
+            "description" : "Danse avec quelqu'un",
+            "usage" : "/dance <user>"
+        },
+        "/glomp" : {
+            "description" : "Glousse",
+            "usage" : "/glomp"
+        },
+        "/handhold" : {
+            "description" : "Serre la main de quelqu'un",
+            "usage" : "/handhold <user>"
+        },
+        "/happy" : {
+            "description" : "Sois content",
+            "usage" : "/happy"
+        },
+        "/hug" : {
+            "description" : "Fais un calin a quelqu'un",
+            "usage" : "/huh <user>"
+        },
+        "/kill" : {
+            "description" : "Tue quelqu'un",
+            "usage" : "/kill <user>"
+        },
+        "/pat" : {
+            "description" : "Réconforte quelqu'un",
+            "usage" : "/pat <user>"
+        },
+        "/kiss" : {
+            "description" : "Embrasse quelqu'un",
+            "usage" : "/kiss <user>"
+        },
+        "/poke" : {
+            "description" : "Donne un petit coup à quelqu'un",
+            "usage" : "/poke <user>"
+        },
+        "/slap" : {
+            "description" : "Donne une gifle à quelqu'un",
+            "usage" : "/slap <user>"
+        },
+        "/smile" : {
+            "description" : "Sourit",
+            "usage" : "/smile"
+        },
+        "/wave" : {
+            "description" : "Salue quelqu'un",
+            "usage" : "/wave <user>"
+        },
+        "/wink" : {
+            "description" : "Fait un clin d'oeil à quelqu'un",
+            "usage" : "/wave <user>"
+        },
+        "/yeet" : {
+            "description" : "Donne un coup de pied à quelqu'un",
+            "usage" : "/yeet <user>"
+        }
+    },
+    "Animaux" : {
+        "/animals axolot" : {
+            "description" : "Affiche un axolot",
+            "usage" : "/animals axolot"
+        },
+        "/animals dog" : {
+            "description" : "Affiche un chien",
+            "usage" : "/animals dog"
+        },
+        "/animals fox" : {
+            "description" : "Affiche un renard",
+            "usage" : "/animals fox"
+        },
+        "/animals panda" : {
+            "description" : "Affiche un panda",
+            "usage" : "/animals panda"
+        },
+        "/animals bird" : {
+            "description" : "Affiche un oiseau",
+            "usage" : "/animals bird"
+        },
+        "/animals bunny" : {
+            "description" : "Affiche un lapin",
+            "usage" : "/animals bunny"
+        },
+        "/animals cat" : {
+            "description" : "Affiche un chat",
+            "usage" : "/animals cat"
+        },
+        "/animals duck" : {
+            "description" : "Affiche un canard",
+            "usage" : "/animals duck"
+        },
+        "/animals elephant" : {
+            "description" : "Affiche un éléphant",
+            "usage" : "/animals elephant"
+        },
+        "/animals kangourou" : {
+            "description" : "Affiche un kangourou",
+            "usage" : "/animals kangourou"
+        },
+        "/animals koala" : {
+            "description" : "Affiche un koala",
+            "usage" : "/animals koala"
+        },
+        "/animals lizard" : {
+            "description" : "Affiche un reptile",
+            "usage" : "/animals lizard"
+        },
+        "/animals raccoon" : {
+            "description" : "Affiche un raton laveur",
+            "usage" : "/animals raccoon"
+        },
+        "/animals redpanda" : {
+            "description" : "Affiche un panda roux",
+            "usage" : "/animals redpanda"
+        }
+    },
+    "Activitées" : {
+        "/activity youtube" : {
+            "description" : "Lance l'activité Youtube Together",
+            "usage" : "/activity youtube"
+        },
+        "/activity awkword" : {
+            "description" : "Lance l'activité Awkword",
+            "usage" : "/activity awkword"
+        },
+        "/activity betrayal" : {
+            "description" : "Lance l'activité Betrayal",
+            "usage" : "/activity betrayal"
+        },
+        "/activity checkers" : {
+            "description" : "Lance l'activité Checkers",
+            "usage" : "/activity checkers"
+        },
+        "/activity chess" : {
+            "description" : "Lance l'activité Chess",
+            "usage" : "/activity chess"
+        },
+        "/activity doodlecrew" : {
+            "description" : "Lance l'activité Doodlecrew",
+            "usage" : "/activity doodlecrew"
+        },
+        "/activity fishing" : {
+            "description" : "Lance l'activité Fishing",
+            "usage" : "/activity fishing"
+        },
+        "/activity lettertile" : {
+            "description" : "Lance l'activité Lettertile",
+            "usage" : "/activity lettertile"
+        },
+        "/activity poker" : {
+            "description" : "Lance l'activité Poker",
+            "usage" : "/activity poker"
+        },
+        "/activity puttparty" : {
+            "description" : "Lance l'activité Puttparty",
+            "usage" : "/activity puttparty"
+        },
+        "/activity sketchyartists" : {
+            "description" : "Lance l'activité Sketchyartists",
+            "usage" : "/activity sketchyartists"
+        },
+        "/activity spellcast" : {
+            "description" : "Lance l'activité Spellcast",
+            "usage" : "/activity spellcast"
+        },
+        "/activity wordsnack" : {
+            "description" : "Lance l'activité Wordsnack",
+            "usage" : "/activity wordsnack"
+        }
+    },
+    "Jeux" : {
+        "/duel" : {
+            "description" : "Lance un duel avec quelqu'un",
+            "usage" : "/duel <user>"
+        },
+        "/pendu" : {
+            "description" : "Lance le jeu du pendu en groupe ou en solo",
+            "usage" : "/pendu"
+        },
+        "/fasttype" : {
+            "description" : "Lance le jeu du fasttype en groupe ou en solo",
+            "usage" : "/fasttype"
+        },
+        "/memory" : {
+            "description" : "Lance une partie de memory",
+            "usage" : "/memory"
+        },
+        "/morpion" : {
+            "description" : "Lance une partei de morpion avec quelqu'un",
+            "usage" : "/morpion <user>"
+        },
+        "/puissance4" : {
+            "description" : "Lance une partie de puissance 4 avec quelqu'un",
+            "usage" : "/puissance4 <user>"
+        },
+        "/rps" : {
+            "description" : "Lance un jeu de pierre feuille ciseaux avec quelqu'un ou en solo",
+            "usage" : "/rps <user> | /rps"
+        },
+        "/akinator" : {
+            "description" : "Lance une partie d'Akinator",
+            "usage" : "/akinator"
+        }
+    },
+    "Image" : {
+        "/blurp" : {
+            "description" : "Brouille l'image de soi ou de quelqu'un",
+            "usage" : "/blurp <user> | /blurp"
+        },
+        "/changemymind" : {
+            "description" : "Invoque un \"Change my mind !\" avec le texte de votre choix",
+            "usage" : "/changemymind <text>"
+        },
+        "/color" : {
+            "description" : "Affiche les informations d'une couleur avec un code hexadécimal",
+            "usage" : "/color <hex>"
+        },
+        "/gay" : {
+            "description" : "Convertis sa photo de profile ou celle de quelqu'un",
+            "usage" : "/gay <user> | /gay"
+        },
+        "/jail" : {
+            "description" : "Met en prison la photo de soi ou de quelqu'un",
+            "usage" : "/jail <user> | /jail"
+        },
+        "/mission" : {
+            "description" : "Change la photo de profil de soi ou de quelqu'un",
+            "usage" : "/mission <user> | /mission"
+        },
+        "/nasa" : {
+            "description" : "Invoque la photo quotidienne de la nasa",
+            "usage" : "/nasa"
+        },
+        "/pixelate" : {
+            "description" : "Pixelate l'image de profil soi ou de quelqu'un",
+            "usage" : "/pixelate <user> | /pixelate"
+        },
+        "/stickbug" : {
+            "description" : "Invoque un stickbug de soi ou de quelqu'un",
+            "usage" : "/stickbug <user> | /stickbug"
+        },
+        "/tweet": {
+            "description" : "Cree un faux tweet twitter avec le texte de votre choix",
+            "usage" : "/tweet <text>"
+        },
+        "/wasted" : {
+            "description" : "Cree une image \"wasted\" de la photo de profil de soi ou de quelqu'un",
+            "usage" : "/wasted <user> | /wasted"
+        },
+        "ytbcomment" : {
+            "description" : "Cree un faux commentaire youtube avec sa photo de profil",
+            "usage" : "/ytbcomment <text>"
+        }
+    },
+    "Modération" : {
+        "/ban" : {
+            "description" : "Bannit un utilisateur",
+            "usage" : "/ban <user>"
+        },
+        "/unban" : {
+            "description" : "Debannit un utilisateur",
+            "usage" : "/unban <userID>"
+        },
+        "/mute" : {
+            "description" : "Mute un utilisateur",
+            "usage" : "/mute <user>"
+        },
+        "/unmute" : {
+            "description" : "Démute un utilisateur",
+            "usage" : "/unmute <user>"
+        },
+        "/banlist" : {
+            "description" : "Affiche la liste des utilisateurs bannis",
+            "usage" : "/banlist"
+        },
+        "/clear" : {
+            "description" : "Efface le nombre de messages indiqué",
+            "usage" : "/clear <number>"
+        },
+        "/lock" : {
+            "description" : "Verrouille un salon",
+            "usage" : "/lock <channel>"
+        },
+        "/unlock" : {
+            "description" : "Déverrouille un salon",
+            "usage" : "/unlock <channel>"
+        },
+        "/prison" : {
+            "description" : "Met un prison un utilisateur en clonant le channel",
+            "usage" : "/prison <user>"
+        },
+        "/addprison" : {
+            "description" : "Ajoute un utilisateur à la prison",
+            "usage" : "/addprison <user>"
+        },
+        "/liberate" : {
+            "description" : "Libère un utilisateur de la prison",
+            "usage" : "/liberate <user>"
+        },
+        "/slowmode" : {
+            "description" : "Règle le slowmode d'un salon",
+            "usage" : "/slowmode <temp> <channek>"
+        },
+        "/warn user add" : {
+            "description" : "Ajoute un avertissement à un utilisateur",
+            "usage" : "/warn user add <user>"
+        },
+        "/warn user remove" : {
+            "description" : "Enlève un avertissement à un utilisateur",
+            "usage" : "/warn user remove <user>"
+        },
+        "/warn clear user" : {
+            "description" : "Efface les avertissement d'un utilisateur",
+            "usage" : "/warn clear user <user>"
+        },
+        "/warn clear all" : {
+            "description" : "Efface tous les avertissements",
+            "usage" : "/warn clear all"
+        },
+        "/warn list user" : {
+            "description" : "Affiche tous les avertissement d'un utilisateur",
+            "usage" : "/warn list user <user>"
+        },
+        "/warn list all" : {
+            "description" : "Affiche tous les avertissements du serveur",
+            "usage" : "/warn list all"
+        }
+    },
+    "Fun" : {
+        "/8ball" : {
+            "description" : "Lance une question avec la réponse de la magic 8 ball",
+            "usage" : "/8ball <question>"
+        },
+        "/achievement" : {
+            "description" : "Affiche un achievement minecraft",
+            "usage" : "/achievement <name>"
+        },
+        "/anime" : {
+            "description" : "Affiche les informations d'un animé",
+            "usage" : "/anime <name>"
+        },
+        "/ascii" : {
+            "description" : "Affiche un texte en format ascii",
+            "usage" : "/ascii <text>"
+        },
+        "/commit" : {
+            "description" : "Invente un nom de commit {Developper}",
+            "usage" : "/commit"
+        },
+        "/emogify" : {
+            "description" : "Traduit votre texte en format emoji",
+            "usage" : "/emogify <text>"
+        },
+        "/hack" : {
+            "description" : "Permet d'hacker un ami",
+            "usage" : "/hack <user>"
+        },
+        "/lovecalc" : {
+            "description" : "Calcule l'amour entre vous et quelqu'un d'autre",
+            "usage" : "/lovecalc <user1> <user2> | /lovecalc <user>"
+        },
+        "/mcskin" : {
+            "description" : "Affiche les informations d'un compte minecraft",
+            "usage" : "/mcskin <name>"
+        },
+        "/pof" : {
+            "description" : "Pile ou face ?",
+            "usage" : "/pof"
+        },
+        "/pokefusion" : {
+            "description" : "Invoque une fusion de deux pokémons",
+            "usage" : "/pokefusion"
+        },
+        "/quote" : {
+            "description" : "Invoque une citation issue d'un animé",
+            "usage" : "/quote"
+        },
+        "/roulette" : {
+            "description" : "Lance une roulette avec vos amis",
+            "usage" : "/roulette"
+        },
+        "/tierlist" : {
+            "description" : "Cree une tierlist aléatoire",
+            "usage" : "/tierlist <liste>"
+        },
+        "/xkcd" : {
+            "description" : "Affiche une image de xkcd",
+            "usage" : "/xkcd"
+        },
+        "/rate something" : {
+            "description" : "Note n'importe quoi",
+            "usage" : "/rate something <text>"
+        },
+        "/rate user" : {
+            "description" : "Note un utilisateur",
+            "usage" : "/rate user <user>"
+        }
+    },
+    "Utile" : {
+        "/userinfo" : {
+            "description" : "Affiche les informations de soi ou d'un utilisateur",
+            "usage" : "/userinfo <user> | /userinfo"
+        },
+        "/serverinfo" : {
+            "description" : "Affiche les informations du serveur",
+            "usage" : "/serverinfo"
+        },
+        "/pp" : {
+            "description" : "Affiche l'avatar de soi ou d'un utilisateur",
+            "usage" : "/pp <user> | /pp"
+        },
+        "/translate" : {
+            "description" : "Traduit un texte",
+            "usage" : "/translate <from> <to> <text>"
+        },
+        "/sugg" : {
+            "description" : "Envoie un suggestion",
+            "usage" : "/sugg <text>"
+        },
+        "/rappel" : {
+            "description" : "Crée un rappel",
+            "usage" : "/rappel <time> <raison>"
+        },
+        "/meteo" : {
+            "description" : "Affiche la météo d'une ville",
+            "usage" : "/meteo <ville>"
+        },
+        "/poll" : {
+            "description" : "Crée un sondage avec les question réponses de votre choix",
+            "usage" : "/poll <question> <reponse1> <reponse2> <reponse3> ..etc"
+        },
+        "/id" : {
+            "description" : "Affiche l'id d'un utilisateur",
+            "usage" : "/id <user> | /id"
+        },
+        "/help" : {
+            "description" : "Affiche la liste des commandes",
+            "usage" : "/help"
+        },
+        "/count" : {
+            "description" : "Compte le nombre de caractere dans une phrase",
+            "usage" : "/count <text>"
+        },
+        "/calc" : {
+            "description" : "Calcule une expression mathématique",
+            "usage" : "/calc <expression>"
+        },
+        "/bumps" : {
+            "description" : "Affiche le classement de bumps",
+            "usage" : "/bumps"
+        },
+        "/profile edit" : {
+            "description" : "Edite ta page de profile",
+            "usage" : "/profile edit"
+        },
+        "/profile view" : {
+            "description" : "Affiche ta page de profile",
+            "usage" : "/profile view <user> | /profile view"
+        },
+        "/steam random" : {
+            "description" : "Affiche un jeu aléatoire de steam",
+            "usage" : "/steam random"
+        },
+        "/steam search" : {
+            "description" : "Affiche les informations d'un jeu steam",
+            "usage" : "/steam search <name>"
+        },
+        "/emote add" : {
+            "description" : "Ajoute un emote",
+            "usage" : "/emote add <name> <emoji>"
+        },
+        "/emote delete" : {
+            "description" : "Supprime un emote",
+            "usage" : "/emote delete <name>"
+        },
+        "/emote rename" : {
+            "description" : "Renomme un emote",
+            "usage" : "/emote rename <name> <new name>"
+        },
+        "/emote image" : {
+            "description" : "Affiche l'image d'un emote",
+            "usage" : "/emote image <emoji>"
+        },
+        "/emote list" : {
+            "description" : "Affiche la liste des emotes",
+            "usage" : "/emote list"
+        },
+        "/anniv set" : {
+            "description" : "Ajoute ton anniversaire",
+            "usage" : "/anniv set <date>"
+        },
+        "/anniv delete" : {
+            "description" : "Supprime ta date d'anniversaire",
+            "usage" : "/anniv delete <date>"
+        },
+        "/anniv show" : {
+            "description" : "Affiche ta date d'anniversaire ou celle d'un utilisateur",
+            "usage" : "/anniv show <user> | /anniv show"
+        },
+        "/anniv list" : {
+            "description" : "Affiche la liste des anniversaires",
+            "usage" : "/anniv list"
+        },
+        "/giveaway create" : {
+            "description" : "Crée un giveaway",
+            "usage" : "/giveaway create"
+        },
+        "/giveaway end" : {
+            "description" : "Avance la fin du giveaway giveaway",
+            "usage" : "/giveaway end"
+        },
+        "/giveaway cancel" : {
+            "description" : "Annule un giveaway",
+            "usage" : "/giveaway cancel"
+        },
+        "/giveaway reroll" : {
+            "description" : "Reroll un giveaway",
+            "usage" : "/giveaway reroll"
+        },
+        "/giveaway count" : {
+            "description" : "Liste les giveaways actif",
+            "usage" : "/giveaway count"
+        },
+        "/interserveur open" : {
+            "description" : "Lance un code pour un interserveur",
+            "usage" : "/interserveur open"
+        },
+        "/interserveur join" : {
+            "description" : "Rejoins un interserveur",
+            "usage" : "/interserveur join <code>"
+        },
+        "/interserveur infos" : {
+            "description" : "Affiche les informations de l'interserveur",
+            "usage" : "/interserveur infos"
+        },
+        "/vocal private" : {
+            "description" : "Met le vocal en privé [privateroom]",
+            "usage" : "/vocal private"
+        },
+        "/vocal add" : {
+            "description" : "Ajoute un modérateur au vocal privé",
+            "usage" : "/vocal add <user>"
+        },
+        "/vocal limit" : {
+            "description" : "Limite le nombre de personne dans le vocal privé",
+            "usage" : "/vocal limit <nombre>"
+        },
+        "/vocal rename" : {
+            "description" : "Renomme le vocal privé",
+            "usage" : "/vocal rename <name>"
+        }
+    }
+}
