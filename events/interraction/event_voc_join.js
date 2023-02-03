@@ -1,4 +1,4 @@
-const {MessageEmbed, Permissions, MessageActionRow, MessageButton} = require('discord.js');
+const {EmbedBuilder, PermissionsBitField, ActionRowBuilder, ButtonBuilder} = require('discord.js');
 let date = new Date()
 
 module.exports = {
@@ -21,10 +21,10 @@ module.exports = {
                     userLimit : 99,
                     permissionOverwrites: [{
                         id: oldMember.guild.id,
-                        allow: [Permissions.FLAGS.VIEW_CHANNEL]
+                        allow: [PermissionsBitField.Flags.ViewChannel]
                     },{
                         id : oldMember.id,
-                        allow : [Permissions.FLAGS.MANAGE_CHANNELS, Permissions.FLAGS.MOVE_MEMBERS, Permissions.FLAGS.CONNECT, Permissions.FLAGS.CREATE_INSTANT_INVITE, Permissions.FLAGS.MANAGE_ROLES]
+                        allow : [PermissionsBitField.Flags.ManageChannels, PermissionsBitField.Flags.MOVE_MEMBERS, PermissionsBitField.Flags.Connect, PermissionsBitField.Flags.CreateInstantInvite, PermissionsBitField.Flags.ManageRoles]
                     }] 
                 })
                 user.voice.setChannel(voc);

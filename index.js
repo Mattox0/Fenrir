@@ -1,8 +1,8 @@
-const { Client, Intents, Collection, DMChannel } = require("discord.js")
-const client = new Client({partials: ["CHANNEL", "MESSAGE"] ,intents: [ Intents.FLAGS.GUILD_INVITES, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, Intents.FLAGS.GUILD_MEMBERS,Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_PRESENCES] })
-const fs = require("fs")
-const Config = require("./config.json")
-const sqlite3 = require("sqlite3")
+const { Client, GatewayIntentBits, Partials, Collection } = require("discord.js")
+const client = new Client({ partials: [Partials.Channel, Partials.Message], intents: [ GatewayIntentBits.MessageContent ,GatewayIntentBits.GuildInvites, GatewayIntentBits.GuildBans, GatewayIntentBits.GuildEmojisAndStickers, GatewayIntentBits.GuildMembers, GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildPresences] })
+const fs = require("fs");
+const Config = require("./config.json");
+const sqlite3 = require("sqlite3");
 const schedule = require('node-schedule');
 require('./deploy_commands').build();
 
@@ -30,7 +30,7 @@ const addAnniv = schedule.scheduleJob('0 0 0 * * *', function() {
         if (dates[0] == date.getDate() && dates[1] == date.getMonth() + 1) {
             let user = await guild.members.fetch(res.user_id);
             user.roles.add(role).catch(err => console.log(err)).then(user => {
-                const anniv = new MessageEmbed()
+                const anniv = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription(`<a:LMT_arrow:831817537388937277> **C\'est l\'anniversaire de ${user} !**\nSouhaitez lui un bon anniversaire !`)
                     .setThumbnail('https://cdn.discordapp.com/attachments/708012118619717783/901498201629143120/882249649736527892.gif')

@@ -1,4 +1,4 @@
-const { MessageEmbed, Permissions } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField } = require("discord.js");
 
 module.exports = {
 	name: 'guildMemberRemove',
@@ -26,17 +26,17 @@ module.exports = {
                 if (Math.floor(time / (1000*60*60)) > 1) nbTime = `${Math.floor(time / (1000*60*60))} heures` ;
                 if(Math.floor(time / (1000*60*60*24)) > 1) nbTime = `${Math.floor(time / (1000*60*60*24))} jours`;
                 if (!kickLog || !(kickLog.target.id === Member.id)) {
-                    const event = new MessageEmbed()
+                    const event = new EmbedBuilder()
                         .setColor('#2f3136')
-                        .setDescription(`<a:LMT__arrow:831817537388937277> **${Member} a quitté le serveur** !\n\n**Membre depuis** : ${nbTime}\n\n**ID** : ${Member.id}\n\n**Date :** <t:${Math.ceil(date / 1000)}:F>`)
+                        .setDescription(`<a:LMT_arrow:1065548690862899240> **${Member} a quitté le serveur** !\n\n**Membre depuis** : ${nbTime}\n\n**ID** : ${Member.id}\n\n**Date :** <t:${Math.ceil(date / 1000)}:F>`)
                         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return chann.send({embeds:[event]});
                 } else {
-                    const event = new MessageEmbed()
+                    const event = new EmbedBuilder()
                         .setColor('#2f3136')
                         .setThumbnail(kickLog.executor.displayAvatarURL({dynamic:true}))
                         .setAuthor({name:`${kickLog.executor.username}#${kickLog.executor.discriminator}`, iconURL:`${kickLog.executor.displayAvatarURL()}`})
-                        .setDescription(`<a:LMT__arrow:831817537388937277> **${Member} a été exclu par ${kickLog.executor}** !\n\n**Membre depuis** : ${nbTime}\n\n**ID** : ${Member.id}\n\n**Date :** <t:${Math.ceil(date / 1000)}:F>`)
+                        .setDescription(`<a:LMT_arrow:1065548690862899240> **${Member} a été exclu par ${kickLog.executor}** !\n\n**Membre depuis** : ${nbTime}\n\n**ID** : ${Member.id}\n\n**Date :** <t:${Math.ceil(date / 1000)}:F>`)
                         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return chann.send({embeds:[event]});
                 }

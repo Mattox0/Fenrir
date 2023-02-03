@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 
 async function setDiscordRoles(interaction, date, game, resolve) {
     // creer un role LG + l'assigner à tous les joueurs

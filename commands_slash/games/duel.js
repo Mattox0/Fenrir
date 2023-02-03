@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js")
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js")
 const wait = require('util').promisify(setTimeout);
 
 module.exports = {
@@ -16,21 +16,21 @@ module.exports = {
         listediff = [0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 30];
         hp1 = 100;
         hp2 = 100;
-        const duel = new MessageEmbed()
+        const duel = new EmbedBuilder()
             .setColor('#000000')
             .setTitle('⚔️ Duel ⚔️')
             .setDescription(`**${player2.user.username}**, Acceptes-tu ce duel de la part de **${player1.user.username}** ?`)
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
-        const row = new MessageActionRow()
+        const row = new ActionRowBuilder()
             .addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('Oui')
                     .setLabel('Let’s go')
-                    .setStyle('SUCCESS'),
-                new MessageButton()
+                    .setStyle(ButtonStyle.Success),
+                new ButtonBuilder()
                     .setCustomId('Non')
                     .setLabel('Fuite !')
-                    .setStyle('DANGER'),
+                    .setStyle(ButtonStyle.Danger),
             )
         await interaction.deferReply();
         interaction.editReply({embeds: [duel], components: [row] }).then(msg => {
@@ -42,16 +42,16 @@ module.exports = {
             });
             collector.on('end', async collected => {
                 if (!collected.first()) {
-                    const delai = new MessageEmbed()
+                    const delai = new EmbedBuilder()
                         .setColor('#2f3136')
-                        .setDescription(`<a:LMT__arrow:831817537388937277> **${player2} n'a pas répondu**`)
+                        .setDescription(`<a:LMT_arrow:1065548690862899240> **${player2} n'a pas répondu**`)
                         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return msg.edit({ embeds: [delai], components: [] });
                 };
                 collected.first().deferUpdate(); // évite le chargement infinie de l'intérraction
                 switch (collected.first().customId) {
                     case 'Oui':
-                        const debut = new MessageEmbed()
+                        const debut = new EmbedBuilder()
                             .setTitle(`${player1.user.username} ⚔️ ${player2.user.username}`)
                             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                             .addFields(
@@ -68,7 +68,7 @@ module.exports = {
                             diff = Math.floor(Math.random() * listediff.length);
                             if (i % 2 === 0) {
                                 hp2 = hp2 - diff;
-                                const attack1 = new MessageEmbed()
+                                const attack1 = new EmbedBuilder()
                                     .setTitle(`${player1.user.username} ⚔️ ${player2.user.username}`)
                                     .setColor('#2C75FF')
                                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
@@ -98,7 +98,7 @@ module.exports = {
                                 };
                             } else {
                                 hp1 = hp1 - diff;
-                                const attack2 = new MessageEmbed()
+                                const attack2 = new EmbedBuilder()
                                     .setTitle(`${player1.user.username} ⚔️ ${player2.user.username}`)
                                     .setColor('#FF0000')
                                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
@@ -129,14 +129,14 @@ module.exports = {
                             };
                         }
                         if (hp2 <= 0) {
-                            const final = new MessageEmbed()
+                            const final = new EmbedBuilder()
                                 .setColor('#2f3136')
                                 .setImage('https://media.giphy.com/media/DffShiJ47fPqM/giphy.gif')
                                 .setDescription(`${player1} **est le grand vaincqueur !**\n\nAvec **${hp1}** HP restants`)
                                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                             await interaction.followUp({ embeds: [final] });
                         } else {
-                            const final = new MessageEmbed()
+                            const final = new EmbedBuilder()
                                 .setColor('#2f3136')
                                 .setImage('https://media.giphy.com/media/DffShiJ47fPqM/giphy.gif')
                                 .setDescription(`${player2} **est le grand vaincqueur !**\n\nAvec **${hp2}** HP restants`)
@@ -145,9 +145,9 @@ module.exports = {
                         }
                         return
                     case 'Non':
-                        const fuite = new MessageEmbed()
+                        const fuite = new EmbedBuilder()
                             .setColor('#2f3136')
-                            .setDescription(`<a:LMT__arrow:831817537388937277> ${player2} **a décliné ton offre**`)
+                            .setDescription(`<a:LMT_arrow:1065548690862899240> ${player2} **a décliné ton offre**`)
                             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                         return msg.edit({ embeds: [fuite], components: [] });
                 };

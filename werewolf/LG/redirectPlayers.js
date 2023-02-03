@@ -1,9 +1,9 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 
 async function redirectPlayers(interaction, date, game, resolve) {
     const channel = await interaction.guild.channels.cache.find(channel => channel.id === game.config.villageId);
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
         .setColor('#2f3136')
         .setDescription(`Tout est prêt pour la partie !\n\n> Direction le village : ${channel}`)
         .setThumbnail("https://media.discordapp.net/attachments/905980338017284197/1027940276775419955/lmt-logo-white.png?width=661&height=671")

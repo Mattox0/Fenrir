@@ -30,7 +30,7 @@ module.exports = {
 
 		const rest = new REST({ version: '9' }).setToken(config.token);
 
-		await rest.put(Routes.applicationGuildCommands('784943061616427018','707953787477688360'), { body: localCommands })
+		await rest.put(Routes.applicationGuildCommands('784943061616427018','901980905579643001'), { body: localCommands })
 			.then(() => console.log('--- Commandes LOCALES ont été chargés ✅ ---'))
 			.catch(console.error);
 		

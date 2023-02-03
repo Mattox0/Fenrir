@@ -1,4 +1,4 @@
-const {MessageEmbed} = require('discord.js');
+const {EmbedBuilder} = require('discord.js');
 
 module.exports = {
     async execute(...params) {
@@ -21,13 +21,13 @@ module.exports = {
             if (emote.startsWith('<:')) link = `https://cdn.discordapp.com/emojis/${id}.png`
             if (emote.startsWith('<a:')) link = `https://cdn.discordapp.com/emojis/${id}.gif`
             else {
-                const fail = new MessageEmbed()
+                const fail = new EmbedBuilder()
                 .setColor('2f3136')
-                .setDescription(`<a:LMT__arrow:831817537388937277> **Merci de respecter le format suivant :**\n\n> \`/emote image :emote:\`\n> \`/emote image nomEmote\``)
+                .setDescription(`<a:LMT_arrow:1065548690862899240> **Merci de respecter le format suivant :**\n\n> \`/emote image :emote:\`\n> \`/emote image nomEmote\``)
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return interaction.reply({embeds:[fail],ephemeral:true});
             }
-            const emoteEmbed = new MessageEmbed()
+            const emoteEmbed = new EmbedBuilder()
                 .setColor('#2f3136')
                 .setImage(link)
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
@@ -35,7 +35,7 @@ module.exports = {
         }
         link = emoji.url
         emoji.animated ? aperçu = `<a:${emoji.name}:${emoji.id}>` : aperçu = `<:${emoji.name}:${emoji.id}>`
-        const emote1 = new MessageEmbed()
+        const emote1 = new EmbedBuilder()
         .setColor('#2f3136')
         .setImage(link)
         .setDescription(`**Nom: \`${emoji.name}\`\nAperçu: ${aperçu}\nIdentifiant: \`${emoji.id}\`\nIdentifier: \`${aperçu.slice(1,-1)}\`\nImage:**`)

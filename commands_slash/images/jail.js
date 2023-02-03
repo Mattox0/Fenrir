@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed,MessageAttachment } = require('discord.js');
+const { EmbedBuilder,AttachmentBuilder } = require('discord.js');
 const Canvas = require('canvas')
 
 module.exports = {
@@ -13,19 +13,19 @@ module.exports = {
         let person = interaction.options.getUser('utilisateur');
         if (!person) person = interaction.member;
         else person = await interaction.member.guild.members.cache.find(x => x.id === person.id);
-        const wait = new MessageEmbed()
+        const wait = new EmbedBuilder()
             .setColor('#2f3136')
-            .setDescription('<a:LMT__arrow:831817537388937277> **Génération de l\'image** <a:LMT__loading:877990312432254976>')
+            .setDescription('<a:LMT_arrow:1065548690862899240> **Génération de l\'image** <a:LMT_loading:1065616439836414063>')
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         await interaction.reply({embeds:[wait]});
         const canvas = Canvas.createCanvas(256,256);
         const context = canvas.getContext('2d');
-        const personI = await Canvas.loadImage(person.user.displayAvatarURL({ format:'png',size:256, dynamic : false}));
+        const personI = await Canvas.loadImage(person.user.displayAvatarURL({ extension:'png',size:256, dynamic : false}));
         context.drawImage(personI, 0, 0, canvas.width, canvas.height);
         let background = await Canvas.loadImage('./Images/jail.png');
         context.drawImage(background, 0, 0, canvas.width, canvas.height);
-        const attachment = new MessageAttachment(canvas.toBuffer(), 'jail.png');
-        const jail = new MessageEmbed()
+        const attachment = new AttachmentBuilder(canvas.toBuffer(), { name:'jail.png'});
+        const jail = new EmbedBuilder()
             .setColor('#2f3136')
             .setImage(`attachment://jail.png`)
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})

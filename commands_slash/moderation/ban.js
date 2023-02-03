@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed,  Permissions, MessageAttachment } = require("discord.js");
+const { EmbedBuilder,  PermissionsBitField, AttachmentBuilder } = require("discord.js");
 const schedule = require('node-schedule')
 
 module.exports = {
@@ -14,10 +14,10 @@ module.exports = {
         let interaction = params[0];
         let date = params[2];
         let db = params[4];
-        if (!interaction.member.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) {
-            const fail = new MessageEmbed()
+        if (!interaction.member.permissions.has(PermissionsBitField.Flags.BanMembers)) {
+            const fail = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription('<a:LMT__arrow:831817537388937277> **Tu ne peux pas faire justice toi-même !** \n**Appelle une personne plus qualifiée qui pourra t\'**\n**aider dans la démarche du bannissement**')
+                .setDescription('<a:LMT_arrow:1065548690862899240> **Tu ne peux pas faire justice toi-même !** \n**Appelle une personne plus qualifiée qui pourra t\'**\n**aider dans la démarche du bannissement**')
                 .setThumbnail('https://cdn.discordapp.com/attachments/883117525842423898/899365869560430592/882249237486784522.gif')
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({ embeds : [fail],ephemeral : true});
@@ -27,9 +27,9 @@ module.exports = {
         let duree = interaction.options.getString('durée');
         if (!raison) raison = "Aucune raison n'a été donnée";
         let dateFin = new Date();
-        const fail = new MessageEmbed()
+        const fail = new EmbedBuilder()
             .setColor('#2f3136')
-            .setDescription(`<a:LMT__arrow:831817537388937277> **Il faut mettre une tranche horaire correcte**\n\n> \`/ban <user> 1M30j\`\n> \`(m->minutes,h->heures,j->jours,M->mois)\`\n> \`si tu ne met rien, ce sera pour toujours\``)
+            .setDescription(`<a:LMT_arrow:1065548690862899240> **Il faut mettre une tranche horaire correcte**\n\n> \`/ban <user> 1M30j\`\n> \`(m->minutes,h->heures,j->jours,M->mois)\`\n> \`si tu ne met rien, ce sera pour toujours\``)
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         if (duree) {
             let time = "";let day=0;let heure = 0; let minute = 0; let mois = 0;
@@ -54,7 +54,7 @@ module.exports = {
         if (purge) daysPurge = 7;
         else daysPurge = 0;
         person.ban({reason : raison, days : daysPurge}).then((member) => {
-            const ban = new MessageEmbed()
+            const ban = new EmbedBuilder()
                 .setColor('#2f3136')
                 .setDescription(`**${member} a été banni !\n\n${interaction.member} a décidé de vous éliminer, et sa sentence est __irrévocable__.**\n\n__Pour la raison suivante :__\n> ${raison}.\n\n__Durée :__\n> ${dureeString}`)
                 .setThumbnail('https://cdn.discordapp.com/attachments/883117525842423898/920829502861492314/727224531021987880.png')
@@ -62,9 +62,9 @@ module.exports = {
             return interaction.reply({ embeds : [ban]});
         }).catch((e) => {
             console.log(e)
-            const fail = new MessageEmbed()
+            const fail = new EmbedBuilder()
             .setColor('#2f3136')
-            .setDescription(`<a:LMT__arrow:831817537388937277> **Mon rôle doit être au dessus des autres pour que je puisse ban**`)
+            .setDescription(`<a:LMT_arrow:1065548690862899240> **Mon rôle doit être au dessus des autres pour que je puisse ban**`)
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({ embeds : [fail],ephemeral:true });
         });

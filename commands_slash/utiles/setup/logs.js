@@ -1,12 +1,12 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
     async execute(interaction, db, date) {
         let chann = interaction.options.getChannel('channel');
         if (chann.type !== 'GUILD_TEXT') {
-            const fail = new MessageEmbed()
+            const fail = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription('<a:LMT__arrow:831817537388937277> **Le salon doit être __textuel__**')
+                .setDescription('<a:LMT_arrow:1065548690862899240> **Le salon doit être __textuel__**')
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({embeds:[fail],ephemeral:true});
         };
@@ -42,9 +42,9 @@ module.exports = {
             } else {
                 db.run("UPDATE logs SET logs_id = ?,channelCreate = ?,channelDelete = ?,channelUpdate = ?,messageDelete = ?,messageUpdate = ?,roleCreate = ?,roleDelete = ?,roleUpdate = ?,emojiCreate = ?,emojiDelete = ?,emojiUpdate = ?,voiceStateUpdate = ?,guildMemberUpdate = ?,guildMemberRemove = ?,guildBanAdd = ?,guildBanRemove = ?,inviteCreate = ?,inviteDelete = ?,guildMemberAdd = ?,stickerCreate = ?,stickerDelete = ?,threadCreate = ?,threadDelete = ? WHERE guild_id = ?",chann.id,channelCreate,channelDelete,channelUpdate,messageDelete,messageUpdate,roleCreate,roleDelete,roleUpdate,emojiCreate,emojiDelete,emojiUpdate,voiceStateUpdate,guildMemberUpdate,guildMemberRemove,guildBanAdd,guildBanRemove,inviteCreate,inviteDelete,guildMemberAdd,stickerCreate,stickerDelete,threadCreate,threadDelete, interaction.member.guild.id, (err, res) => {if (err) console.log(err)});
             }
-            const win = new MessageEmbed()
+            const win = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription(`<a:LMT__arrow:831817537388937277> **Le système de logs est maintenant actif\ndans le salon** ${chann}`)
+                .setDescription(`<a:LMT_arrow:1065548690862899240> **Le système de logs est maintenant actif\ndans le salon** ${chann}`)
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({embeds:[win]});
         }) 

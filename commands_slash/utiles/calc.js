@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
 const math = require("mathjs")
 
 module.exports = {
@@ -15,15 +15,15 @@ module.exports = {
         try{
             result = math.evaluate(expression);
         } catch (e) {
-            const fail = new MessageEmbed()
+            const fail = new EmbedBuilder()
             .setColor('#2f3136')
-            .setDescription(`<a:LMT__arrow:831817537388937277> **Votre expression n'est pas bonne**\n\n> \`/calc 5*2+9\``)
+            .setDescription(`<a:LMT_arrow:1065548690862899240> **Votre expression n'est pas bonne**\n\n> \`/calc 5*2+9\``)
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({ embeds : [ fail ], ephemeral:true });;
         };
-        const calc = new MessageEmbed()
+        const calc = new EmbedBuilder()
             .setColor('#2f3136')
-            .setDescription(`<a:LMT__arrow:831817537388937277> **${expression}**\n\n> ${result}`)
+            .setDescription(`<a:LMT_arrow:1065548690862899240> **${expression}**\n\n> ${result}`)
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         return interaction.reply({embeds:[calc]});
     }

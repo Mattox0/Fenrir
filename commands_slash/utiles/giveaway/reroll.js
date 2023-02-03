@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton  } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const schedule = require("node-schedule")
 
 module.exports = {
@@ -6,16 +6,16 @@ module.exports = {
         let message_id = interaction.options.getString('message_id');
         db.get('SELECT * FROM giveaways WHERE message_id = ?',message_id, (err, res) => {
             if (!res) {
-                const fail = new MessageEmbed()
+                const fail = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription(`<a:LMT__arrow:831817537388937277> **Ce message n'a pas de giveaway actif**\n\n> /giveaway reroll <ID>`)
+                .setDescription(`<a:LMT_arrow:1065548690862899240> **Ce message n'a pas de giveaway actif**\n\n> /giveaway reroll <ID>`)
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return interaction.reply({embeds:[fail],ephemeral:true});
             }
             if (res.past !== 1) {
-                const failZ = new MessageEmbed()
+                const failZ = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription(`<a:LMT__arrow:831817537388937277> **Le giveaway n'est pas fini !**`)
+                .setDescription(`<a:LMT_arrow:1065548690862899240> **Le giveaway n'est pas fini !**`)
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return message.channel.send({embeds:[failZ],ephemeral:true});
             }

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 const jsdom = require('jsdom')
 const got = require('got')
 const fetch = require('node-fetch')
@@ -11,9 +11,9 @@ module.exports = {
     async execute(...params) {
         let interaction = params[0];
         let date = params[2];
-        const wait = new MessageEmbed()
+        const wait = new EmbedBuilder()
             .setColor('#2f3136')
-            .setDescription('<a:LMT__arrow:831817537388937277> **Génération de l\'image** <a:LMT__loading:877990312432254976>')
+            .setDescription('<a:LMT_arrow:1065548690862899240> **Génération de l\'image** <a:LMT_loading:1065616439836414063>')
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         await interaction.reply({embeds:[wait]});
         let num1 = Math.ceil(Math.random() * 152);
@@ -42,7 +42,7 @@ module.exports = {
                 nameText2 = data["names"]["4"]["name"]
             })
         })
-        const pokefusion = new MessageEmbed()
+        const pokefusion = new EmbedBuilder()
             .setColor('#2f3136')
             .setTitle(`${nameText1} <a:LMT__etoiles:910840707865014322> ${nameText2}`)
             .setImage(`https://images.alexonsager.net/pokemon/fused/${num1}/${num1}.${num2}.png`)

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed,  Permissions } = require("discord.js");
+const { EmbedBuilder,  PermissionsBitField } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -9,10 +9,10 @@ module.exports = {
     async execute(...params) {
         let interaction = params[0];
         let date = params[2];
-        if (!interaction.member.permissions.has(Permissions.FLAGS.MANAGE_NICKNAMES)) {
-            const noperm = new MessageEmbed()
+        if (!interaction.member.permissions.has(PermissionsBitField.Flags.MANAGE_NICKNAMES)) {
+            const noperm = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription(`<a:LMT__arrow:831817537388937277> **Désolé tu n'as pas la permission d'utiliser cette commande !**`)
+                .setDescription(`<a:LMT_arrow:1065548690862899240> **Désolé tu n'as pas la permission d'utiliser cette commande !**`)
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({embeds:[noperm],ephemeral:true});
         }
@@ -22,16 +22,16 @@ module.exports = {
         let pseudo2 = pseudo.replace(/[^a-zA-Z0-9]/g, '');
         if (pseudo2 === '') pseudo2 = 'Pseudo à changer';
         if (pseudo === pseudo2) {
-            let embed = new MessageEmbed()
+            let embed = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription(`<a:LMT__arrow:831817537388937277> **Il n'y a rien à changer**`)
+                .setDescription(`<a:LMT_arrow:1065548690862899240> **Il n'y a rien à changer**`)
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({embeds:[embed]}); 
         }
         person.setNickname(pseudo2);
-        let embed = new MessageEmbed()
+        let embed = new EmbedBuilder()
             .setColor('#2f3136')
-            .setDescription(`<a:LMT__arrow:831817537388937277> **\`${pseudo}\` devient \`${pseudo2}\`**`)
+            .setDescription(`<a:LMT_arrow:1065548690862899240> **\`${pseudo}\` devient \`${pseudo2}\`**`)
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         return interaction.reply({embeds:[embed]});
     }

@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 
 module.exports = {
@@ -23,9 +23,9 @@ module.exports = {
                 let description;
                 let modif = false;
                 if (!deletionLog) {
-                    const event = new MessageEmbed()
+                    const event = new EmbedBuilder()
                         .setColor('#2f3136')
-                        .setDescription(`<a:LMT__arrow:831817537388937277> **Le salon ${newChann} a été modifié !**\n\n**ID** : ${newChann.id}\n\n**Date de modification :** <t:${Math.ceil(date / 1000)}:F>`)
+                        .setDescription(`<a:LMT_arrow:1065548690862899240> **Le salon ${newChann} a été modifié !**\n\n**ID** : ${newChann.id}\n\n**Date de modification :** <t:${Math.ceil(date / 1000)}:F>`)
                         .addFields(
                             {name:"Ancien nom", value:oldChann.name, inline:true},
                             {name:'Nouveau Nom',value:newChann.name, inline:true}
@@ -33,25 +33,25 @@ module.exports = {
                         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return chann.send({embeds:[event]});
                 } else {
-                    event = new MessageEmbed()
+                    event = new EmbedBuilder()
                         .setColor('#2f3136')
                         .setThumbnail(deletionLog.executor.displayAvatarURL({dynamic:true}))
                         .setAuthor({name:`${deletionLog.executor.username}#${deletionLog.executor.discriminator}`, iconURL:`${deletionLog.executor.displayAvatarURL()}`})                            
                         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
-                    description = `<a:LMT__arrow:831817537388937277> **Le salon ${newChann} a été modifié par ${deletionLog.executor} !**\n\n**Channel ID** : ${newChann.id}\n\n**Date de modification :** <t:${Math.ceil(date / 1000)}:F>\n\n`
+                    description = `<a:LMT_arrow:1065548690862899240> **Le salon ${newChann} a été modifié par ${deletionLog.executor} !**\n\n**Channel ID** : ${newChann.id}\n\n**Date de modification :** <t:${Math.ceil(date / 1000)}:F>\n\n`
 
                 }
                 if (oldChann.name !== newChann.name) {
                     modif = true
-                    description += `> **Nom** : \`${oldChann.name}\` <a:LMT__arrow:831817537388937277> \`${newChann.name}\`\n`;
+                    description += `> **Nom** : \`${oldChann.name}\` <a:LMT_arrow:1065548690862899240> \`${newChann.name}\`\n`;
                 } 
                 if (oldChann.topic !== newChann.topic) {
                     modif = true
-                    description += `> **Sujet du salon** : \`${oldChann.topic ? oldChann.topic : "Aucun"}\` <a:LMT__arrow:831817537388937277> \`${newChann.topic ? newChann.topic : "Aucun"}\`\n`;
+                    description += `> **Sujet du salon** : \`${oldChann.topic ? oldChann.topic : "Aucun"}\` <a:LMT_arrow:1065548690862899240> \`${newChann.topic ? newChann.topic : "Aucun"}\`\n`;
                 }
                 if (oldChann.nsfw !== newChann.nsfw) {       
                     modif = true
-                    description += `> **NSFW** : ${oldChann.nsfw ? '✅' : '❌'} <a:LMT__arrow:831817537388937277> ${newChann.nsfw ? '✅' : '❌'}\n`;
+                    description += `> **NSFW** : ${oldChann.nsfw ? '✅' : '❌'} <a:LMT_arrow:1065548690862899240> ${newChann.nsfw ? '✅' : '❌'}\n`;
                 }
                 if (oldChann.rateLimitPerUser !== newChann.rateLimitPerUser) {
                     modif = true
@@ -59,7 +59,7 @@ module.exports = {
                     tab2 = [0,5,10,15,30,60,2*60,5*60,10*60,15*60,30*60,1*3600,2*3600,6*3600]
                     oldSlow = tab[tab2.indexOf(oldChann.rateLimitPerUser)];
                     newSlow = tab[tab2.indexOf(newChann.rateLimitPerUser)];
-                    description += `> **Slowmode** : \`${oldSlow}\` <a:LMT__arrow:831817537388937277> \`${newSlow}\`\n`;
+                    description += `> **Slowmode** : \`${oldSlow}\` <a:LMT_arrow:1065548690862899240> \`${newSlow}\`\n`;
                 }
                 event.setDescription(description);
                 if (modif) return chann.send({embeds:[event]});

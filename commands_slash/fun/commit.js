@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 const got = require('got');
 const jsdom = require('jsdom');
 
@@ -14,9 +14,9 @@ module.exports = {
         const response = await got(vgmUrl);
         const dom = new jsdom.JSDOM(response.body);
         const nodeList = [...dom.window.document.querySelectorAll('p')];
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setColor('#2f3136')
-            .setDescription(`<a:LMT__arrow:831817537388937277> **${nodeList[0].textContent}**`)
+            .setDescription(`<a:LMT_arrow:1065548690862899240> **${nodeList[0].textContent}**`)
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         return interaction.reply({embeds:[embed]});
     }

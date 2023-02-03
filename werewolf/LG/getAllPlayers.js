@@ -1,23 +1,23 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 
 async function getAllPlayers(interaction, date, game, resolve) {
     let players = [];
-    const row = new MessageActionRow()
+    const row = new ActionRowBuilder()
     .addComponents(
-        new MessageButton()
+        new ButtonBuilder()
             .setCustomId('join')
             .setLabel('Rejoindre')
-            .setStyle('SUCCESS'),
-        new MessageButton()
+            .setStyle(ButtonStyle.Success),
+        new ButtonBuilder()
             .setCustomId('leave')
             .setLabel('Quitter')
-            .setStyle('DANGER'),
-        new MessageButton()
+            .setStyle(ButtonStyle.Danger),
+        new ButtonBuilder()
             .setCustomId('start')
             .setLabel('Lancer la partie')
-            .setStyle('PRIMARY')
+            .setStyle(ButtonStyle.Primary)
     )
-    const collect = new MessageEmbed()
+    const collect = new EmbedBuilder()
         .setColor('#2f3136')
         .setDescription("Le village de Thiercelieux est maintenant ouvert !\n\n**Habitants** :\n\n> *Le village est désert*")
         .setThumbnail("https://media.discordapp.net/attachments/905980338017284197/1027940276775419955/lmt-logo-white.png?width=661&height=671")
@@ -67,7 +67,7 @@ async function getAllPlayers(interaction, date, game, resolve) {
             if (players.length >= 4) {
                 game.config.firstMsg = msg.id;
                 game.allPlayersId = players;
-                const finishMessage = new MessageEmbed()
+                const finishMessage = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription(`La partie va commencer !\n\n**Habitants** :\n\n> ${players.map(player => `<@${player}>`).join("\n> ")}`)
                     .setThumbnail("https://media.discordapp.net/attachments/905980338017284197/1027940276775419955/lmt-logo-white.png?width=661&height=671")
@@ -76,7 +76,7 @@ async function getAllPlayers(interaction, date, game, resolve) {
                 resolve();
             } else {
                 game.end = true
-                const finishMessage = new MessageEmbed()
+                const finishMessage = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription("Le village de Thiercelieux est maintenant fermé !\n\nIl n'y a pas assez de joueurs pour commencer la partie !")
                     .setThumbnail("https://media.discordapp.net/attachments/905980338017284197/1027940276775419955/lmt-logo-white.png?width=661&height=671")

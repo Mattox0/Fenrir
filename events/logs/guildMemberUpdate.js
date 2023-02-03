@@ -1,4 +1,4 @@
-const { MessageEmbed, Permissions } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField } = require("discord.js");
 
 module.exports = {
 	name: 'guildMemberUpdate',
@@ -14,10 +14,10 @@ module.exports = {
                 let chann = await newMember.guild.channels.cache.find(x => x.id === res.logs_id);
                 if (!chann) return;
                 if (oldMember.nickname !== newMember.nickname) {
-                    const event = new MessageEmbed()
+                    const event = new EmbedBuilder()
                         .setColor('#2f3136')
                         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
-                        .setDescription(`<a:LMT__arrow:831817537388937277> **Le surnom de ${newMember} a été modifié** !\n\n**ID** : ${newMember.id}\n\n**Date :** <t:${Math.ceil(date / 1000)}:F>\n\n> **Pseudo** : \`${oldMember.nickname ? oldMember.nickname : oldMember.user.username}\` <a:LMT__arrow:831817537388937277> ${newMember.nickname ? newMember.nickname : newMember.user.username}`)
+                        .setDescription(`<a:LMT_arrow:1065548690862899240> **Le surnom de ${newMember} a été modifié** !\n\n**ID** : ${newMember.id}\n\n**Date :** <t:${Math.ceil(date / 1000)}:F>\n\n> **Pseudo** : \`${oldMember.nickname ? oldMember.nickname : oldMember.user.username}\` <a:LMT_arrow:1065548690862899240> ${newMember.nickname ? newMember.nickname : newMember.user.username}`)
                     return chann.send({embeds:[event]})
                 }
                 if (oldMember._roles !== newMember._roles) {
@@ -26,19 +26,19 @@ module.exports = {
                     if (difference2.length !== 0) {
                         let role = await oldMember.guild.roles.cache.find(x => x.id === difference2[0])
                         if (role) {
-                            const event = new MessageEmbed()
+                            const event = new EmbedBuilder()
                                 .setColor('#2f3136')
                                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
-                                .setDescription(`<a:LMT__arrow:831817537388937277> **${newMember} a reçu le rôle ${role.name}** !\n\n**Date :** <t:${Math.ceil(date / 1000)}:F>`)
+                                .setDescription(`<a:LMT_arrow:1065548690862899240> **${newMember} a reçu le rôle ${role.name}** !\n\n**Date :** <t:${Math.ceil(date / 1000)}:F>`)
                             return chann.send({embeds:[event]})
                         }
                     } else {
                         let role = await oldMember.guild.roles.cache.find(x => x.id === difference1[0])
                         if (role) {
-                            const event = new MessageEmbed()
+                            const event = new EmbedBuilder()
                                 .setColor('#2f3136')
                                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
-                                .setDescription(`<a:LMT__arrow:831817537388937277> **${newMember} a été retiré du rôle ${role.name}** !\n\n**Date :** <t:${Math.ceil(date / 1000)}:F>`)
+                                .setDescription(`<a:LMT_arrow:1065548690862899240> **${newMember} a été retiré du rôle ${role.name}** !\n\n**Date :** <t:${Math.ceil(date / 1000)}:F>`)
                             return chann.send({embeds:[event]})
                         }
                     }

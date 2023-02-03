@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js")
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js")
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -17,20 +17,20 @@ module.exports = {
         let gris = '<:gris:913851890373132388>';
         let fleche = '<:LMT__left:913873419249016862>';
         let transparent = '<:transparent:913875846178172980>';
-        const row = new MessageActionRow()
+        const row = new ActionRowBuilder()
             .addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('Oui')
                     .setLabel('Oui')
-                    .setStyle('SUCCESS'),
-                new MessageButton()
+                    .setStyle(ButtonStyle.Success),
+                new ButtonBuilder()
                     .setCustomId('Non')
                     .setLabel('Non')
-                    .setStyle('DANGER')
+                    .setStyle(ButtonStyle.Danger)
             )
-        const ask = new MessageEmbed()
+        const ask = new EmbedBuilder()
             .setColor('#2f3136')
-            .setDescription(`<a:LMT__arrow:831817537388937277> **${player2}, Acceptes-tu le puissance4 proposé par ${player1} ? **`)
+            .setDescription(`<a:LMT_arrow:1065548690862899240> **${player2}, Acceptes-tu le puissance4 proposé par ${player1} ? **`)
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         await interaction.deferReply();
         interaction.editReply({embeds:[ask],components:[row]}).then(msg => {
@@ -42,9 +42,9 @@ module.exports = {
             })
             collector.on('end', collected => {
                 if (!collected.first()) {
-                    const fail = new MessageEmbed()
+                    const fail = new EmbedBuilder()
                         .setColor('#2f3136')
-                        .setDescription(`<a:LMT__arrow:831817537388937277> **${player2} n'a pas répondu !**`)
+                        .setDescription(`<a:LMT_arrow:1065548690862899240> **${player2} n'a pas répondu !**`)
                         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return msg.edit({embeds:[fail],components:[]})
                 }
@@ -60,41 +60,41 @@ module.exports = {
                             board.push(temp[i].join(' '))
                         }
                         trans = Array(7).fill(transparent)
-                        const numeros1 = new MessageActionRow()
+                        const numeros1 = new ActionRowBuilder()
                         .addComponents(
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('1')
                                 .setEmoji('1️⃣')
-                                .setStyle('SECONDARY'),
-                            new MessageButton()
+                                .setStyle(ButtonStyle.Secondary),
+                            new ButtonBuilder()
                                 .setCustomId('2')
                                 .setEmoji('2️⃣')
-                                .setStyle('SECONDARY'),
-                            new MessageButton()
+                                .setStyle(ButtonStyle.Secondary),
+                            new ButtonBuilder()
                                 .setCustomId('3')
                                 .setEmoji('3️⃣')
-                                .setStyle('SECONDARY'),
-                                new MessageButton()
+                                .setStyle(ButtonStyle.Secondary),
+                                new ButtonBuilder()
                                 .setCustomId('4')
                                 .setEmoji('4️⃣')
-                                .setStyle('SECONDARY')
+                                .setStyle(ButtonStyle.Secondary)
                         )
-                        const numeros2 = new MessageActionRow()
+                        const numeros2 = new ActionRowBuilder()
                         .addComponents(
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('5')
                                 .setEmoji('5️⃣')
-                                .setStyle('SECONDARY'),
-                            new MessageButton()
+                                .setStyle(ButtonStyle.Secondary),
+                            new ButtonBuilder()
                                 .setCustomId('6')
                                 .setEmoji('6️⃣')
-                                .setStyle('SECONDARY'),
-                                new MessageButton()
+                                .setStyle(ButtonStyle.Secondary),
+                                new ButtonBuilder()
                                 .setCustomId('7')
                                 .setEmoji('7️⃣')
-                                .setStyle('SECONDARY')
+                                .setStyle(ButtonStyle.Secondary)
                         )
-                        const tab = new MessageEmbed()
+                        const tab = new EmbedBuilder()
                             .setColor('#2f3136')
                             .setTitle('Puissance 4')
                             .setDescription(`<:LMT_one:901982492473573377> <:LMT_two:901982559456608256> <:LMT_three:901982617006657576> <:LMT_four:901982648463917056> <:LMT_five:901982703476441128> <:LMT_six:901982741493604384> <:LMT_seven:901982779489796106>
@@ -109,9 +109,9 @@ module.exports = {
                         })
                         break
                     case 'Non':
-                        const no = new MessageEmbed()
+                        const no = new EmbedBuilder()
                             .setColor('#2f3136')
-                            .setDescription(`<a:LMT__arrow:831817537388937277> **${player2} a refusé ta demande !**`)
+                            .setDescription(`<a:LMT_arrow:1065548690862899240> **${player2} a refusé ta demande !**`)
                             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                         return msg.edit({embeds:[no],components:[]})
                 }
@@ -176,9 +176,9 @@ module.exports = {
                     turn = turn === player1 ? player2 : player1
                     
                 }  else {
-                    const fail = new MessageEmbed()
+                    const fail = new EmbedBuilder()
                         .setColor('#2f3136')
-                        .setDescription('<a:LMT__arrow:831817537388937277> **Ce n\'est pas ton tour !**')
+                        .setDescription('<a:LMT_arrow:1065548690862899240> **Ce n\'est pas ton tour !**')
                         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     interaction.followUp({embeds:[fail]});
                 }
@@ -191,7 +191,7 @@ module.exports = {
                 }
                 trans = Array(7).fill(transparent)
                 if (!victoire) {
-                    const timeup1 = new MessageEmbed()
+                    const timeup1 = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setTitle('Puissance 4')
                     .setDescription(`<:LMT_one:901982492473573377> <:LMT_two:901982559456608256> <:LMT_three:901982617006657576> <:LMT_four:901982648463917056> <:LMT_five:901982703476441128> <:LMT_six:901982741493604384> <:LMT_seven:901982779489796106>
@@ -204,7 +204,7 @@ module.exports = {
                     ${bleu} ${player1}
                     ${rouge} ${player2} Winner <:LMT__couronne:882246303726313514>`)
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
-                    const timeup2 = new MessageEmbed()
+                    const timeup2 = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setTitle('Puissance 4')
                     .setDescription(`<:LMT_one:901982492473573377> <:LMT_two:901982559456608256> <:LMT_three:901982617006657576> <:LMT_four:901982648463917056> <:LMT_five:901982703476441128> <:LMT_six:901982741493604384> <:LMT_seven:901982779489796106>
@@ -221,7 +221,7 @@ module.exports = {
                     else return msg.edit({embeds:[timeup2],components:[]})
                 }
                 if (victoire === 'egalite') {
-                    const egalite = new MessageEmbed()
+                    const egalite = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setTitle('Puissance 4')
                     .setDescription(`<:LMT_one:901982492473573377> <:LMT_two:901982559456608256> <:LMT_three:901982617006657576> <:LMT_four:901982648463917056> <:LMT_five:901982703476441128> <:LMT_six:901982741493604384> <:LMT_seven:901982779489796106>
@@ -237,7 +237,7 @@ module.exports = {
                     return msg.edit({embeds:[egalite],components:[]})
                 }
                 if (victoire === player1) {
-                    const win1 = new MessageEmbed()
+                    const win1 = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setTitle('Puissance 4')
                     .setDescription(`<:LMT_one:901982492473573377> <:LMT_two:901982559456608256> <:LMT_three:901982617006657576> <:LMT_four:901982648463917056> <:LMT_five:901982703476441128> <:LMT_six:901982741493604384> <:LMT_seven:901982779489796106>
@@ -251,7 +251,7 @@ module.exports = {
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return msg.edit({embeds:[win1],components:[]})
                 } else {
-                    const win2 = new MessageEmbed()
+                    const win2 = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setTitle('Puissance 4')
                     .setDescription(`<:LMT_one:901982492473573377> <:LMT_two:901982559456608256> <:LMT_three:901982617006657576> <:LMT_four:901982648463917056> <:LMT_five:901982703476441128> <:LMT_six:901982741493604384> <:LMT_seven:901982779489796106>
@@ -279,7 +279,7 @@ module.exports = {
             }
             trans = Array(7).fill(transparent)
             trans[column] = '🔻'
-            const tab1 = new MessageEmbed()
+            const tab1 = new EmbedBuilder()
             .setColor('#2f3136')
             .setTitle('Puissance 4')
             .setDescription(`<:LMT_one:901982492473573377> <:LMT_two:901982559456608256> <:LMT_three:901982617006657576> <:LMT_four:901982648463917056> <:LMT_five:901982703476441128> <:LMT_six:901982741493604384> <:LMT_seven:901982779489796106>
@@ -289,7 +289,7 @@ module.exports = {
             ${bleu} ${player1} ${fleche}
             ${rouge} ${player2}`)
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
-            const tab2 = new MessageEmbed()
+            const tab2 = new EmbedBuilder()
             .setColor('#2f3136')
             .setTitle('Puissance 4')
             .setDescription(`<:LMT_one:901982492473573377> <:LMT_two:901982559456608256> <:LMT_three:901982617006657576> <:LMT_four:901982648463917056> <:LMT_five:901982703476441128> <:LMT_six:901982741493604384> <:LMT_seven:901982779489796106>

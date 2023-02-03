@@ -1,4 +1,4 @@
-const { MessageEmbed, Permissions } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField } = require("discord.js");
 
 module.exports = {
 	name: 'emojiUpdate',
@@ -19,11 +19,11 @@ module.exports = {
                 });
                 const deletionLog = fetchedLogs.entries.first();
                 if (oldEmoji.name !== newEmoji.name) {
-                    const event = new MessageEmbed()
+                    const event = new EmbedBuilder()
                         .setColor('#2f3136')
                         .setThumbnail(deletionLog.executor.displayAvatarURL({dynamic:true}))
                         .setAuthor({name:`${deletionLog.executor.username}#${deletionLog.executor.discriminator}`, iconURL:`${deletionLog.executor.displayAvatarURL()}`})                            
-                        .setDescription(`<a:LMT__arrow:831817537388937277> **L'emoji ${newEmoji} a été modifié par ${deletionLog.executor} !**\n\n**Channel ID** : ${newEmoji.id}\n\n**Date de modification :** <t:${Math.ceil(date / 1000)}:F>\n\n> **Nom** : \`${oldEmoji.name}\` <a:LMT__arrow:831817537388937277> \`${newEmoji.name}\``)
+                        .setDescription(`<a:LMT_arrow:1065548690862899240> **L'emoji ${newEmoji} a été modifié par ${deletionLog.executor} !**\n\n**Channel ID** : ${newEmoji.id}\n\n**Date de modification :** <t:${Math.ceil(date / 1000)}:F>\n\n> **Nom** : \`${oldEmoji.name}\` <a:LMT_arrow:1065548690862899240> \`${newEmoji.name}\``)
                         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return chann.send({embeds:[event]});
                 }

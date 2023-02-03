@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -29,7 +29,7 @@ module.exports = {
         let fowner = await interaction.member.guild.fetchOwner();
         let owner = `${fowner}\n\`${fowner.user.username}#${fowner.user.discriminator}\``;
         let thumbnail = interaction.member.guild.iconURL({ dynamic: true });
-        const userinfo = new MessageEmbed()
+        const userinfo = new EmbedBuilder()
             .setColor('#2f3136')
             .setTitle('Toutes les informations sur le serveur :')
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})

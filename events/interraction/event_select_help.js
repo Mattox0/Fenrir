@@ -1,4 +1,4 @@
-const {MessageEmbed} = require('discord.js')
+const {EmbedBuilder} = require('discord.js')
 let date = new Date()
 
 module.exports = {
@@ -9,15 +9,15 @@ module.exports = {
         let choix = interaction.values[0];
         switch (choix) {
             case 'accueil':
-                const home = new MessageEmbed()
+                const home = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setAuthor({name:'🏘️ ・ Accueil'})
-                    .setDescription(`<a:LMT__arrow:831817537388937277> Choississez une catégorie pour avoir les commandes correspondantes\n\n> [Support](https://discord.gg/p9gNk4u)`)
+                    .setDescription(`<a:LMT_arrow:1065548690862899240> Choississez une catégorie pour avoir les commandes correspondantes\n\n> [Support](https://discord.gg/p9gNk4u)`)
                     .setFooter({text:`Choississez une catégorie dans le sélecteur ci-dessous`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 await interaction.message.edit({embeds:[home]})
                 return interaction.deferUpdate();
             case 'setup':
-                const setup = new MessageEmbed()
+                const setup = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setAuthor({name:'⚙️ ・ Setup - Tous les systèmes à installer pour votre serveur'})
                     .setDescription(`>>> \`/setup anniversaire\` : Un système d'anniversaire complet
@@ -34,7 +34,7 @@ module.exports = {
                 await interaction.message.edit({embeds:[setup]})
                 return interaction.deferUpdate();
             case 'disable' : 
-                const disable = new MessageEmbed()
+                const disable = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setAuthor({name:'🚫 ・ Disable - Un système pour désactiver les systèmes de setup'})
                     .setDescription(`>>> \`/disable anniversaire\` : Désactive le système d'anniversaire
@@ -50,7 +50,7 @@ module.exports = {
                 await interaction.message.edit({embeds:[disable]})
                 return interaction.deferUpdate();
             case 'interaction' :
-                const social = new MessageEmbed()
+                const social = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setAuthor({name:'💞 ・ Social - Interragissez avec d\'autres utilisateur'})
                     .setDescription(`>>> \`/bite <user>\` : Pour mordre quelqu'un
@@ -76,7 +76,7 @@ module.exports = {
                 await interaction.message.edit({embeds:[social]})
                 return interaction.deferUpdate();
             case 'animals' : 
-                const animals = new MessageEmbed()
+                const animals = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setAuthor({name:'🐶 ・ Animaux - Affichez vos animaux favoris'})
                     .setDescription(`>>> \`/animals axolot\` : Affiche un axolot
@@ -98,7 +98,7 @@ module.exports = {
                 await interaction.message.edit({embeds:[animals]})
                 return interaction.deferUpdate();
             case 'activity' : 
-                const activity = new MessageEmbed()
+                const activity = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setAuthor({name:'📡 ・ Activitées - Lancez les activitées de Discord'})
                     .setDescription(`>>> \`/activity youtube\` : Lance l'activité Youtube Together
@@ -119,7 +119,7 @@ module.exports = {
                 await interaction.message.edit({embeds:[activity]})
                 return interaction.deferUpdate();
             case 'game' : 
-                const game = new MessageEmbed()
+                const game = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setAuthor({name:'🎮 ・ Jeux - L\'ensemble des jeux à jouer avec vos amis'})
                     .setDescription(`>>> \`/duel <user>\` : Lance un duel avec quelqu'un
@@ -135,7 +135,7 @@ module.exports = {
                 await interaction.message.edit({embeds:[game]})
                 return interaction.deferUpdate();
             case 'image' : 
-                const image = new MessageEmbed()
+                const image = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setAuthor({name:'📷 ・ Images - Modifiez vos photo de profil'})
                     .setDescription(`>>> \`/blurp <user>\` : Brouille l'image de soi ou de quelqu'un
@@ -155,7 +155,7 @@ module.exports = {
                 await interaction.message.edit({embeds:[image]})
                 return interaction.deferUpdate();
             case 'modo' : 
-                const modo = new MessageEmbed()
+                const modo = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setAuthor({name:'🔨 ・ Modérateur - Toutes les commandes de Modérations'})
                     .setDescription(`>>> \`/ban <user>\` : Bannit un utilisateur
@@ -181,7 +181,7 @@ module.exports = {
                 await interaction.message.edit({embeds:[modo]})
                 return interaction.deferUpdate();
             case 'fun':
-                const fun = new MessageEmbed()
+                const fun = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setAuthor({name:'🎉 ・ Fun - Toutes les commandes amusantes'})
                     .setDescription(`>>> \`/8ball <question>\` : Posez votre question au bot !
@@ -206,7 +206,7 @@ module.exports = {
                 await interaction.message.edit({embeds:[fun]})
                 return interaction.deferUpdate();
             case 'utile' : 
-                const utile = new MessageEmbed()
+                const utile = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setAuthor({name:'💡 ・ Utiles - Toutes les Commandes utiles'})
                     .setDescription(`>>> \`/userinfo <user>\` : Affiche toutes les informations de soi ou de quelqu'un

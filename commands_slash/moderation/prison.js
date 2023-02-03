@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed,  Permissions, MessageAttachment } = require("discord.js");
+const { EmbedBuilder,  PermissionsBitField, AttachmentBuilder } = require("discord.js");
 const Canvas = require('canvas')
 
 module.exports = {
@@ -16,10 +16,10 @@ module.exports = {
         let raison = interaction.options.getString('raison');
         if (!raison) raison = "Aucune raison n'a été donnée"
         person = await interaction.member.guild.members.cache.find(x => x.id === person.id)
-        if (!interaction.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) {
-            const noperm = new MessageEmbed()
+        if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
+            const noperm = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription(`<a:LMT__arrow:831817537388937277> **Désolé tu n'as pas la permission d'utiliser cette commande !**`)
+                .setDescription(`<a:LMT_arrow:1065548690862899240> **Désolé tu n'as pas la permission d'utiliser cette commande !**`)
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({embeds:[noperm],ephemeral:true});
         }
@@ -28,9 +28,9 @@ module.exports = {
                 return console.log(err);
             }
             if (res.prison_id === null) {
-                const fail = new MessageEmbed()
+                const fail = new EmbedBuilder()
                     .setColor('#2f3136')
-                    .setDescription('<a:LMT__arrow:831817537388937277> **Le système de prison n\'est pas activé sur ce serveur !**\n> `/setup prison`')
+                    .setDescription('<a:LMT_arrow:1065548690862899240> **Le système de prison n\'est pas activé sur ce serveur !**\n> `/setup prison`')
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return interaction.reply({embeds:[fail],ephemeral:true});
             }
@@ -38,17 +38,17 @@ module.exports = {
             let chann = await interaction.member.guild.channels.cache.find(chann => chann.id === res.prison_id);
             let role = await interaction.member.guild.roles.cache.find(role => role.id === res.prison_admin_id);
             if (!prison) {
-                const fail = new MessageEmbed()
+                const fail = new EmbedBuilder()
                     .setColor('#2f3136')
-                    .setDescription('<a:LMT__arrow:831817537388937277> **Je n\'arrive pas a trouver le role `@Prison`**\n> `/setup prison`')
+                    .setDescription('<a:LMT_arrow:1065548690862899240> **Je n\'arrive pas a trouver le role `@Prison`**\n> `/setup prison`')
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return interaction.reply({embeds:[fail],ephemeral:true});
             }
             person.roles.add(prison).catch((error) => {
                 console.error(error);
-                const echec = new MessageEmbed()
+                const echec = new EmbedBuilder()
                     .setColor('#2f3136')
-                    .setDescription(`<a:LMT__arrow:831817537388937277> **Il y a une erreur avec cette commande !**\n\n [Contactez le support !](https://discord.gg/p9gNk4u)`)
+                    .setDescription(`<a:LMT_arrow:1065548690862899240> **Il y a une erreur avec cette commande !**\n\n [Contactez le support !](https://discord.gg/p9gNk4u)`)
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return interaction.reply({ embeds:[echec], ephemeral: true });
             }).then(async (firstarg) => {
@@ -58,8 +58,8 @@ module.exports = {
                 context.drawImage(personI, 0, 0, canvas.width, canvas.height);
                 let background = await Canvas.loadImage('./Images/jail.png')
                 context.drawImage(background, 0, 0, canvas.width, canvas.height);
-                const attachment = new MessageAttachment(canvas.toBuffer(), 'jail.png')
-                const embed = new MessageEmbed()
+                const attachment = new AttachmentBuilder(canvas.toBuffer(), 'jail.png')
+                const embed = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription(`**${person} a été envoyé en prison !**\n\nSon sort sera débattu à la suite d'une discussion avec l'équipe de Modération`)
                     .setThumbnail('attachment://jail.png')
@@ -72,17 +72,17 @@ module.exports = {
                 position : 1,
                 permissionOverwrites: [{
                     id: interaction.member.guild.id,
-                    deny: [Permissions.FLAGS.VIEW_CHANNEL]
+                    deny: [PermissionsBitField.Flags.ViewChannel]
                 }, {
                     id: prison.id,
-                    allow:[Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES]
+                    allow:[PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages]
                 }]
             }).then((tribunal) => {
-                if (role) tribunal.permissionOverwrites.edit(role, { VIEW_CHANNEL: true, SEND_MESSAGES: true, MANAGE_MESSAGES: true });
+                if (role) tribunal.permissionOverwrites.edit(role, { VIEW_CHANNEL: true, SEND_MESSAGES: true, ManageMessages: true });
                 tribunal.send(`@here, ${person}`).then(mess => mess.delete());
-                const tribu = new MessageEmbed()
+                const tribu = new EmbedBuilder()
                     .setColor('#2f3136')
-                    .setDescription(`<a:LMT__arrow:831817537388937277> **${person}, tu es convoqué dans le Tribunal !**\n\n**Le staff t'a convoqué dans notre prison, où tu devras t'expliquer pour les faits suivants qui te sont reprochés :**\n__${raison}__\n\n**Nous te rappelons que tu n'es pas ici pour t'amuser, mais pour répondre aux accusations.**`)
+                    .setDescription(`<a:LMT_arrow:1065548690862899240> **${person}, tu es convoqué dans le Tribunal !**\n\n**Le staff t'a convoqué dans notre prison, où tu devras t'expliquer pour les faits suivants qui te sont reprochés :**\n__${raison}__\n\n**Nous te rappelons que tu n'es pas ici pour t'amuser, mais pour répondre aux accusations.**`)
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 tribunal.send({embeds : [ tribu ]});
                 db.run("UPDATE servers SET prison_id = ? WHERE guild_id = ?",tribunal.id,interaction.member.guild.id, (err) => {if (err) console.log(err)});  

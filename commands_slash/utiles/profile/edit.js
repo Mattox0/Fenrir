@@ -1,4 +1,4 @@
-const { MessageEmbed, Permissions, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 
 module.exports = {
     async execute(interaction, db, date) {
@@ -37,9 +37,9 @@ module.exports = {
             } else {footer = res.footer}
             if (interaction.options.getString('couleur_hexa')) {
                 if (interaction.options.getString('couleur_hexa').length !== 6) {
-                    const fail = new MessageEmbed()
+                    const fail = new EmbedBuilder()
                     .setColor('#2f3136')
-                    .setDescription('<a:LMT__arrow:831817537388937277> **\`couleur_hexa\` n\'est pas dans le bon format (hexadécimal)**')
+                    .setDescription('<a:LMT_arrow:1065548690862899240> **\`couleur_hexa\` n\'est pas dans le bon format (hexadécimal)**')
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return interaction.reply({embeds:[fail], ephemeral:true});
                 }
@@ -70,25 +70,25 @@ module.exports = {
                 db.run("UPDATE profile SET pseudo = ? WHERE user_id = ?", interaction.options.getString('pseudo'), interaction.member.id, (err) => {if (err) console.log(err)});
                 pseudo = interaction.options.getString('pseudo');
             } else {pseudo = res.pseudo}
-            const row = new MessageActionRow()
+            const row = new ActionRowBuilder()
                 .addComponents(
-                    new MessageButton()
+                    new ButtonBuilder()
                         .setCustomId('like_profile')
                         .setLabel('Like')
                         .setEmoji('❤️')
-                        .setStyle('SUCCESS'),
-                    new MessageButton()
+                        .setStyle(ButtonStyle.Success),
+                    new ButtonBuilder()
                         .setCustomId('unlike_profile')
                         .setLabel('Unlike')
                         .setEmoji('💔')
-                        .setStyle('DANGER')
+                        .setStyle(ButtonStyle.Danger)
                 )
-            const view = new MessageEmbed()
+            const view = new EmbedBuilder()
                 .setColor(`#${couleur_hexa ? couleur_hexa : '2f3136'}`)
                 .setAuthor({name:`${interaction.member.user.username} ・ ${res.likes.likes.length} ❤️`, iconURL:interaction.member.user.displayAvatarURL({dynamic: true})})
                 .setThumbnail(`${image ? image : interaction.member.user.displayAvatarURL({dynamic: true})}`)
                 .setFooter({text:`${footer ? footer : `LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`}`})
-                .setDescription(`${description ? description : ''}\n\n${ pseudo ? `> \`Pseudo\` <a:LMT__arrow:831817537388937277> ${pseudo}\n` : ''}${ film ? `> \`Film favoris\` <a:LMT__arrow:831817537388937277> ${film}\n` : ''}${ musique ? `> \`Style musical\` <a:LMT__arrow:831817537388937277> ${musique}\n` : ''}${ couleur ? `> \`Couleur favorite\` <a:LMT__arrow:831817537388937277> ${couleur}\n` : ''}${ repas ? `> \`Repas favoris\` <a:LMT__arrow:831817537388937277> ${repas}\n` : ''}${adjectifs ? `> \`Personnalité\` <a:LMT__arrow:831817537388937277> ${adjectifs}` : ''}`)
+                .setDescription(`${description ? description : ''}\n\n${ pseudo ? `> \`Pseudo\` <a:LMT_arrow:1065548690862899240> ${pseudo}\n` : ''}${ film ? `> \`Film favoris\` <a:LMT_arrow:1065548690862899240> ${film}\n` : ''}${ musique ? `> \`Style musical\` <a:LMT_arrow:1065548690862899240> ${musique}\n` : ''}${ couleur ? `> \`Couleur favorite\` <a:LMT_arrow:1065548690862899240> ${couleur}\n` : ''}${ repas ? `> \`Repas favoris\` <a:LMT_arrow:1065548690862899240> ${repas}\n` : ''}${adjectifs ? `> \`Personnalité\` <a:LMT_arrow:1065548690862899240> ${adjectifs}` : ''}`)
             return interaction.reply({content:`${interaction.member}, **Voici votre nouveau profil :**`,embeds:[view],components:[row]});
         })
     }

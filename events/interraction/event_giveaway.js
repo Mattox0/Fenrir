@@ -1,4 +1,4 @@
-const {MessageEmbed} = require('discord.js')
+const {EmbedBuilder} = require('discord.js')
 let date = new Date()
 
 module.exports = {
@@ -25,7 +25,7 @@ module.exports = {
             if (!allParticipants.includes(interraction.member.id)) {
                 if (participants) db.run('UPDATE giveaways SET participants = ? WHERE message_id = ?',`${participants} ${interraction.member.id}`,interraction.message.id, err => {if (err) console.log(err)})
                 else db.run('UPDATE giveaways SET participants = ? WHERE message_id = ?',`${interraction.member.id}`,interraction.message.id, err => {if (err) console.log(err)})
-                const embed = new MessageEmbed()
+                const embed = new EmbedBuilder()
                 .setColor('#2f3136')
                 .setTitle('Giveaway <a:LMT_fete2:911791997428334622>')
                 .setThumbnail('https://media.discordapp.net/attachments/883117525842423898/911778659604500510/831817670822723597.gif')

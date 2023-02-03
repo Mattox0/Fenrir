@@ -1,13 +1,13 @@
-const { MessageEmbed, Permissions, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 
 module.exports = {
     async execute(interaction, db, date, client) {
         db.all("SELECT * FROM interserveur WHERE guild_id_1 = ? OR guild_id_2 = ?", interaction.member.guild.id,interaction.member.guild.id, async (err, res) => {
-            let description = `<a:LMT__arrow:831817537388937277> **Le système d'interserveur sert à connecter deux salons de deux serveur différents.**\n\n> \`/interserveur open\` pour ouvrir une connexion\n> \`/interserveur join <code>\` dans un autre salon pour rejoindre une connexion.\n\n**Vos interserveurs :**`;
+            let description = `<a:LMT_arrow:1065548690862899240> **Le système d'interserveur sert à connecter deux salons de deux serveur différents.**\n\n> \`/interserveur open\` pour ouvrir une connexion\n> \`/interserveur join <code>\` dans un autre salon pour rejoindre une connexion.\n\n**Vos interserveurs :**`;
             if (err) return console.log(err);
             if (!res) {
                 description += "Ce serveur n'a aucun interserveur avec un autre.";
-                const fail = new MessageEmbed()
+                const fail = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription(description)
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
@@ -30,7 +30,7 @@ module.exports = {
                         tabDescription.push(`**Serveur :** ${guild1.name} (\`${guild1.id}\`)\n**Salon :** ${channel1}`)
                     }
                     if (tabDescription.length === 4) {
-                        let page = new MessageEmbed()
+                        let page = new EmbedBuilder()
                             .setColor('#2f3136')
                             .setDescription(`${description}\n\n${tabDescription.join('\n\n')}`)
                             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)} ・ ${nbPage} / ${Math.ceil(res.length / 4)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
@@ -40,38 +40,38 @@ module.exports = {
                     }
                 };
                 if (tabDescription.length !== 0) {
-                    let page = new MessageEmbed()
+                    let page = new EmbedBuilder()
                         .setColor('#2f3136')
                         .setDescription(`${description}\n\n${tabDescription.join('\n\n')}`)
                         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)} ・ ${nbPage} / ${Math.ceil(res.length / 4)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     pages.push(page)
                 }
-                const row = new MessageActionRow()
+                const row = new ActionRowBuilder()
                     .addComponents(
-                        new MessageButton()
+                        new ButtonBuilder()
                             .setCustomId('1')
                             .setEmoji('⏮️')
-                            .setStyle('PRIMARY')
+                            .setStyle(ButtonStyle.Primary)
                             .setDisabled(true),
-                        new MessageButton()
+                        new ButtonBuilder()
                             .setCustomId('-1')
                             .setEmoji('◀️')
-                            .setStyle('PRIMARY')
+                            .setStyle(ButtonStyle.Primary)
                             .setDisabled(true),
-                        new MessageButton()
+                        new ButtonBuilder()
                             .setCustomId('0')
                             .setEmoji('🔢')
-                            .setStyle('PRIMARY')
+                            .setStyle(ButtonStyle.Primary)
                             .setDisabled(true),
-                        new MessageButton()
+                        new ButtonBuilder()
                             .setCustomId('+1')
                             .setEmoji('▶️')
-                            .setStyle('PRIMARY')
+                            .setStyle(ButtonStyle.Primary)
                             .setDisabled(true),
-                        new MessageButton()
+                        new ButtonBuilder()
                             .setCustomId('2')
                             .setEmoji('⏭️')
-                            .setStyle('PRIMARY')
+                            .setStyle(ButtonStyle.Primary)
                             .setDisabled(true),
                     )
                 let isComponent = false;
@@ -146,9 +146,9 @@ module.exports = {
                                 msg.edit({embeds:[pages[count]],components:[row]})
                                 break
                             case '0':
-                                const ask = new MessageEmbed()
+                                const ask = new EmbedBuilder()
                                     .setColor('#2f3136')
-                                    .setDescription(`<a:LMT__arrow:831817537388937277> **Quel page tu veux voir ?** \`[1 - ${Math.ceil(res.length/3)}]\``)
+                                    .setDescription(`<a:LMT_arrow:1065548690862899240> **Quel page tu veux voir ?** \`[1 - ${Math.ceil(res.length/3)}]\``)
                                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                                 msg.edit({embeds:[pages[count],ask]}).then(messg => {
                                     let page = count;

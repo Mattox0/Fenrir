@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
+const { EmbedBuilder, ButtonBuilder, ActionRowBuilder } = require("discord.js");
 const lock = require("./lock.js");
 
 async function askCupidon(interaction ,date, game, resolve) {
@@ -10,7 +10,7 @@ async function askCupidon(interaction ,date, game, resolve) {
         return resolve();
     }
     const message = await village.messages.fetch(game.config.messageId);
-    const CupidEmbed = new MessageEmbed()
+    const CupidEmbed = new EmbedBuilder()
         .setColor('#2f3136')
         .setDescription(`Le Cupidon est arrivé !\n\n> Il a 60 secondes pour désigner deux joueurs qui s'aimeront pour la vie !`)
         .setThumbnail("https://media.discordapp.net/attachments/905980338017284197/1027940276775419955/lmt-logo-white.png?width=661&height=671")
@@ -38,11 +38,11 @@ async function askCupidon(interaction ,date, game, resolve) {
     })
     game.config.cupidonChannelId = cupidChannel.id;
     // envoi message cupidon
-    const row1 = new MessageActionRow()
-    const row2 = new MessageActionRow()
-    const row3 = new MessageActionRow()
-    const row4 = new MessageActionRow()
-    const row5 = new MessageActionRow()
+    const row1 = new ActionRowBuilder()
+    const row2 = new ActionRowBuilder()
+    const row3 = new ActionRowBuilder()
+    const row4 = new ActionRowBuilder()
+    const row5 = new ActionRowBuilder()
     let finalrow = []
     for (const [i,playerId] of game.allPlayersId.entries()) {
         const player = await interaction.guild.members.cache.get(playerId);
@@ -52,46 +52,46 @@ async function askCupidon(interaction ,date, game, resolve) {
         if (i < 5) {
             finalrow = [row1]
             row1.addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId(`cupidon-${playerId}`)
                     .setLabel(`${player.user.username}`)
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
             )
         } else if (i < 10) {
             finalrow = [row1, row2]
             row2.addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId(`cupidon-${playerId}`)
                     .setLabel(`${player.user.username}`)
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
             )
         } else if (i < 15) {
             finalrow = [row1, row2, row3]
             row3.addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId(`cupidon-${playerId}`)
                     .setLabel(`${player.user.username}`)
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
             )
         } else if (i < 20) {
             finalrow = [row1, row2, row3, row4]
             row4.addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId(`cupidon-${playerId}`)
                     .setLabel(`${player.user.username}`)
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
             )
         } else if (i < 25) {
             finalrow = [row1, row2, row3, row4, row5]
             row5.addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId(`cupidon-${playerId}`)
                     .setLabel(`${player.user.username}`)
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
             )
         }
     }
-    const embedCupid = new MessageEmbed()
+    const embedCupid = new EmbedBuilder()
         .setColor('#2f3136')
         .setDescription(`Choisis deux personnes qui s'aimeront pour la vie !\n\n> Tu as 60 secondes !`)
         .setThumbnail("https://media.discordapp.net/attachments/905980338017284197/1027940276775419955/lmt-logo-white.png?width=661&height=671")
@@ -121,7 +121,7 @@ async function askCupidon(interaction ,date, game, resolve) {
         });
         collector.on('end', async collected => {
             const message = await village.messages.fetch(game.config.messageId);
-            const SucceedCupid = new MessageEmbed()
+            const SucceedCupid = new EmbedBuilder()
                 .setColor('#2f3136')
                 .setDescription(`Le Cupidon a fait son choix !`)
                 .setThumbnail("https://media.discordapp.net/attachments/905980338017284197/1027940276775419955/lmt-logo-white.png?width=661&height=671")
@@ -155,7 +155,7 @@ async function askCupidon(interaction ,date, game, resolve) {
                 // envoi message amoureux
                 let lover1 = await interaction.guild.members.cache.get(game.allPlayersRoles.find(x => x.name === "Cupidon").lover1);
                 let lover2 = await interaction.guild.members.cache.get(game.allPlayersRoles.find(x => x.name === "Cupidon").lover2);
-                const embedLoved = new MessageEmbed()
+                const embedLoved = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription(`${lover1} et ${lover2}, le Cupidon vous as liés pour la vie !\n\n> Vous pouvez parler entre vous dans ce salon !`)
                     .setThumbnail("https://media.discordapp.net/attachments/905980338017284197/1027940276775419955/lmt-logo-white.png?width=661&height=671")

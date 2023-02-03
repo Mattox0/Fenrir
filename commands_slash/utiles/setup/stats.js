@@ -1,4 +1,4 @@
-const { MessageEmbed, Permissions } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField } = require("discord.js");
 
 module.exports = {
     async execute(interaction, db, date) {
@@ -15,9 +15,9 @@ module.exports = {
             let allCount = 1;
             if (bot) allCount++
             if (online) allCount++
-            const ask = new MessageEmbed()
+            const ask = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription('<a:LMT__arrow:831817537388937277> **Quel nom aura votre salon \`Membres\` ?**\n\n> <a:LMT__attention:924423639431020574> Mettre {nb}\n> Exemple : \`Membres : {nb}\`')
+                .setDescription('<a:LMT_arrow:1065548690862899240> **Quel nom aura votre salon \`Membres\` ?**\n\n> <a:LMT__attention:924423639431020574> Mettre {nb}\n> Exemple : \`Membres : {nb}\`')
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)} ・ 1 / ${allCount}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             interaction.editReply({embeds:[ask]}).then(async msg => {
                 await (new Promise((resolve, reject) => {
@@ -26,7 +26,7 @@ module.exports = {
                     collector.on('collect', collected => {
                         collected.delete()
                         if (collected.content.length > 30 || !collected.content.includes('{nb}') || collected.content.includes('\n')) {
-                            ask.setDescription('<a:LMT__arrow:831817537388937277> **Quel nom aura votre salon \`Membres\` ?**\n\n> <a:LMT__attention:924423639431020574> Mettre {nb}\n> Exemple : \`Membres : {nb}\`\n\n <a:LMT__arrow:831817537388937277> Votre message est trop long, ou il ne contient pas \`{nb}\`')
+                            ask.setDescription('<a:LMT_arrow:1065548690862899240> **Quel nom aura votre salon \`Membres\` ?**\n\n> <a:LMT__attention:924423639431020574> Mettre {nb}\n> Exemple : \`Membres : {nb}\`\n\n <a:LMT_arrow:1065548690862899240> Votre message est trop long, ou il ne contient pas \`{nb}\`')
                             msg.edit({embeds:[ask]})
                         } else {
                             collector.stop()
@@ -34,9 +34,9 @@ module.exports = {
                     })
                     collector.on('end',async collect => {
                         if (!collect.first() || collect.first().content.length > 30 || !collect.first().content.includes('{nb}') || collect.first().content.includes('\n')) {
-                            const fail = new MessageEmbed()
+                            const fail = new EmbedBuilder()
                                 .setColor('#2f3136')
-                                .setDescription('<a:LMT__arrow:831817537388937277> **Il faut se décider avant Noel !**')
+                                .setDescription('<a:LMT_arrow:1065548690862899240> **Il faut se décider avant Noel !**')
                                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)} ・ 1 / ${allCount}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                             return msg.edit({embeds:[fail]})
                         }
@@ -48,7 +48,7 @@ module.exports = {
                                 position : 1,
                                 permissionOverwrites: [{
                                     id: interaction.member.guild.id,
-                                    deny: [Permissions.FLAGS.CONNECT]
+                                    deny: [PermissionsBitField.Flags.Connect]
                                 }] 
                             });
                         } else {
@@ -61,9 +61,9 @@ module.exports = {
                 if (bot) {
                     count++;
                     await (new Promise( async (resolve, reject) => {
-                        const askBot = new MessageEmbed()
+                        const askBot = new EmbedBuilder()
                             .setColor('#2f3136')
-                            .setDescription('<a:LMT__arrow:831817537388937277> **Quel nom aura votre salon \`Bot\` ?**\n\n> <a:LMT__attention:924423639431020574> Mettre {nb}\n> Exemple : \`Bots : {nb}\`')
+                            .setDescription('<a:LMT_arrow:1065548690862899240> **Quel nom aura votre salon \`Bot\` ?**\n\n> <a:LMT__attention:924423639431020574> Mettre {nb}\n> Exemple : \`Bots : {nb}\`')
                             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)} ・ ${count} / ${allCount}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                         await msg.edit({embeds:[askBot]})
                         const filter = m => m.author.id === interaction.member.user.id && m.channelId === msg.channel.id
@@ -71,7 +71,7 @@ module.exports = {
                         collector.on('collect', collected => {
                             collected.delete()
                             if (collected.content.length > 30 || !collected.content.includes('{nb}') || collected.content.includes('\n')) {
-                                ask.setDescription('<a:LMT__arrow:831817537388937277> **Quel nom aura votre salon \`Bot\` ?**\n\n> <a:LMT__attention:924423639431020574> Mettre {nb}\n> Exemple : \`Bots : {nb}\`\n\n <a:LMT__arrow:831817537388937277> Votre message est trop long, ou il ne contient pas \`{nb}\`')
+                                ask.setDescription('<a:LMT_arrow:1065548690862899240> **Quel nom aura votre salon \`Bot\` ?**\n\n> <a:LMT__attention:924423639431020574> Mettre {nb}\n> Exemple : \`Bots : {nb}\`\n\n <a:LMT_arrow:1065548690862899240> Votre message est trop long, ou il ne contient pas \`{nb}\`')
                                 msg.edit({embeds:[ask]})
                             } else {
                                 collector.stop()
@@ -79,9 +79,9 @@ module.exports = {
                         })
                         collector.on('end',async collect => {
                             if (!collect.first() || collect.first().content.length > 30 || !collect.first().content.includes('{nb}') || collect.first().content.includes('\n')) {
-                                const fail = new MessageEmbed()
+                                const fail = new EmbedBuilder()
                                     .setColor('#2f3136')
-                                    .setDescription('<a:LMT__arrow:831817537388937277> **Il faut se décider avant Noel !**')
+                                    .setDescription('<a:LMT_arrow:1065548690862899240> **Il faut se décider avant Noel !**')
                                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)} ・ 2 / ${allCount}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                                 return msg.edit({embeds:[fail]})
                             }
@@ -94,7 +94,7 @@ module.exports = {
                                     position : 1,
                                     permissionOverwrites: [{
                                         id: interaction.member.guild.id,
-                                        deny: [Permissions.FLAGS.CONNECT]
+                                        deny: [PermissionsBitField.Flags.Connect]
                                     }] 
                                 });
                             } else {
@@ -108,9 +108,9 @@ module.exports = {
                 if (online) {
                     count++;
                     await (new Promise( async (resolve, reject) => {
-                        const askBot = new MessageEmbed()
+                        const askBot = new EmbedBuilder()
                             .setColor('#2f3136')
-                            .setDescription('<a:LMT__arrow:831817537388937277> **Quel nom aura votre salon \`En ligne\` ?**\n\n> <a:LMT__attention:924423639431020574> Mettre {nb}\n> Exemple : \`Membres en ligne : {nb}\`')
+                            .setDescription('<a:LMT_arrow:1065548690862899240> **Quel nom aura votre salon \`En ligne\` ?**\n\n> <a:LMT__attention:924423639431020574> Mettre {nb}\n> Exemple : \`Membres en ligne : {nb}\`')
                             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)} ・ ${count} / ${allCount}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                         await msg.edit({embeds:[askBot]})
                         const filter = m => m.author.id === interaction.member.user.id && m.channelId === msg.channel.id
@@ -118,7 +118,7 @@ module.exports = {
                         collector.on('collect', collected => {
                             collected.delete()
                             if (collected.content.length > 30 || !collected.content.includes('{nb}') || collected.content.includes('\n')) {
-                                ask.setDescription('<a:LMT__arrow:831817537388937277> **Quel nom aura votre salon \`En ligne\` ?**\n\n> <a:LMT__attention:924423639431020574> Mettre {nb}\n> Exemple : \`Membres en ligne : {nb}\`\n\n <a:LMT__arrow:831817537388937277> Votre message est trop long, ou il ne contient pas \`{nb}\`')
+                                ask.setDescription('<a:LMT_arrow:1065548690862899240> **Quel nom aura votre salon \`En ligne\` ?**\n\n> <a:LMT__attention:924423639431020574> Mettre {nb}\n> Exemple : \`Membres en ligne : {nb}\`\n\n <a:LMT_arrow:1065548690862899240> Votre message est trop long, ou il ne contient pas \`{nb}\`')
                                 msg.edit({embeds:[ask]})
                             } else {
                                 collector.stop()
@@ -126,9 +126,9 @@ module.exports = {
                         })
                         collector.on('end',async collect => {
                             if (!collect.first() || collect.first().content.length > 30 || !collect.first().content.includes('{nb}') || collect.first().content.includes('\n')) {
-                                const fail = new MessageEmbed()
+                                const fail = new EmbedBuilder()
                                     .setColor('#2f3136')
-                                    .setDescription('<a:LMT__arrow:831817537388937277> **Il faut se décider avant Noel !**')
+                                    .setDescription('<a:LMT_arrow:1065548690862899240> **Il faut se décider avant Noel !**')
                                     .setFooter({text :`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)} ・ ${count} / ${allCount}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                                 return msg.edit({embeds:[fail]})
                             }
@@ -141,7 +141,7 @@ module.exports = {
                                     position : 1,
                                     permissionOverwrites: [{
                                         id: interaction.member.guild.id,
-                                        deny: [Permissions.FLAGS.CONNECT]
+                                        deny: [PermissionsBitField.Flags.Connect]
                                     }]
                                 });
                             } else {
@@ -152,9 +152,9 @@ module.exports = {
                         })
                     }))
                 }
-                const win = new MessageEmbed()
+                const win = new EmbedBuilder()
                     .setColor('#2f3136')
-                    .setDescription('<a:LMT__arrow:831817537388937277> **Les salons sont créés et seront mis à jour toutes les 10 minutes.**')
+                    .setDescription('<a:LMT_arrow:1065548690862899240> **Les salons sont créés et seront mis à jour toutes les 10 minutes.**')
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)} ・ ${count} / ${allCount}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return msg.edit({embeds:[win]});
             })

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js")
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js")
 const fs = require('fs');
 
 module.exports = {
@@ -9,20 +9,20 @@ module.exports = {
     async execute(...params) {
         let interaction = params[0];
         let date = params[2];
-        const pendu = new MessageEmbed()
+        const pendu = new EmbedBuilder()
             .setColor('#2f3136')
-            .setDescription(`<a:LMT__arrow:831817537388937277> **Veux-tu lancer une partie solitaire ou à plusieurs ?**`)
+            .setDescription(`<a:LMT_arrow:1065548690862899240> **Veux-tu lancer une partie solitaire ou à plusieurs ?**`)
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
-        const row = new MessageActionRow()
+        const row = new ActionRowBuilder()
             .addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('Solo')
                     .setLabel('Solitaire !')
-                    .setStyle('PRIMARY'),
-                new MessageButton()
+                    .setStyle(ButtonStyle.Primary),
+                new ButtonBuilder()
                     .setCustomId('Ensemble')
                     .setLabel('Ensemble !')
-                    .setStyle('PRIMARY'),
+                    .setStyle(ButtonStyle.Primary),
             )
         await interaction.deferReply();
         interaction.editReply({ embeds: [pendu], components: [row] }).then(msg => {
@@ -34,9 +34,9 @@ module.exports = {
             })
             collector.on('end', async collected => {
                 if (!collected.first()) {
-                    const delai = new MessageEmbed()
+                    const delai = new EmbedBuilder()
                         .setColor('#2f3136')
-                        .setDescription('<a:LMT__arrow:831817537388937277> Décide toi avant Noël !')
+                        .setDescription('<a:LMT_arrow:1065548690862899240> Décide toi avant Noël !')
                         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return msg.edit({ embeds: [delai], components: [] })
                 };
@@ -78,7 +78,7 @@ module.exports = {
             let poubelleWords = [];
             let phrase = `\`${tabWordF.join(' ')}\``;
             let poubelle = `**Aucune**`;
-            const test = new MessageEmbed()
+            const test = new EmbedBuilder()
                 .setTitle('Jeu du Pendu')
                 .setDescription(`${phrase}\nLettres incorrectes : ${poubelle}\n\`\`\`${hangmans[0]}\`\`\``)
                 .setFooter({text:'Le temps maximum par lettre est de 1 minute !', iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
@@ -92,7 +92,7 @@ module.exports = {
             collector.on('collect', collected => {
                 tabWordV, tabWordF, done, motTrouvé = Letter(tabWordV, tabWordF, collected.content);
                 if (motTrouvé) {
-                    const win = new MessageEmbed()
+                    const win = new EmbedBuilder()
                     .setDescription(`Tu as remporté la victoire ! Le mot était bien **${word.charAt(0).toUpperCase()}${word.slice(1)}**`)
                     return msg.reply({embeds:[win],components: []})
                 } else if (!done) {
@@ -100,7 +100,7 @@ module.exports = {
                         hangmanCount++
                         poubelleWords.push(collected.content.toUpperCase())
                         poubelle = `**${poubelleWords.join(' ')}**`
-                        const hangman = new MessageEmbed()
+                        const hangman = new EmbedBuilder()
                         .setTitle('Jeu du Pendu')
                         .setDescription(`${phrase}\nLettres incorrectes : ${poubelle}\n\`\`\`${hangmans[hangmanCount]}\`\`\``)
                         .setFooter({text:'Le temps maximum par lettre est de 1 minute !', iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
@@ -108,7 +108,7 @@ module.exports = {
                     }
                 } else {
                     phrase = `\`${tabWordF.join(' ')}\``
-                    const hangman = new MessageEmbed()
+                    const hangman = new EmbedBuilder()
                     .setTitle('Jeu du Pendu')
                     .setDescription(`${phrase}\nLettres incorrectes : ${poubelle}\n\`\`\`${hangmans[hangmanCount]}\`\`\``)
                     .setFooter({text:'Le temps maximum par lettre est de 1 minute !', iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
@@ -116,19 +116,19 @@ module.exports = {
                 }
                 collected.delete()
                 if (!tabWordF.includes('_')) {
-                    const win = new MessageEmbed()
+                    const win = new EmbedBuilder()
                     .setDescription(`Tu as remporté la victoire ! Le mot était bien **${word.charAt(0).toUpperCase()}${word.slice(1)}**`)
                     return msg.reply({embeds:[win],components: []})
                 } else if (hangmanCount === 6) {
-                    const defeat = new MessageEmbed()
+                    const defeat = new EmbedBuilder()
                     .setDescription(`Tu as perdu ! Le mot a trouver était **${word.charAt(0).toUpperCase()}${word.slice(1)}** !`)
                     return msg.reply({embeds:[defeat],components:[]})
                 }
             });
             collector.on('end', collected => {
                 if (!tabWordF.includes('_') || hangmanCount === 6 || motTrouvé) return
-                const delai = new MessageEmbed()
-                    .setDescription('<a:LMT__arrow:831817537388937277> **Tu as pris trop de temps, recommence !**')
+                const delai = new EmbedBuilder()
+                    .setDescription('<a:LMT_arrow:1065548690862899240> **Tu as pris trop de temps, recommence !**')
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return msg.edit({ embeds: [delai], components: [] })
             })
@@ -160,7 +160,7 @@ module.exports = {
             let poubelleWords = []
             let phrase = `\`${tabWordF.join(' ')}\``
             let poubelle = `**Aucune**`
-            const test = new MessageEmbed()
+            const test = new EmbedBuilder()
                 .setTitle('Jeu du Pendu')
                 .setDescription(`${phrase}\nLettres incorrectes : ${poubelle}\n\`\`\`${hangmans[0]}\`\`\``)
                 .setFooter({text:'Le temps maximum par lettre est de 1 minute !', iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
@@ -174,7 +174,7 @@ module.exports = {
             collector.on('collect', collected => {
                 tabWordV, tabWordF, done, motTrouvé = Letter(tabWordV, tabWordF, collected.content)
                 if (motTrouvé) {
-                    const win = new MessageEmbed()
+                    const win = new EmbedBuilder()
                     .setDescription(`Tu as remporté la victoire ! Le mot était bien **${word.charAt(0).toUpperCase()}${word.slice(1)}**`)
                     return msg.reply({embeds:[win],components: []})
                 } else if (!done) {
@@ -182,7 +182,7 @@ module.exports = {
                         hangmanCount++
                         poubelleWords.push(collected.content.toUpperCase())
                         poubelle = `**${poubelleWords.join(' ')}**`
-                        const hangman = new MessageEmbed()
+                        const hangman = new EmbedBuilder()
                         .setTitle('Jeu du Pendu')
                         .setDescription(`${phrase}\nLettres incorrectes : ${poubelle}\n\`\`\`${hangmans[hangmanCount]}\`\`\``)
                         .setFooter({text:'Le temps maximum par lettre est de 1 minute !', iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
@@ -190,7 +190,7 @@ module.exports = {
                     }
                 } else {
                     phrase = `\`${tabWordF.join(' ')}\``
-                    const hangman = new MessageEmbed()
+                    const hangman = new EmbedBuilder()
                     .setTitle('Jeu du Pendu')
                     .setDescription(`${phrase}\nLettres incorrectes : ${poubelle}\n\`\`\`${hangmans[hangmanCount]}\`\`\``)
                     .setFooter({text:'Le temps maximum par lettre est de 1 minute !', iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
@@ -198,19 +198,19 @@ module.exports = {
                 }
                 collected.delete()
                 if (!tabWordF.includes('_')) {
-                    const win = new MessageEmbed()
+                    const win = new EmbedBuilder()
                     .setDescription(`Tu as remporté la victoire ! Le mot était bien **${word.charAt(0).toUpperCase()}${word.slice(1)}**`)
                     return msg.reply({embeds:[win],components: []})
                 } else if (hangmanCount === 6) {
-                    const defeat = new MessageEmbed()
+                    const defeat = new EmbedBuilder()
                     .setDescription(`Tu as perdu ! Le mot a trouver était **${word.charAt(0).toUpperCase()}${word.slice(1)}** !`)
                     return msg.reply({embeds:[defeat],components:[]})
                 }
             });
             collector.on('end', () => {
                 if (!tabWordF.includes('_') || hangmanCount === 6 || motTrouvé) return
-                const delai = new MessageEmbed()
-                    .setDescription('<a:LMT__arrow:831817537388937277> **Tu as pris trop de temps, recommence !**')
+                const delai = new EmbedBuilder()
+                    .setDescription('<a:LMT_arrow:1065548690862899240> **Tu as pris trop de temps, recommence !**')
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return msg.edit({ embeds: [delai], components: [] })
             })

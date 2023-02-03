@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
 	name: 'messageUpdate',
@@ -14,11 +14,11 @@ module.exports = {
                 let chann = await newMessage.guild.channels.cache.find(x => x.id === res.logs_id);
                 if (!chann) return;
                 if (oldMessage.content === newMessage.content) return;
-                const event = new MessageEmbed()
+                const event = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setThumbnail(newMessage.author.displayAvatarURL({dynamic:true}))
                     .setAuthor({name:`${newMessage.author.username}#${newMessage.author.discriminator}`, iconURL:`${newMessage.author.displayAvatarURL()}`})
-                    .setDescription(`<a:LMT__arrow:831817537388937277> **Le [message](https://discord.com/channels/${newMessage.guild.id}/${newMessage.channel.id}/${newMessage.id}) de ${newMessage.author} a été modifié dans ${newMessage.channel}**\n\n**Message ID** : ${newMessage.id}\n\n**Date de suppression :** <t:${Math.ceil(date / 1000)}:F>`)
+                    .setDescription(`<a:LMT_arrow:1065548690862899240> **Le [message](https://discord.com/channels/${newMessage.guild.id}/${newMessage.channel.id}/${newMessage.id}) de ${newMessage.author} a été modifié dans ${newMessage.channel}**\n\n**Message ID** : ${newMessage.id}\n\n**Date de suppression :** <t:${Math.ceil(date / 1000)}:F>`)
                     .addFields(
                         {name:'Ancien message', value : oldMessage.content ? oldMessage.content : "❌", inline: true},
                         {name:'Nouveau message', value : newMessage.content ? newMessage.content : "❌", inline: true}

@@ -1,4 +1,4 @@
-const { MessageEmbed, Permissions } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField } = require("discord.js");
 
 module.exports = {
 	name: 'voiceStateUpdate',
@@ -18,17 +18,17 @@ module.exports = {
                 if (oldMember.channelId === null) {
                     client.events.get('voc_join').execute(newMember, date, db)
                     let channVocal = await newMember.guild.channels.cache.find(x => x.id === newMember.channelId)
-                    const event = new MessageEmbed()
+                    const event = new EmbedBuilder()
                     .setColor('#2f3136')
-                    .setDescription(`<a:LMT__arrow:831817537388937277> **${user} a rejoint le salon vocal ${channVocal}** !\n\n**ID** : ${user.id}\n\n**Date :** <t:${Math.ceil(date / 1000)}:F>`)
+                    .setDescription(`<a:LMT_arrow:1065548690862899240> **${user} a rejoint le salon vocal ${channVocal}** !\n\n**ID** : ${user.id}\n\n**Date :** <t:${Math.ceil(date / 1000)}:F>`)
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return chann.send({embeds:[event]});
                 } else if (newMember.channelId === null) {
                     client.events.get('voc_left').execute(oldMember, date, db)
                     let channVocal = await newMember.guild.channels.cache.find(x => x.id === oldMember.channelId)
-                    const event = new MessageEmbed()
+                    const event = new EmbedBuilder()
                     .setColor('#2f3136')
-                    .setDescription(`<a:LMT__arrow:831817537388937277> **${user} a quitté le salon vocal ${channVocal}** !\n\n**ID** : ${user.id}\n\n**Date :** <t:${Math.ceil(date / 1000)}:F>`)
+                    .setDescription(`<a:LMT_arrow:1065548690862899240> **${user} a quitté le salon vocal ${channVocal}** !\n\n**ID** : ${user.id}\n\n**Date :** <t:${Math.ceil(date / 1000)}:F>`)
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return chann.send({embeds:[event]});
                 } else {
@@ -36,9 +36,9 @@ module.exports = {
                     let channVocal2 = await newMember.guild.channels.cache.find(x => x.id === oldMember.channelId)
                     client.events.get('voc_join').execute(newMember, date, db)
                     client.events.get('voc_left').execute(oldMember, date, db)
-                    const event = new MessageEmbed()
+                    const event = new EmbedBuilder()
                     .setColor('#2f3136')
-                    .setDescription(`<a:LMT__arrow:831817537388937277> **${user} a été déplacé !\n\n> ${channVocal2} <a:LMT__arrow:831817537388937277> ${channVocal1}\n\n**ID** : ${user.id}\n\n**Date :** <t:${Math.ceil(date / 1000)}:F>`)
+                    .setDescription(`<a:LMT_arrow:1065548690862899240> **${user} a été déplacé !\n\n> ${channVocal2} <a:LMT_arrow:1065548690862899240> ${channVocal1}\n\n**ID** : ${user.id}\n\n**Date :** <t:${Math.ceil(date / 1000)}:F>`)
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return chann.send({embeds:[event]});
                 }

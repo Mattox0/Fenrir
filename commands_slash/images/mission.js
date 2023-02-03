@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed,MessageAttachment } = require('discord.js');
+const { EmbedBuilder,AttachmentBuilder } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -12,14 +12,14 @@ module.exports = {
         let person = interaction.options.getUser('utilisateur');
         if (!person) person = interaction.member;
         else person = await interaction.member.guild.members.cache.find(x => x.id === person.id);
-        const wait = new MessageEmbed()
+        const wait = new EmbedBuilder()
             .setColor('#2f3136')
-            .setDescription('<a:LMT__arrow:831817537388937277> **Génération de l\'image** <a:LMT__loading:877990312432254976>')
+            .setDescription('<a:LMT_arrow:1065548690862899240> **Génération de l\'image** <a:LMT_loading:1065616439836414063>')
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         await interaction.reply({embeds:[wait]});
-        let link = `https://some-random-api.ml/canvas/passed/?avatar=${person.user.displayAvatarURL({ format: 'png' })}`
-        let attachment = new MessageAttachment(link, 'passed.gif');
-        const embed = new MessageEmbed()
+        let link = `https://some-random-api.ml/canvas/passed/?avatar=${person.user.displayAvatarURL({ extension: 'png' })}`
+        let attachment = new AttachmentBuilder(link, { name:'passed.gif' });
+        const embed = new EmbedBuilder()
             .setColor('#2f3136')
             .setImage('attachment://passed.gif')
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})

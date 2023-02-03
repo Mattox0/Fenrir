@@ -1,4 +1,4 @@
-const {MessageEmbed, Permissions, MessageActionRow, MessageButton} = require('discord.js');
+const {EmbedBuilder, PermissionsBitField, ActionRowBuilder, ButtonBuilder} = require('discord.js');
 let date = new Date()
 
 module.exports = {
@@ -12,9 +12,9 @@ module.exports = {
                 return interaction.reply({content:'il y a eu une erreur...', ephemeral:true});
             }
             if (res.deleted === 0) {
-                const fail = new MessageEmbed()
+                const fail = new EmbedBuilder()
                     .setColor('#2f3136')
-                    .setDescription('<a:LMT__arrow:831817537388937277> **Le ticket n\'est pas fermé, tu dois d\'abord le fermer avant de le supprimé !**')
+                    .setDescription('<a:LMT_arrow:1065548690862899240> **Le ticket n\'est pas fermé, tu dois d\'abord le fermer avant de le supprimé !**')
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return interaction.reply({embeds:[fail],ephemeral:true});
             }

@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 const wait = require('util').promisify(setTimeout);
 
 module.exports = {
@@ -7,9 +7,9 @@ module.exports = {
         person = await interaction.member.guild.members.cache.find(x => x.id === person.id);
         db.all("SELECT * FROM warns WHERE user_id = ? AND guild_id = ?", person.user.id, interaction.member.guild.id, async (err, res) => {
             if (!res) {
-                const fail = new MessageEmbed()
+                const fail = new EmbedBuilder()
                     .setColor('#2f3136')
-                    .setDescription(`<a:LMT__arrow:831817537388937277> **${person} n'a aucun warn !**`)
+                    .setDescription(`<a:LMT_arrow:1065548690862899240> **${person} n'a aucun warn !**`)
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return interaction.reply({embeds:[fail]})
             }
@@ -21,7 +21,7 @@ module.exports = {
                 let modo = await interaction.member.guild.members.cache.find(x => x.id === res.modo_id);
                 description.push(`**Identifiant: ${x.warn_id}**\n**Modérateur:** ${modo}\n**Raison:** ${x.raison}\n**Date:** <t:${Math.ceil(new Date(x.warn_date) / 1000)}:F>`);
                 if (description.length === 3) {
-                    const page = new MessageEmbed()
+                    const page = new EmbedBuilder()
                         .setColor('#2f3136')
                         .setAuthor({name:`${person.user.username}#${person.user.discriminator} (${person.user.id})`, iconURL:person.user.displayAvatarURL()})
                         .setDescription(`${debut}\n\n${description.join('\n\n')}`)
@@ -32,39 +32,39 @@ module.exports = {
                 }
             }
             if (description.length !== 0) {
-                const page = new MessageEmbed()
+                const page = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setAuthor({name:`${person.user.username}#${person.user.discriminator} (${person.user.id})`, iconURL:person.user.displayAvatarURL()})
                     .setDescription(`${debut}\n\n${description.join('\n\n')}`)
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)} ・ ${nbPage} / ${Math.ceil(res.length/3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 pages.push(page);
             }
-            const row = new MessageActionRow()
+            const row = new ActionRowBuilder()
                 .addComponents(
-                    new MessageButton()
+                    new ButtonBuilder()
                     .setCustomId('1')
                     .setEmoji('⏮️')
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
                     .setDisabled(true),
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('-1')
                     .setEmoji('◀️')
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
                     .setDisabled(true),
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('0')
                     .setEmoji('🔢')
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
                     .setDisabled(false),
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('+1')
                     .setEmoji('▶️')
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
                     .setDisabled(true),
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('2')
                     .setEmoji('⏭️')
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
                     .setDisabled(true),
             )
             let isComponent = false;
@@ -139,9 +139,9 @@ module.exports = {
                             msg.edit({embeds:[pages[count]],components:[row]})
                             break
                         case '0':
-                            const ask = new MessageEmbed()
+                            const ask = new EmbedBuilder()
                                 .setColor('#2f3136')
-                                .setDescription(`<a:LMT__arrow:831817537388937277> **Quel page tu veux voir ?** \`[1 - ${Math.ceil(res.length/3)}]\``)
+                                .setDescription(`<a:LMT_arrow:1065548690862899240> **Quel page tu veux voir ?** \`[1 - ${Math.ceil(res.length/3)}]\``)
                                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                             msg.edit({embeds:[pages[count],ask]}).then(messg => {
                                 let page = count;

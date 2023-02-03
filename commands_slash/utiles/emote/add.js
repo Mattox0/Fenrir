@@ -1,17 +1,17 @@
-const { MessageEmbed, Permissions } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField } = require("discord.js");
 
 module.exports = {
     async execute(interaction, date) {
-        if (!interaction.member.permissions.has(Permissions.FLAGS.MANAGE_EMOJIS_AND_STICKERS)) {
-            const notperms = new MessageEmbed()
+        if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageEmojisAndStickers)) {
+            const notperms = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription(`<a:LMT__arrow:831817537388937277> **Tu n'a pas les permissions pour ajouté une emote !**`)
+                .setDescription(`<a:LMT_arrow:1065548690862899240> **Tu n'a pas les permissions pour ajouté une emote !**`)
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({embeds:[notperms],ephemeral:true})
         }
-        const fail = new MessageEmbed()
+        const fail = new EmbedBuilder()
             .setColor('#2f3136')
-            .setDescription('<a:LMT__arrow:831817537388937277> **Merci de respecter le format suivant**\n\n> /emote add NomDeTonEmote :emoji:')
+            .setDescription('<a:LMT_arrow:1065548690862899240> **Merci de respecter le format suivant**\n\n> /emote add NomDeTonEmote :emoji:')
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         let emote = interaction.options.getString('emote');
         let nom = interaction.options.getString('nom');
@@ -26,9 +26,9 @@ module.exports = {
         }
         if (emote.startsWith('<:')) emoji = await interaction.member.guild.emojis.create(`https://cdn.discordapp.com/emojis/${id}.png`, nom).catch((err) => {console.log(err);return interaction.reply({embeds:[fail], ephemeral:true})});
         else emoji = await interaction.member.guild.emojis.create(`https://cdn.discordapp.com/emojis/${id}.gif`, nom).catch((err) => {console.log(err);return interaction.reply({embeds:[fail], ephemeral:true})});
-        const win = new MessageEmbed()
+        const win = new EmbedBuilder()
             .setColor('#2f3136')
-            .setDescription(`<a:LMT__arrow:831817537388937277> **L'emoji** ${emoji} **a bien été ajouté !**`)
+            .setDescription(`<a:LMT_arrow:1065548690862899240> **L'emoji** ${emoji} **a bien été ajouté !**`)
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         return interaction.reply({embeds:[win]})
     }

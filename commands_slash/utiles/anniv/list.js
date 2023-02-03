@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 
 module.exports = {
     async execute(interaction, date, db) {
@@ -8,9 +8,9 @@ module.exports = {
         db.all('SELECT * FROM anniversaires WHERE guild_id = ?',interaction.member.guild.id, async (err,res) => {
             if (err || !res) {
                 console.log(err);
-                const error = new MessageEmbed()
+                const error = new EmbedBuilder()
                     .setColor('#2f3136')
-                    .setDescription('<a:LMT__arrow:831817537388937277> **Il n\'y aucun anniversaire sur ce serveur !**')
+                    .setDescription('<a:LMT_arrow:1065548690862899240> **Il n\'y aucun anniversaire sur ce serveur !**')
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return interaction.reply({ embeds : [error]});
             };
@@ -20,10 +20,10 @@ module.exports = {
             res.forEach(async (item) => {
                 count++;
                 dates = item.date.split('/');
-                description += `<@!${item.user_id}> <a:LMT__arrow:831817537388937277> **${dates[0]} ${listemois[parseInt(dates[1]) - 1]}**\n\n`;
+                description += `<@!${item.user_id}> <a:LMT_arrow:1065548690862899240> **${dates[0]} ${listemois[parseInt(dates[1]) - 1]}**\n\n`;
                 if (count === 10) {
                     count = 0;
-                    const page = new MessageEmbed()
+                    const page = new EmbedBuilder()
                         .setColor('#2f3136')
                         .setTitle('Voici la liste des anniversaires :')
                         .setDescription(description)
@@ -33,33 +33,33 @@ module.exports = {
                 }
             })
             if (nbpage === 1) {
-                const page = new MessageEmbed()
+                const page = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription(description)
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return interaction.reply({ embeds : [page]});
             }
-            const row = new MessageActionRow()
+            const row = new ActionRowBuilder()
                 .addComponents(
-                    new MessageButton()
+                    new ButtonBuilder()
                         .setCustomId('1')
                         .setEmoji('⏮️')
-                        .setStyle('PRIMARY')
+                        .setStyle(ButtonStyle.Primary)
                         .setDisabled(true),
-                    new MessageButton()
+                    new ButtonBuilder()
                         .setCustomId('-1')
                         .setEmoji('◀️')
-                        .setStyle('PRIMARY')
+                        .setStyle(ButtonStyle.Primary)
                         .setDisabled(true),
-                    new MessageButton()
+                    new ButtonBuilder()
                         .setCustomId('+1')
                         .setEmoji('▶️')
-                        .setStyle('PRIMARY')
+                        .setStyle(ButtonStyle.Primary)
                         .setDisabled(true),
-                    new MessageButton()
+                    new ButtonBuilder()
                         .setCustomId('2')
                         .setEmoji('⏭️')
-                        .setStyle('PRIMARY')
+                        .setStyle(ButtonStyle.Primary)
                         .setDisabled(true),
                 )
             let isComponent = false;

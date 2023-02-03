@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageAttachment } = require("discord.js")
+const { AttachmentBuilder } = require("discord.js")
 const Canvas = require('canvas');
-Canvas.registerFont('./Fonts/minecraft_font.ttf', { family: 'Minecraft' })
+Canvas.registerFont('./Fonts/Minecraft.ttf', { family: 'Minecraft' })
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -10,7 +10,6 @@ module.exports = {
         .addStringOption(option => option.setName('texte').setDescription('Votre achievement | Exemple : "Avoir tous les succès"').setRequired(true)),
     async execute(...params) {
         let interaction = params[0];
-        let date = params[2];
         let text = interaction.options.getString('texte');
         if (text.length > 30) text = `${text.slice(0,30)}...`
         const canvas = Canvas.createCanvas(320, 64);
@@ -20,7 +19,7 @@ module.exports = {
         context.font = '12px Minecraft';
         context.fillStyle = '#ffffff';
         context.fillText(text, 60, 48);
-        const attachment = new MessageAttachment(canvas.toBuffer(), 'achievement.png')
+        const attachment = new AttachmentBuilder(canvas.toBuffer(), { name:'achievement.png' })
         return interaction.reply({files:[attachment]})
     }
 }

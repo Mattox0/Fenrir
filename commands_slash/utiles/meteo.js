@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const fetch = require('node-fetch');
 
 module.exports = {
@@ -11,9 +11,9 @@ module.exports = {
         let interaction = params[0];
         let date = params[2];
         let expression = interaction.options.getString('ville');
-        const fail = new MessageEmbed()
+        const fail = new EmbedBuilder()
             .setColor('#2f3136')
-            .setDescription(`<a:LMT__arrow:831817537388937277> **Je n'ai pas trouvé votre ville**\n\n> \`/meteo Bordeaux\``)
+            .setDescription(`<a:LMT_arrow:1065548690862899240> **Je n'ai pas trouvé votre ville**\n\n> \`/meteo Bordeaux\``)
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         try {
             fetch(`http://api.openweathermap.org/data/2.5/weather?appid=80960e984146a0de56567ac4c69074f4&q=${expression}&lang=fr`)
@@ -22,7 +22,7 @@ module.exports = {
                 if (data["cod"] === '404') {
                     return interaction.reply({embeds:[fail], ephemeral:true});
                 }
-                const meteo = new MessageEmbed()
+                const meteo = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setTitle(`Météo à ${data["name"]} :white_sun_cloud:`)
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})

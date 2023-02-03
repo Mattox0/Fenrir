@@ -1,12 +1,12 @@
-const { MessageEmbed, Permissions, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 const fetch = require('node-fetch')
 
 module.exports = {
     async execute(interaction, db, date) {
         await interaction.deferReply()
-        const wait = new MessageEmbed()
+        const wait = new EmbedBuilder()
             .setColor('#2f3136')
-            .setDescription('<a:LMT__arrow:831817537388937277> **Chargement de votre requête**')
+            .setDescription('<a:LMT_arrow:1065548690862899240> **Chargement de votre requête**')
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         await interaction.editReply({embeds:[wait]})
         fetch('https://api.steampowered.com/ISteamApps/GetAppList/v0002/?format=json')
@@ -14,9 +14,9 @@ module.exports = {
         .then(async (data) => {
             let tab = data.applist.apps.filter(x => x.name.includes(interaction.options.getString('recherche')))
             if (tab.length === 0) {
-                const fail = new MessageEmbed()
+                const fail = new EmbedBuilder()
                     .setColor('#2f3136')
-                    .setDescription(`<a:LMT__arrow:831817537388937277> **Désolé, votre recherche n\'a rien trouvé !**\n\n> \`${interaction.options.getString('recherche')}`)
+                    .setDescription(`<a:LMT_arrow:1065548690862899240> **Désolé, votre recherche n\'a rien trouvé !**\n\n> \`${interaction.options.getString('recherche')}`)
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return interaction.editReply({embeds:[fail], ephemeral:true})
             }
@@ -71,7 +71,7 @@ module.exports = {
                     if (data[num].data.release_date) {
                         release = `\n> \`Date de sortie\` : ${data[num].data.release_date.date}`
                     }
-                    const page = new MessageEmbed()
+                    const page = new EmbedBuilder()
                         .setColor('#2f3136')
                         .setImage(data[num].data.header_image)
                         .setTitle(data[num].data.name)
@@ -81,32 +81,32 @@ module.exports = {
                     nbPage++;
                 })
             }
-            const row = new MessageActionRow()
+            const row = new ActionRowBuilder()
             .addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('1')
                     .setEmoji('⏮️')
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
                     .setDisabled(true),
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('-1')
                     .setEmoji('◀️')
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
                     .setDisabled(true),
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('0')
                     .setEmoji('🔢')
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
                     .setDisabled(true),
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('+1')
                     .setEmoji('▶️')
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
                     .setDisabled(true),
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('2')
                     .setEmoji('⏭️')
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
                     .setDisabled(true),
             )
             let isComponent = false;
@@ -180,9 +180,9 @@ module.exports = {
                             msg.edit({embeds:[pages[count]],components:[row]})
                             break
                         case '0':
-                            const ask = new MessageEmbed()
+                            const ask = new EmbedBuilder()
                                 .setColor('#2f3136')
-                                .setDescription(`<a:LMT__arrow:831817537388937277> **Quel page tu veux voir ?** \`[1 - ${tab.slice(0,50).length}]\``)
+                                .setDescription(`<a:LMT_arrow:1065548690862899240> **Quel page tu veux voir ?** \`[1 - ${tab.slice(0,50).length}]\``)
                                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                             msg.edit({embeds:[pages[count],ask]}).then(messg => {
                                 let page = count;

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const fetch = require('node-fetch');
 
 module.exports = {
@@ -67,9 +67,9 @@ module.exports = {
             let pages = [];
             let count = 1;
             if (data.data.Page.media.length === 0) {
-                const fail = new MessageEmbed()
+                const fail = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription(`<a:LMT__arrow:831817537388937277> **L'animé demandé n'a pas été trouvé**\n\n> \`priviligiez les noms en anglais ou japonais\``)
+                .setDescription(`<a:LMT_arrow:1065548690862899240> **L'animé demandé n'a pas été trouvé**\n\n> \`priviligiez les noms en anglais ou japonais\``)
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return interaction.reply({ embeds : [ fail ]});
             } 
@@ -88,7 +88,7 @@ module.exports = {
                 description = description.replaceAll('</b>','');
                 description = description.replaceAll('<strong>','');
                 description = description.replaceAll('</strong>','');
-                const page = new MessageEmbed()
+                const page = new EmbedBuilder()
                     .setColor(color)
                     .setTitle(`Résultat pour ${arg} `)
                     .setImage(x.coverImage.large)
@@ -97,32 +97,32 @@ module.exports = {
                 pages.push(page);
                 count++;
             }
-            const row = new MessageActionRow()
+            const row = new ActionRowBuilder()
                 .addComponents(
-                    new MessageButton()
+                    new ButtonBuilder()
                         .setCustomId('1')
                         .setEmoji('⏮️')
-                        .setStyle('PRIMARY')
+                        .setStyle(ButtonStyle.Primary)
                         .setDisabled(true),
-                    new MessageButton()
+                    new ButtonBuilder()
                         .setCustomId('-1')
                         .setEmoji('◀️')
-                        .setStyle('PRIMARY')
+                        .setStyle(ButtonStyle.Primary)
                         .setDisabled(true),
-                    new MessageButton()
+                    new ButtonBuilder()
                         .setCustomId('0')
                         .setEmoji('🔢')
-                        .setStyle('PRIMARY')
+                        .setStyle(ButtonStyle.Primary)
                         .setDisabled(true),
-                    new MessageButton()
+                    new ButtonBuilder()
                         .setCustomId('+1')
                         .setEmoji('▶️')
-                        .setStyle('PRIMARY')
+                        .setStyle(ButtonStyle.Primary)
                         .setDisabled(true),
-                    new MessageButton()
+                    new ButtonBuilder()
                         .setCustomId('2')
                         .setEmoji('⏭️')
-                        .setStyle('PRIMARY')
+                        .setStyle(ButtonStyle.Primary)
                         .setDisabled(true),
             )
             let isComponent = false;
@@ -197,9 +197,9 @@ module.exports = {
                             msg.edit({embeds:[pages[count]],components:[row]})
                             break
                         case '0':
-                            const ask = new MessageEmbed()
+                            const ask = new EmbedBuilder()
                                 .setColor('#2f3136')
-                                .setDescription(`<a:LMT__arrow:831817537388937277> **Quel page tu veux voir ?** \`[1 - ${pages.length - 1}]\``)
+                                .setDescription(`<a:LMT_arrow:1065548690862899240> **Quel page tu veux voir ?** \`[1 - ${pages.length - 1}]\``)
                                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                             msg.edit({embeds:[pages[count],ask]}).then(messg => {
                                 let page = count;

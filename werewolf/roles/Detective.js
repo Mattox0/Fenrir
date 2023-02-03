@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 const lock = require("./../LG/lock.js");
 const unlock = require("./../LG/lock.js");
 const Player = require("./Player.js");
@@ -16,7 +16,7 @@ class Detective extends Player {
             return resolve();
         }
         const message = await village.messages.fetch(game.config.messageId);
-        const DetectiveEmbed = new MessageEmbed()
+        const DetectiveEmbed = new EmbedBuilder()
         .setColor('#2f3136')
         .setDescription(`Le Detective fait son choix !\n\n> Il a 60 secondes pour se décider !`)
         .setThumbnail("https://media.discordapp.net/attachments/905980338017284197/1027940276775419955/lmt-logo-white.png?width=661&height=671")
@@ -50,11 +50,11 @@ class Detective extends Player {
             game.config.detectiveChannelId = detectiveChannel.id;
         }
         unlock(detectiveChannel, game);
-        const row1 = new MessageActionRow()
-        const row2 = new MessageActionRow()
-        const row3 = new MessageActionRow()
-        const row4 = new MessageActionRow()
-        const row5 = new MessageActionRow()
+        const row1 = new ActionRowBuilder()
+        const row2 = new ActionRowBuilder()
+        const row3 = new ActionRowBuilder()
+        const row4 = new ActionRowBuilder()
+        const row5 = new ActionRowBuilder()
         let finalrow = []
         for (let [i,playerId] of game.allPlayersAlive.entries()) {
             playerId = playerId.idPlayer;
@@ -65,46 +65,46 @@ class Detective extends Player {
             if (i < 5) {
                 finalrow = [row1]
                 row1.addComponents(
-                    new MessageButton()
+                    new ButtonBuilder()
                         .setCustomId(`detective-${playerId}`)
                         .setLabel(`${player.user.username}`)
-                        .setStyle('PRIMARY')
+                        .setStyle(ButtonStyle.Primary)
                 )
             } else if (i < 10) {
                 finalrow = [row1, row2]
                 row2.addComponents(
-                    new MessageButton()
+                    new ButtonBuilder()
                         .setCustomId(`detective-${playerId}`)
                         .setLabel(`${player.user.username}`)
-                        .setStyle('PRIMARY')
+                        .setStyle(ButtonStyle.Primary)
                 )
             } else if (i < 15) {
                 finalrow = [row1, row2, row3]
                 row3.addComponents(
-                    new MessageButton()
+                    new ButtonBuilder()
                         .setCustomId(`detective-${playerId}`)
                         .setLabel(`${player.user.username}`)
-                        .setStyle('PRIMARY')
+                        .setStyle(ButtonStyle.Primary)
                 )
             } else if (i < 20) {
                 finalrow = [row1, row2, row3, row4]
                 row4.addComponents(
-                    new MessageButton()
+                    new ButtonBuilder()
                         .setCustomId(`detective-${playerId}`)
                         .setLabel(`${player.user.username}`)
-                        .setStyle('PRIMARY')
+                        .setStyle(ButtonStyle.Primary)
                 )
             } else if (i < 25) {
                 finalrow = [row1, row2, row3, row4, row5]
                 row5.addComponents(
-                    new MessageButton()
+                    new ButtonBuilder()
                         .setCustomId(`detective-${playerId}`)
                         .setLabel(`${player.user.username}`)
-                        .setStyle('PRIMARY')
+                        .setStyle(ButtonStyle.Primary)
                 )
             }
         }
-        const detectiveChoiceEmbed = new MessageEmbed()
+        const detectiveChoiceEmbed = new EmbedBuilder()
             .setColor('#2f3136')
             .setDescription(`Tu es le Détective !\n\n> Tu as 60 secondes pour choisir deux personnes et révéler leurs camps !`)
             .setThumbnail("https://media.discordapp.net/attachments/905980338017284197/1027940276775419955/lmt-logo-white.png?width=661&height=671")

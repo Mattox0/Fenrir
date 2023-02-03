@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageSelectMenu, MessageActionRow } = require('discord.js')
+const { EmbedBuilder, StringSelectMenuBuilder, ActionRowBuilder } = require('discord.js')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -8,9 +8,9 @@ module.exports = {
     async execute(...params) {
         let interaction = params[0];
         let date = params[2];
-        const row = new MessageActionRow()
+        const row = new ActionRowBuilder()
             .addComponents(
-                new MessageSelectMenu()
+                new StringSelectMenuBuilder()
                     .setCustomId('select_help')
                     .setPlaceholder('Accueil')
                     .addOptions([
@@ -72,10 +72,10 @@ module.exports = {
                     ])
             )
         // Setup Disable Interaction Animaux Activitées Jeux Fun Images Modération Utiles 
-        const win = new MessageEmbed()
+        const win = new EmbedBuilder()
             .setColor('#2f3136')
             .setAuthor({name:'🏘️ ・ Accueil'})
-            .setDescription(`<a:LMT__arrow:831817537388937277> Choississez une catégorie pour avoir les commandes correspondantes\n\n> [Support](https://discord.gg/p9gNk4u)`)
+            .setDescription(`<a:LMT_arrow:1065548690862899240> Choississez une catégorie pour avoir les commandes correspondantes\n\n> [Support](https://discord.gg/p9gNk4u)`)
             .setFooter({text:`Choississez une catégorie dans le sélecteur ci-dessous`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         return interaction.reply({embeds:[win], components:[row]});
     }

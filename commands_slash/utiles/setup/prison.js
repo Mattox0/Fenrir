@@ -1,4 +1,4 @@
-const { MessageEmbed, Permissions } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField } = require("discord.js");
 
 module.exports = {
     async execute(interaction, db, date) {
@@ -16,10 +16,10 @@ module.exports = {
                     position : 1,
                     permissionOverwrites: [{
                         id: interaction.member.guild.id,
-                        deny: [Permissions.FLAGS.VIEW_CHANNEL]
+                        deny: [PermissionsBitField.Flags.ViewChannel]
                     }] 
                 });
-                if (role) chann.permissionOverwrites.edit(role, { VIEW_CHANNEL: true, SEND_MESSAGES: true, MANAGE_MESSAGES: true });
+                if (role) chann.permissionOverwrites.edit(role, { VIEW_CHANNEL: true, SEND_MESSAGES: true, ManageMessages: true });
             }
             if (res.prison_role_id !== null) {
                 prison = await interaction.member.guild.roles.cache.find(x => x.id === res.prison_role_id);
@@ -37,9 +37,9 @@ module.exports = {
             })
             if (role) db.run("UPDATE servers SET prison_id = ?, prison_role_id = ?, prison_admin_id = ? WHERE guild_id = ?",chann.id,prison.id,role.id,interaction.member.guild.id, (err) => {if (err) console.log(err)});
             else db.run("UPDATE servers SET prison_id = ?, prison_role_id = ? WHERE guild_id = ?",chann.id,prison.id,interaction.member.guild.id, (err) => {if (err) console.log(err)});
-            const win = new MessageEmbed()
+            const win = new EmbedBuilder()
                 .setColor("#2f3136")
-                .setDescription(`<a:LMT__arrow:831817537388937277> **Le système de prison est activé !**\nLes prisonniers iront donc dans la prison ${chann}`)
+                .setDescription(`<a:LMT_arrow:1065548690862899240> **Le système de prison est activé !**\nLes prisonniers iront donc dans la prison ${chann}`)
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({embeds:[win]});
         })

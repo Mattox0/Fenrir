@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js")
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js")
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -16,22 +16,22 @@ module.exports = {
             let msgmember = 'Choisis...';
             let emoji1 = choix[Math.floor(Math.random() * choix.length)];
             let emoji2;
-            const choixR = new MessageActionRow()
+            const choixR = new ActionRowBuilder()
                 .addComponents(
-                    new MessageButton()
+                    new ButtonBuilder()
                         .setCustomId('Pierre')
                         .setEmoji('912309329519079454')
-                        .setStyle('SUCCESS'),
-                    new MessageButton()
+                        .setStyle(ButtonStyle.Success),
+                    new ButtonBuilder()
                         .setCustomId('Feuille')
                         .setLabel('🗞️')
-                        .setStyle('SUCCESS'),
-                    new MessageButton()
+                        .setStyle(ButtonStyle.Success),
+                    new ButtonBuilder()
                         .setCustomId('Ciseau')
                         .setLabel('✂️')
-                        .setStyle('SUCCESS'),
+                        .setStyle(ButtonStyle.Success),
                 )
-            const game = new MessageEmbed()
+            const game = new EmbedBuilder()
                 .setColor('#FFFFFF')
                 .setTitle(`${player1.user.username} ✂️<:LMT_rock:912309329519079454>🗞️ LMT-Bot`)
                 .addFields(
@@ -50,9 +50,9 @@ module.exports = {
                 })
                 collector.on('end', async collected => {
                     if (!collected.first()) {
-                        const delai = new MessageEmbed()
+                        const delai = new EmbedBuilder()
                             .setColor('#2f3136')
-                            .setDescription(`<a:LMT__arrow:831817537388937277> **Décide toi avant noël la prochaine fois !**`)
+                            .setDescription(`<a:LMT_arrow:1065548690862899240> **Décide toi avant noël la prochaine fois !**`)
                             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                         return msg.edit({ embeds: [delai], components: [] })
                     };
@@ -74,7 +74,7 @@ module.exports = {
                     } else {
                         resultat = `${player1.user.username} a gagné !`
                     }
-                    const game = new MessageEmbed()
+                    const game = new EmbedBuilder()
                         .setColor('#FFFFFF')
                         .setTitle(`${player1.user.username} ✂️<:LMT_rock:912309329519079454>🗞️ LMT-Bot`)
                         .addFields(
@@ -89,20 +89,20 @@ module.exports = {
             })
         } else {
             let person = await interaction.member.guild.members.cache.find(x => x.id === player2.id);
-            const duel = new MessageEmbed()
+            const duel = new EmbedBuilder()
                 .setColor('#ffffff')
                 .setDescription(`**${person}**, Acceptes-tu ce Pierre Feuille Ciseau de la part de **${player1}** ?`)
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
-            const row = new MessageActionRow()
+            const row = new ActionRowBuilder()
                 .addComponents(
-                    new MessageButton()
+                    new ButtonBuilder()
                         .setCustomId('Oui')
                         .setLabel('Oui')
-                        .setStyle('SUCCESS'),
-                    new MessageButton()
+                        .setStyle(ButtonStyle.Success),
+                    new ButtonBuilder()
                         .setCustomId('Non')
                         .setLabel('Non')
-                        .setStyle('DANGER'),
+                        .setStyle(ButtonStyle.Danger),
                 )
             await interaction.deferReply();
             interaction.editReply({ embeds: [duel], components: [row] }).then(msg => {
@@ -114,35 +114,35 @@ module.exports = {
                 })
                 collector.on('end', async collected => {
                     if (!collected.first()) {
-                        const delai = new MessageEmbed()
+                        const delai = new EmbedBuilder()
                             .setColor('#2f3136')
-                            .setDescription(`<a:LMT__arrow:831817537388937277> **${person} n'a pas répondu...**`)
+                            .setDescription(`<a:LMT_arrow:1065548690862899240> **${person} n'a pas répondu...**`)
                             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                         return msg.edit({ embeds: [delai], components: [] })
                     };
                     collected.first().deferUpdate(); // évite le chargement infinie de l'intérraction
                     switch (collected.first().customId) {
                         case 'Oui':
-                            const choix = new MessageActionRow()
+                            const choix = new ActionRowBuilder()
                             .addComponents(
-                                new MessageButton()
+                                new ButtonBuilder()
                                     .setCustomId('Pierre')
                                     .setEmoji('912309329519079454')
-                                    .setStyle('SUCCESS'),
-                                new MessageButton()
+                                    .setStyle(ButtonStyle.Success),
+                                new ButtonBuilder()
                                     .setCustomId('Feuille')
                                     .setLabel('🗞️')
-                                    .setStyle('SUCCESS'),
-                                new MessageButton()
+                                    .setStyle(ButtonStyle.Success),
+                                new ButtonBuilder()
                                     .setCustomId('Ciseau')
                                     .setLabel('✂️')
-                                    .setStyle('SUCCESS'),
+                                    .setStyle(ButtonStyle.Success),
                             )
                             let msgperson = "Choisis ...";
                             let msgmember = "Choisis ...";
                             let emoji1;
                             let emoji2;
-                            const game = new MessageEmbed()
+                            const game = new EmbedBuilder()
                                 .setColor('#FFFFFF')
                                 .setTitle(`${player1.user.username} ✂️<:LMT_rock:912309329519079454>🗞️ ${person.user.username}`)
                                 .addFields(
@@ -189,7 +189,7 @@ module.exports = {
                                                 break;
                                         }
                                     }
-                                    const game = new MessageEmbed()
+                                    const game = new EmbedBuilder()
                                     .setColor('#FFFFFF')
                                     .setTitle(`${player1.user.username} ✂️<:LMT_rock:912309329519079454>🗞️ ${person.user.username}`)
                                     .addFields(
@@ -205,9 +205,9 @@ module.exports = {
                                 })
                                 collector.on('end', () => {
                                     if (!choixperson || !choixmessage) {
-                                        const fail = new MessageEmbed()
+                                        const fail = new EmbedBuilder()
                                             .setColor('#2f3136')
-                                            .setDescription(`<a:LMT__arrow:831817537388937277> **Un de vous s'est défilé et n'as pas répondu !**`)
+                                            .setDescription(`<a:LMT_arrow:1065548690862899240> **Un de vous s'est défilé et n'as pas répondu !**`)
                                             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                                         return msg.edit({embeds:[fail],components: []});
                                     }
@@ -219,7 +219,7 @@ module.exports = {
                                     } else {
                                         resultat = `${player1} a gagné !`;
                                     }
-                                    const game = new MessageEmbed()
+                                    const game = new EmbedBuilder()
                                     .setColor('#FFFFFF')
                                     .setTitle(`${player1.user.username} ✂️<:LMT_rock:912309329519079454>🗞️ ${person.user.username}`)
                                     .addFields(
@@ -234,7 +234,7 @@ module.exports = {
                             })
                             break;
                         case 'Non':
-                            const fuite = new MessageEmbed()
+                            const fuite = new EmbedBuilder()
                                 .setColor('#2f3136')
                                 .setTitle(`${player2.user.username} n'a pas voulu t'affronter`)
                                 .setDescription(`${player2.user.username} a pris la fuite comme un pokémon sauvage`)

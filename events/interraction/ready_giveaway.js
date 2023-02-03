@@ -1,5 +1,5 @@
 const schedule = require('node-schedule');
-const { MessageEmbed } = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
 
 module.exports = {
     name:'readygiveaways',
@@ -47,7 +47,7 @@ module.exports = {
                         }
                         let chann = await client.channels.fetch(result.channel_id)
                         let msg = await chann.messages.fetch(result.message_id)
-                        const fail = new MessageEmbed()
+                        const fail = new EmbedBuilder()
                             .setColor('#2f3136')
                             .setTitle('Giveaway <a:LMT_fete2:911791997428334622>')
                             .setThumbnail('https://media.discordapp.net/attachments/883117525842423898/911778659604500510/831817670822723597.gif')
@@ -64,7 +64,7 @@ module.exports = {
                                 let index = participants.indexOf(gagnant);
                                 if (index > -1) participants.splice(index, 1);
                             }
-                            const win = new MessageEmbed()
+                            const win = new EmbedBuilder()
                                 .setColor('#2f3136')
                                 .setTitle('Giveaway <a:LMT_fete2:911791997428334622>')
                                 .setThumbnail('https://media.discordapp.net/attachments/883117525842423898/911778659604500510/831817670822723597.gif')

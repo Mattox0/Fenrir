@@ -1,4 +1,4 @@
-const {MessageEmbed} = require('discord.js')
+const {EmbedBuilder} = require('discord.js')
 let date = new Date()
 
 module.exports = {
@@ -42,13 +42,13 @@ module.exports = {
                 }
                 for (let x = 0; x < 9; x++) {
                     if (res[`numero_${x+1}`] === null) break
-                    description += `${numeros[x]} <a:LMT__arrow:831817537388937277> **${res[`numero_${x+1}`]}**\n`;
+                    description += `${numeros[x]} <a:LMT_arrow:1065548690862899240> **${res[`numero_${x+1}`]}**\n`;
                 }
                 for (let x = 0; x < 9; x++) {
                     if (res[`numero_${x+1}`] === null) break
-                    pourcent += `${numeros[x]} <a:LMT__arrow:831817537388937277> **${Math.floor(JSON.parse(res[`numero_${x+1}_nb`]).length / allCount * 100) / 100 * 100}% - ${JSON.parse(res[`numero_${x+1}_nb`]).length}**\n`
+                    pourcent += `${numeros[x]} <a:LMT_arrow:1065548690862899240> **${Math.floor(JSON.parse(res[`numero_${x+1}_nb`]).length / allCount * 100) / 100 * 100}% - ${JSON.parse(res[`numero_${x+1}_nb`]).length}**\n`
                 }
-                const poll = new MessageEmbed()
+                const poll = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription(`${description}\n[\`${allCount}\`] participants\n\n${pourcent}\nFin : <t:${Math.ceil(res.dateFin / 1000)}:R>`)
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})

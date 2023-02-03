@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
+const { EmbedBuilder, ButtonBuilder, ActionRowBuilder } = require("discord.js");
 
 async function annonceRoles(interaction ,date, game, resolve) {
     // message village + stocké ID
@@ -7,14 +7,14 @@ async function annonceRoles(interaction ,date, game, resolve) {
         game.end = true;
         return resolve();
     }
-    const row = new MessageActionRow()
+    const row = new ActionRowBuilder()
     .addComponents(
-        new MessageButton()
+        new ButtonBuilder()
             .setCustomId('role')
             .setLabel('Clique pour savoir ton rôle !')
-            .setStyle('SUCCESS')
+            .setStyle(ButtonStyle.Success)
     );
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
         .setColor('#2f3136')
         .setDescription(`Bienvenue membres du village !\n\n> La partie va commencer, nous allons commencer par vous annoncer vos rôles !\n> Vous avez 30 secondes pour regarder votre rôle !\n> \`${game.allPlayersId.length} restants\``)
         .setThumbnail("https://media.discordapp.net/attachments/905980338017284197/1027940276775419955/lmt-logo-white.png?width=661&height=671")
@@ -47,7 +47,7 @@ async function annonceRoles(interaction ,date, game, resolve) {
         collector.on("end", async collected => {
             if (allIds.length != game.allPlayersId.length) {
                 count = game.allPlayersId.length - allIds.length;
-                const noRoleEmbed = new MessageEmbed()
+                const noRoleEmbed = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription(`**${count}** personne${count > 1 ? 's' : ''} n'${count > 1 ? 'ont' : 'a'} pas demandé son rôle !\n\n> Tant pis pour elle${count > 1 ? 's' : ''} !`)
                     .setThumbnail("https://media.discordapp.net/attachments/905980338017284197/1027940276775419955/lmt-logo-white.png?width=661&height=671")
@@ -55,7 +55,7 @@ async function annonceRoles(interaction ,date, game, resolve) {
                 await msg.edit({ embeds: [noRoleEmbed], components: [] });
                 resolve();
             } else {
-                const SucceedRoleEmbed = new MessageEmbed()
+                const SucceedRoleEmbed = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription(`Tous les joueurs ont vu leurs rôles !`)
                     .setThumbnail("https://media.discordapp.net/attachments/905980338017284197/1027940276775419955/lmt-logo-white.png?width=661&height=671")

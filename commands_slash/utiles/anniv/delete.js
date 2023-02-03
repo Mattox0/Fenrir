@@ -1,29 +1,29 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 
 module.exports = {
     async execute(interaction, date, db) {
         db.get("SELECT * FROM anniversaires WHERE user_id = ?",interaction.member.user.id, async (err, res) => {
             if (err || !res) {
-                const fail = new MessageEmbed()
+                const fail = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
-                    .setDescription('<a:LMT__arrow:831817537388937277> **Tu n\'as pas encore enregistré ton anniversaire !**')
+                    .setDescription('<a:LMT_arrow:1065548690862899240> **Tu n\'as pas encore enregistré ton anniversaire !**')
                 return interaction.reply({embeds:[fail],ephemeral:true});
             }
-            const row = new MessageActionRow()
+            const row = new ActionRowBuilder()
             .addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('Oui')
                     .setLabel('Oui je suis sûre')
-                    .setStyle('SUCCESS'),
-                new MessageButton()
+                    .setStyle(ButtonStyle.Success),
+                new ButtonBuilder()
                     .setCustomId('Non')
                     .setLabel('Non !')
-                    .setStyle('DANGER'),
+                    .setStyle(ButtonStyle.Danger),
             )
-            const ask = new MessageEmbed()
+            const ask = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription(`<a:LMT__arrow:831817537388937277> Souhaite-tu vraiment supprimer ton anniversaire ?`)
+                .setDescription(`<a:LMT_arrow:1065548690862899240> Souhaite-tu vraiment supprimer ton anniversaire ?`)
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             await interaction.deferReply()
             interaction.editReply({embeds:[ask],components:[row]}).then(msg => {
@@ -31,9 +31,9 @@ module.exports = {
                 const collector = msg.channel.createMessageComponentCollector({ filter, max:1,time:60000})
                 collector.on('end', async collected => {
                     if (!collected.first()) {
-                        const delai = new MessageEmbed()
+                        const delai = new EmbedBuilder()
                             .setColor('#2f3136')
-                            .setDescription('<a:LMT__arrow:831817537388937277> **Il faudrait se décider avant Noël.**')
+                            .setDescription('<a:LMT_arrow:1065548690862899240> **Il faudrait se décider avant Noël.**')
                             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                         return msg.edit({ embeds: [delai], components: [] })
                     };
@@ -41,15 +41,15 @@ module.exports = {
                     switch (collected.first().customId) {
                         case 'Oui':
                             db.run("DELETE FROM anniversaires WHERE user_id = ?",interaction.member.user.id, (err) => {if (err) return console.log(err)});
-                            const win = new MessageEmbed()
+                            const win = new EmbedBuilder()
                                 .setColor('#2f3136')
-                                .setDescription(`<a:LMT__arrow:831817537388937277> **Ton anniversaire a bien été supprimé !**`)
+                                .setDescription(`<a:LMT_arrow:1065548690862899240> **Ton anniversaire a bien été supprimé !**`)
                                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                             return msg.edit({embeds:[win],components:[]})
                         case 'Non':
-                            const non = new MessageEmbed()
+                            const non = new EmbedBuilder()
                                 .setColor('#2f3136')
-                                .setDescription('<a:LMT__arrow:831817537388937277> **On a pas touché à ton anniversaire !**')
+                                .setDescription('<a:LMT_arrow:1065548690862899240> **On a pas touché à ton anniversaire !**')
                                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                             return msg.edit({ embeds : [non],components:[]});
                     }

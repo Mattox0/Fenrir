@@ -1,22 +1,22 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 const schedule = require("node-schedule")
 
 module.exports = {
     async execute(interaction, db, date, client) {
         let channel = interaction.options.getChannel('channel')
         if (channel.type !== "GUILD_TEXT") {
-            const fail = new MessageEmbed()
+            const fail = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription('<a:LMT__arrow:831817537388937277> **Le salon doit être __textuel__ !**')
+                .setDescription('<a:LMT_arrow:1065548690862899240> **Le salon doit être __textuel__ !**')
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({embeds:[fail],ephemeral:true});
         }
         let temps = interaction.options.getString('temps')
         let prize = interaction.options.getString('récompense')
         let winners = interaction.options.getInteger('winners')
-        const failTime = new MessageEmbed()
+        const failTime = new EmbedBuilder()
         .setColor(`#2f3136`)
-        .setDescription(`<a:LMT__arrow:831817537388937277> **Merci de mettre un temps correct**\n\n> 2d5h30m (\`2 jours, 5 heures et 30 minutes\`)\n> 2d (\`2 jours\`)`)
+        .setDescription(`<a:LMT_arrow:1065548690862899240> **Merci de mettre un temps correct**\n\n> 2d5h30m (\`2 jours, 5 heures et 30 minutes\`)\n> 2d (\`2 jours\`)`)
         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         let time = "";let day=0;let heure = 0; let minute = 0;
         let dateFin = new Date();
@@ -30,28 +30,28 @@ module.exports = {
         if (day>0) dateFin.setDate(dateFin.getDate() + parseInt(day));
         if (heure>0) dateFin.setHours(dateFin.getHours() + parseInt(heure));
         if (minute>0) dateFin.setMinutes(dateFin.getMinutes() + parseInt(minute))
-        const failWinners = new MessageEmbed()
+        const failWinners = new EmbedBuilder()
         .setColor('#2f3136')
-        .setDescription('<a:LMT__arrow:831817537388937277> **Merci de mettre un nombre de gagnant correct !**\n\n> \`Entre de 1 et 20 maximum\`')
+        .setDescription('<a:LMT_arrow:1065548690862899240> **Merci de mettre un nombre de gagnant correct !**\n\n> \`Entre de 1 et 20 maximum\`')
         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         if (!winners) winners = 1;
         else {
             if (winners > 21 || winners < 1) return interaction.reply({embeds:[failWinners],ephemeral:true});
         }
-        const row = new MessageActionRow()
+        const row = new ActionRowBuilder()
             .addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('Oui')
                     .setLabel('On garde ça')
-                    .setStyle('SUCCESS'),
-                new MessageButton()
+                    .setStyle(ButtonStyle.Success),
+                new ButtonBuilder()
                     .setCustomId('Non')
                     .setLabel('Je recommence !')
-                    .setStyle('DANGER')
+                    .setStyle(ButtonStyle.Danger)
             )
-        const All = new MessageEmbed()
+        const All = new EmbedBuilder()
         .setColor('#2f3136')
-        .setDescription(`<a:LMT__arrow:831817537388937277> **Tout est bon pour toi ?**\n\n<:LMT__point:879168876968026173> __Salon__ : ${channel}\n<:LMT__point:879168876968026173> __Le__ : <t:${Math.round(+dateFin/1000)}>\n<:LMT__point:879168876968026173> __Gagnants__ : ${winners}\n<:LMT__point:879168876968026173> __Récompense__ : ${prize}`)
+        .setDescription(`<a:LMT_arrow:1065548690862899240> **Tout est bon pour toi ?**\n\n<:LMT__point:879168876968026173> __Salon__ : ${channel}\n<:LMT__point:879168876968026173> __Le__ : <t:${Math.round(+dateFin/1000)}>\n<:LMT__point:879168876968026173> __Gagnants__ : ${winners}\n<:LMT__point:879168876968026173> __Récompense__ : ${prize}`)
         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         await interaction.deferReply();
         interaction.editReply({embeds:[All],components:[row]}).then(msg => {
@@ -63,32 +63,32 @@ module.exports = {
             })
             collector.on('end', async collected => {
                 if (!collected.first()) {
-                    const delai = new MessageEmbed()
+                    const delai = new EmbedBuilder()
                         .setColor('#2f3136')
-                        .setDescription('<a:LMT__arrow:831817537388937277> **Il faudrait se décider avant Noël.**')
+                        .setDescription('<a:LMT_arrow:1065548690862899240> **Il faudrait se décider avant Noël.**')
                         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return msg.edit({ embeds: [delai], components: [] })
                 };
                 collected.first().deferUpdate(); // évite le chargement infinie de l'intérraction
                 switch (collected.first().customId) {
                     case 'Oui':
-                        const win = new MessageEmbed()
+                        const win = new EmbedBuilder()
                             .setColor('#2f3136')
-                            .setDescription(`<a:LMT__arrow:831817537388937277> **Giveaway envoyé avec succès !** :white_check_mark:`)
+                            .setDescription(`<a:LMT_arrow:1065548690862899240> **Giveaway envoyé avec succès !** :white_check_mark:`)
                             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                         msg.edit({embeds:[win],components:[]})
-                        const row = new MessageActionRow()
+                        const row = new ActionRowBuilder()
                             .addComponents(
-                                new MessageButton()
+                                new ButtonBuilder()
                                     .setCustomId('giveaways')
                                     .setLabel('Je participe !')
-                                    .setStyle('SUCCESS'),
-                                new MessageButton()
+                                    .setStyle(ButtonStyle.Success),
+                                new ButtonBuilder()
                                     .setCustomId('giveaways_remove')
                                     .setLabel('Je souhaite me désinscrire')
-                                    .setStyle('DANGER')
+                                    .setStyle(ButtonStyle.Danger)
                             )
-                        const giveaway = new MessageEmbed()
+                        const giveaway = new EmbedBuilder()
                             .setColor('#2f3136')
                             .setTitle('Giveaway <a:LMT_fete2:911791997428334622>')
                             .setThumbnail('https://media.discordapp.net/attachments/883117525842423898/911778659604500510/831817670822723597.gif')
@@ -112,7 +112,7 @@ module.exports = {
                                 let chann = await client.channels.fetch(res.channel_id)
                                 let msg = await chann.messages.fetch(res.message_id)
                                 if (res.participants === null) {
-                                    const fail = new MessageEmbed()
+                                    const fail = new EmbedBuilder()
                                         .setColor('#2f3136')
                                         .setTitle('Giveaway <a:LMT_fete2:911791997428334622>')
                                         .setThumbnail('https://media.discordapp.net/attachments/883117525842423898/911778659604500510/831817670822723597.gif')
@@ -130,7 +130,7 @@ module.exports = {
                                         let index = participants.indexOf(gagnant);
                                         if (index > -1) participants.splice(index, 1);
                                     }
-                                    const win = new MessageEmbed()
+                                    const win = new EmbedBuilder()
                                         .setColor('#2f3136')
                                         .setTitle('Giveaway <a:LMT_fete2:911791997428334622>')
                                         .setThumbnail('https://media.discordapp.net/attachments/883117525842423898/911778659604500510/831817670822723597.gif')
@@ -154,9 +154,9 @@ module.exports = {
                         })
                         break
                     case 'Non':
-                        const fail = new MessageEmbed()
+                        const fail = new EmbedBuilder()
                             .setColor('#2f3136')
-                            .setDescription(`<a:LMT__arrow:831817537388937277> **Le giveaway a bien été annulé !**`)
+                            .setDescription(`<a:LMT_arrow:1065548690862899240> **Le giveaway a bien été annulé !**`)
                             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                         return msg.edit({embeds:[fail],components:[]})
                 }

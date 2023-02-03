@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageAttachment } = require("discord.js");
+const { EmbedBuilder, AttachmentBuilder } = require("discord.js");
 const Canvas = require('canvas');
 
 module.exports = {
@@ -58,14 +58,14 @@ module.exports = {
         tab = ['montagne','Jesus','lignes','hand_love','couple','emoji_love','wedding','pouce','cat','angel','heart_2']
         const canvas = Canvas.createCanvas(384, 128);
         const ctx = canvas.getContext('2d');
-        const person1 = await Canvas.loadImage(player1.user.displayAvatarURL({ format:'png',size: 128, dynamic: false }));
+        const person1 = await Canvas.loadImage(player1.user.displayAvatarURL({ extension:'png',size: 128, dynamic: false }));
         ctx.drawImage(person1, 0, 0, 128, 128);
         const coeur = await Canvas.loadImage(`./Images/${tab[Math.floor(Math.random() * tab.length)]}.png`);
         ctx.drawImage(coeur, 128, 0, 128, 128);
-        const person2 = await Canvas.loadImage(player2.user.displayAvatarURL({ format:'png',size: 128, dynamic : false}));
+        const person2 = await Canvas.loadImage(player2.user.displayAvatarURL({ extension:'png',size: 128, dynamic : false}));
         ctx.drawImage(person2, 256, 0, 128, 128);
-        const attachment = new MessageAttachment(canvas.toBuffer(), 'love-image.png')
-        const loved = new MessageEmbed()
+        const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'love-image.png' })
+        const loved = new EmbedBuilder()
             .setColor('#2f3136')
             .setDescription(`**${nick1}** + **${nick2}** = **${love}%** d'amour :heart:\n\n> ${phrase}\n`)
             .setImage('attachment://love-image.png')

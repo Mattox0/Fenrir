@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed,  Permissions } = require("discord.js");
+const { EmbedBuilder,  PermissionsBitField } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -12,10 +12,10 @@ module.exports = {
         let interaction = params[0];
         let db = params[4];
         let date = params[2];
-        if (!interaction.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) {
-            const fail = new MessageEmbed()
+        if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
+            const fail = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription('<a:LMT__arrow:831817537388937277> **Tu n\'as pas les permissions pour executer cette commande !** \n**Appelle une personne plus qualifiée qui pourra t\'aider**')
+                .setDescription('<a:LMT_arrow:1065548690862899240> **Tu n\'as pas les permissions pour executer cette commande !** \n**Appelle une personne plus qualifiée qui pourra t\'aider**')
                 .setThumbnail('https://cdn.discordapp.com/attachments/883117525842423898/899365869560430592/882249237486784522.gif')
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({ embeds : [fail],ephemeral : true});
@@ -23,9 +23,9 @@ module.exports = {
         db.get("SELECT mute_id FROM servers WHERE guild_id = ?",interaction.member.guild.id, async(err, res) => {
             if (err || !res) {
                 console.error(error);
-                const echec = new MessageEmbed()
+                const echec = new EmbedBuilder()
                     .setColor('#2f3136')
-                    .setDescription(`<a:LMT__arrow:831817537388937277> **Il y a une erreur avec cette commande !**\n\n [Contactez le support !](https://discord.gg/p9gNk4u)`)
+                    .setDescription(`<a:LMT_arrow:1065548690862899240> **Il y a une erreur avec cette commande !**\n\n [Contactez le support !](https://discord.gg/p9gNk4u)`)
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 await interaction.reply({ embeds:[echec], ephemeral: true });
             }
@@ -68,16 +68,16 @@ module.exports = {
             if (!raison) raison = "Aucune raison spécifiée";
             person = await interaction.member.guild.members.cache.find(x => x.id === person.id);
             person.roles.add(mute).then(member => {
-                const win = new MessageEmbed()
+                const win = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription(`**${member} a été mute !\n\n${interaction.member} a décidé de vous faire taire, et sa sentence est __irrévocable__.**\n\n__Pour la raison suivante :__\n> ${raison}.\n\n__Durée :__\n> ${dureeString}`)
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 interaction.reply({embeds:[win]})
             }).catch(err => {
                 console.log(err);
-                const fail = new MessageEmbed()
+                const fail = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription(`<a:LMT__arrow:831817537388937277> **Mon rôle doit être au dessus des autres pour que je puisse donner le rôle !**`)
+                .setDescription(`<a:LMT_arrow:1065548690862899240> **Mon rôle doit être au dessus des autres pour que je puisse donner le rôle !**`)
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return interaction.reply({ embeds : [fail],ephemeral:true });
             });

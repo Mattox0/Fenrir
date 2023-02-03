@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 const fetch = require("node-fetch");
 const Config = require('./../../../config.json')
 
@@ -6,9 +6,9 @@ module.exports = {
     async execute(interaction, date) {
         let channel = await interaction.member.voice.channel
         if (!channel) {
-            const JoinEmbed = new MessageEmbed()
+            const JoinEmbed = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription("<a:LMT__arrow:831817537388937277> **Vous devez être dans un salon vocal !**")
+                .setDescription("<a:LMT_arrow:1065548690862899240> **Vous devez être dans un salon vocal !**")
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({ embeds: [JoinEmbed,], ephemeral:true });
         }
@@ -18,9 +18,9 @@ module.exports = {
                 interaction.member.voice.channel
             )
         ) {
-            const SameEmbed = new MessageEmbed()
+            const SameEmbed = new EmbedBuilder()
                 .setColor("#2f3136")
-                .setDescription("<a:LMT__arrow:831817537388937277> **Tu dois être dans le même salon vocal que moi !**")
+                .setDescription("<a:LMT_arrow:1065548690862899240> **Tu dois être dans le même salon vocal que moi !**")
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({ embeds: [SameEmbed], ephemeral: true });
         }
@@ -44,14 +44,14 @@ module.exports = {
                 return interaction.reply({content:"Il y a une erreur lors de la création de l'invitation, désolé ! <:LMT_Bplease:882249814669156412>", ephemeral:true});
             }
             const invite = await res.json();
-            const row = new MessageActionRow()
+            const row = new ActionRowBuilder()
                 .addComponents(
-                    new MessageButton()
+                    new ButtonBuilder()
                         .setEmoji('912854439826714685')
                         .setURL(`https://discord.com/invite/${invite.code}`)
-                        .setStyle('LINK')
+                        .setStyle(ButtonStyle.Link)
                 )
-            const Embed = new MessageEmbed()
+            const Embed = new EmbedBuilder()
             .setColor(`#2f3136`)
             .setDescription(`Avec **Betrayal**, vous pouvez lancer une partie de betrayal avec des amis dans un salon vocal !
             Cliquez sur le lien pour rejoindre l'activité !

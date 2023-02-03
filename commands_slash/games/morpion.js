@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js")
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js")
 const wait = require('util').promisify(setTimeout);
 
 module.exports = {
@@ -24,20 +24,20 @@ module.exports = {
         case7 = ` ⁣ :seven: ⁣ `
         case8 = ` ⁣ :eight: ⁣ `
         case9 = ` ⁣ :nine: ⁣ `
-        const duel = new MessageEmbed()
+        const duel = new EmbedBuilder()
             .setColor('#2f3136')
-            .setDescription(`<a:LMT__arrow:831817537388937277> **${player2}, Acceptes-tu ce morpion de la part de ${player1}** ?`)
+            .setDescription(`<a:LMT_arrow:1065548690862899240> **${player2}, Acceptes-tu ce morpion de la part de ${player1}** ?`)
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
-        const row = new MessageActionRow()
+        const row = new ActionRowBuilder()
             .addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('Oui')
                     .setLabel('Oui')
-                    .setStyle('SUCCESS'),
-                new MessageButton()
+                    .setStyle(ButtonStyle.Success),
+                new ButtonBuilder()
                     .setCustomId('Non')
                     .setLabel('Non')
-                    .setStyle('DANGER'),
+                    .setStyle(ButtonStyle.Danger),
             )
         await interaction.deferReply();
         interaction.editReply({ embeds: [duel], components: [row] }).then(msg => {
@@ -49,61 +49,61 @@ module.exports = {
             })
             collector.on('end', async collected => {
                 if (!collected.first()) {
-                    const delai = new MessageEmbed()
+                    const delai = new EmbedBuilder()
                         .setColor('#2f3136')
-                        .setDescription(`<a:LMT__arrow:831817537388937277> **${player2} n'a pas répondu !**`)
+                        .setDescription(`<a:LMT_arrow:1065548690862899240> **${player2} n'a pas répondu !**`)
                         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return msg.edit({ embeds: [delai], components: [] })
                 };
                 collected.first().deferUpdate();
                 switch (collected.first().customId) {
                     case 'Oui':
-                        const numeros1 = new MessageActionRow()
+                        const numeros1 = new ActionRowBuilder()
                         .addComponents(
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('1')
                                 .setEmoji('1️⃣')
-                                .setStyle('SECONDARY'),
-                            new MessageButton()
+                                .setStyle(ButtonStyle.Secondary),
+                            new ButtonBuilder()
                                 .setCustomId('2')
                                 .setEmoji('2️⃣')
-                                .setStyle('SECONDARY'),
-                            new MessageButton()
+                                .setStyle(ButtonStyle.Secondary),
+                            new ButtonBuilder()
                                 .setCustomId('3')
                                 .setEmoji('3️⃣')
-                                .setStyle('SECONDARY'),
+                                .setStyle(ButtonStyle.Secondary),
                         )
-                        const numeros2 = new MessageActionRow()
+                        const numeros2 = new ActionRowBuilder()
                         .addComponents(
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('4')
                                 .setEmoji('4️⃣')
-                                .setStyle('SECONDARY'),
-                            new MessageButton()
+                                .setStyle(ButtonStyle.Secondary),
+                            new ButtonBuilder()
                                 .setCustomId('5')
                                 .setEmoji('5️⃣')
-                                .setStyle('SECONDARY'),
-                            new MessageButton()
+                                .setStyle(ButtonStyle.Secondary),
+                            new ButtonBuilder()
                                 .setCustomId('6')
                                 .setEmoji('6️⃣')
-                                .setStyle('SECONDARY'),
+                                .setStyle(ButtonStyle.Secondary),
                         )
-                        const numeros3 = new MessageActionRow()
+                        const numeros3 = new ActionRowBuilder()
                         .addComponents(
-                            new MessageButton()
+                            new ButtonBuilder()
                                 .setCustomId('7')
                                 .setEmoji('7️⃣')
-                                .setStyle('SECONDARY'),
-                            new MessageButton()
+                                .setStyle(ButtonStyle.Secondary),
+                            new ButtonBuilder()
                                 .setCustomId('8')
                                 .setEmoji('8️⃣')
-                                .setStyle('SECONDARY'),
-                            new MessageButton()
+                                .setStyle(ButtonStyle.Secondary),
+                            new ButtonBuilder()
                                 .setCustomId('9')
                                 .setEmoji('9️⃣')
-                                .setStyle('SECONDARY'),
+                                .setStyle(ButtonStyle.Secondary),
                         )
-                        const debut = new MessageEmbed()
+                        const debut = new EmbedBuilder()
                             .setTitle(`${player1.user.username} :mag_right::mag: ${player2.username}`)
                             .setDescription(`C'est au tour de **${player1}**     
                   --------------------------
@@ -122,9 +122,9 @@ module.exports = {
                         })
                         break
                     case 'Non':
-                        const fuite = new MessageEmbed()
+                        const fuite = new EmbedBuilder()
                             .setColor('#2f3136')
-                            .setDescription(`<a:LMT__arrow:831817537388937277> **${player2} a décliné ton offre !**`)
+                            .setDescription(`<a:LMT_arrow:1065548690862899240> **${player2} a décliné ton offre !**`)
                             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                         return msg.edit({ embeds: [fuite], components: [] })
                 }
@@ -190,7 +190,7 @@ module.exports = {
                             break
                     }
                     turn === player1 ? turn = player2 : turn = player1
-                    const morpion = new MessageEmbed()
+                    const morpion = new EmbedBuilder()
                         .setTitle(`${player1.user.username} :mag_right::mag: ${player2.username}`)
                         .setDescription(`C'est au tour de **${turn}**     
                           --------------------------
@@ -219,7 +219,7 @@ module.exports = {
             })
             collector.on('end', () => {
                 if (win === player1) {
-                    const vic1 = new MessageEmbed()
+                    const vic1 = new EmbedBuilder()
                         .setColor('#2f3136')
                         .setDescription(`**Victoire !**
 
@@ -236,7 +236,7 @@ module.exports = {
                         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return msg.edit({embeds:[vic1],components: []})
                 } else if (win === player2) {
-                    const vic2 = new MessageEmbed()
+                    const vic2 = new EmbedBuilder()
                         .setColor('#2f3136')
                         .setDescription(`**Victoire !**
 
@@ -253,7 +253,7 @@ module.exports = {
                         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return msg.edit({embeds:[vic2],components: []})
                 }
-                const nul = new MessageEmbed()
+                const nul = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription(`**Egalité !**
                     

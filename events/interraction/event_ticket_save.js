@@ -1,4 +1,4 @@
-const {MessageEmbed, Permissions, MessageActionRow, MessageButton} = require('discord.js');
+const {EmbedBuilder, PermissionsBitField, ActionRowBuilder, ButtonBuilder} = require('discord.js');
 let date = new Date()
 const fs = require('fs');
 

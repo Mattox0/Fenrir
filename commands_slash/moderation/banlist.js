@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed,  Permissions, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder,  PermissionsBitField, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 const schedule = require('node-schedule')
 
 module.exports = {
@@ -10,10 +10,10 @@ module.exports = {
         let interaction = params[0];
         let date = params[2];
         let db = params[4];
-        if (!interaction.member.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) {
-            const fail = new MessageEmbed()
+        if (!interaction.member.permissions.has(PermissionsBitField.Flags.BanMembers)) {
+            const fail = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription('<a:LMT__arrow:831817537388937277> **Tu ne peux pas faire justice toi-même !** \n**Appelle une personne plus qualifiée qui pourra t\'**\n**aider dans la démarche du bannissement**')
+                .setDescription('<a:LMT_arrow:1065548690862899240> **Tu ne peux pas faire justice toi-même !** \n**Appelle une personne plus qualifiée qui pourra t\'**\n**aider dans la démarche du bannissement**')
                 .setThumbnail('https://cdn.discordapp.com/attachments/883117525842423898/899365869560430592/882249237486784522.gif')
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({ embeds : [fail],ephemeral : true});
@@ -32,7 +32,7 @@ module.exports = {
             }
             countDesc++
             if (countDesc === 4) {
-                const page = new MessageEmbed()
+                const page = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setTitle('Liste des bannis')
                     .setDescription(description)
@@ -44,39 +44,39 @@ module.exports = {
             }
         })
         if (description !== ``) {
-            const page = new MessageEmbed()
+            const page = new EmbedBuilder()
                 .setColor('#2f3136')
                 .setTitle('Liste des bannis')
                 .setDescription(description)
                 .setFooter({text :`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)} ・ ${countPage} / ${Math.ceil(allBans.size / 4)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             pages.push(page);
         }
-        const row = new MessageActionRow()
+        const row = new ActionRowBuilder()
             .addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('1')
                     .setEmoji('⏮️')
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
                     .setDisabled(true),
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('-1')
                     .setEmoji('◀️')
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
                     .setDisabled(true),
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('0')
                     .setEmoji('🔢')
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
                     .setDisabled(true),
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('+1')
                     .setEmoji('▶️')
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
                     .setDisabled(true),
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('2')
                     .setEmoji('⏭️')
-                    .setStyle('PRIMARY')
+                    .setStyle(ButtonStyle.Primary)
                     .setDisabled(true),
         )
         let isComponent = false;
@@ -151,9 +151,9 @@ module.exports = {
                         msg.edit({embeds:[pages[count]],components:[row]})
                         break
                     case '0':
-                        const ask = new MessageEmbed()
+                        const ask = new EmbedBuilder()
                             .setColor('#2f3136')
-                            .setDescription(`<a:LMT__arrow:831817537388937277> **Quel page tu veux voir ?** \`[1 - ${Math.ceil(allBans.size / 4)}]\``)
+                            .setDescription(`<a:LMT_arrow:1065548690862899240> **Quel page tu veux voir ?** \`[1 - ${Math.ceil(allBans.size / 4)}]\``)
                             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                         msg.edit({embeds:[pages[count],ask]}).then(messg => {
                             let page = count;

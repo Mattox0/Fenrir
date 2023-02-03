@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 const fetch = require('node-fetch');
 
 module.exports = {
@@ -18,7 +18,7 @@ module.exports = {
             skin = `https://crafatar.com/renders/body/${id}`
             rendu = `https://crafatar.com/skins/${id}`
             avatar = `https://crafatar.com/avatars/${id}`
-            const mc = new MessageEmbed()
+            const mc = new EmbedBuilder()
                 .setColor('#2f3136')
                 .setTitle(`Skin de **${username}**`)
                 .setThumbnail(avatar)
@@ -27,9 +27,9 @@ module.exports = {
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({embeds:[mc]});
         }).catch(()=> {
-            const fail = new MessageEmbed()
+            const fail = new EmbedBuilder()
             .setColor('#2f3136') 
-            .setDescription(`<a:LMT__arrow:831817537388937277> **Nous n'avons pas trouvé votre profil...**`)
+            .setDescription(`<a:LMT_arrow:1065548690862899240> **Nous n'avons pas trouvé votre profil...**`)
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({ embeds : [ fail ], ephemeral:true});
         });

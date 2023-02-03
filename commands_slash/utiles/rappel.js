@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const schedule = require('node-schedule')
 
 module.exports = {
@@ -15,9 +15,9 @@ module.exports = {
         let raison = interaction.options.getString('raison');
         let temps = interaction.options.getString('temps');
         if (!raison) raison = "Rappel";
-        const fail = new MessageEmbed()
+        const fail = new EmbedBuilder()
             .setColor('#2f3136')
-            .setDescription(`<a:LMT__arrow:831817537388937277> **Il faut mettre une tranche horaire correcte**\n\n> /remindme 1h30m\n> /remindme 1h30m10s Faire des pâtes`)
+            .setDescription(`<a:LMT_arrow:1065548690862899240> **Il faut mettre une tranche horaire correcte**\n\n> /remindme 1h30m\n> /remindme 1h30m10s Faire des pâtes`)
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         if (!(temps.endsWith('d') || temps.endsWith('h') || temps.endsWith('m') || temps.endsWith('s'))) {
             return interaction.reply({embeds:[fail],ephemeral:true});
@@ -37,9 +37,13 @@ module.exports = {
         if (minute>0) dateFin.setMinutes(dateFin.getMinutes() + parseInt(minute));
         if (seconde>0) dateFin.setSeconds(dateFin.getSeconds() + parseInt(seconde));
         db.run('INSERT INTO remindme(dateFin,user_id,raison,message_id,guild_id) VALUES (?,?,?,?,?)',dateFin,interaction.user.id,raison,interaction.id,interaction.member.guild.id, (err) => {if (err) console.log(err)})
-        interaction.reply({content:`Votre rappel a été enregistré pour <t:${Math.floor((+ dateFin) / 1000)}:F>`});
+        const rappel = new EmbedBuilder()
+            .setColor('#2f3136')
+            .setDescription(`<a:LMT_arrow:1065548690862899240> **Votre rappel a été enregistré pour** <t:${Math.floor((+ dateFin) / 1000)}:F>`)
+            .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
+        await interaction.reply({ embeds:[rappel]});
         new schedule.scheduleJob(dateFin, function() {
-            interaction.member.send(`**Rappel** : ${raison}`);
+            interaction.member.send(`**Tu avais demandé un rappel** : ${raison}`);
             db.run('DELETE FROM remindme WHERE message_id = ?',interaction.id, (err) => {if (err) console.log(err) });
         })
     }

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -53,7 +53,7 @@ module.exports = {
         let firstrole = `${tabroles[0][1]}`
         db.get("SELECT date FROM anniversaires WHERE guild_id = ? AND user_id = ?", interaction.member.guild.id, interaction.member.id, (err, res) => {
             if (err) return console.log(err);
-            const userinfo = new MessageEmbed()
+            const userinfo = new EmbedBuilder()
                 .setColor('#2f3136')
                 .setAuthor({name:`${person.user.username}#${person.user.discriminator}`, iconURL:person.user.displayAvatarURL()})
                 .addFields(

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 const wait = require('util').promisify(setTimeout);
 
 module.exports = {
@@ -49,7 +49,7 @@ module.exports = {
             count++;
             description += `**#${count}** - ${item}\n`;
         })
-        const tierlist = new MessageEmbed()
+        const tierlist = new EmbedBuilder()
             .setColor('#2f3136')
             .setDescription(description)
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})

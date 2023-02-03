@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 const Villager = require("../roles/Villager.js");
 const Seer = require("../roles/Seer.js");
 const Witch = require("../roles/Witch.js");
@@ -7,113 +7,113 @@ const Hunter = require("../roles/Hunter.js");
 
 
 async function getRolesPerso(interaction, date, game, resolve) {
-    const getRoleEmbed = new MessageEmbed()
+    const getRoleEmbed = new EmbedBuilder()
         .setColor('#2f3136')
         .setDescription(`Il est maintenant temps de choisir les différents rôles du village !\n\n**Rôles** : \`${game.allPlayersId.length} à choisir\`\n\n> *Aucun rôle n'a encore été choisi*`)
         .setThumbnail("https://media.discordapp.net/attachments/905980338017284197/1027940276775419955/lmt-logo-white.png?width=661&height=671")
         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
-    const row = new MessageActionRow()
+    const row = new ActionRowBuilder()
         .addComponents(
-            new MessageButton()
+            new ButtonBuilder()
                 .setCustomId('villageois')
                 .setLabel('Villageois')
                 .setStyle("PRIMARY"),
-            new MessageButton()
+            new ButtonBuilder()
                 .setCustomId('voyante')
                 .setLabel('Voyante')
                 .setStyle("PRIMARY"),
-            new MessageButton()
+            new ButtonBuilder()
                 .setCustomId('sorciere')
                 .setLabel('Sorcière')
                 .setStyle("PRIMARY"),
-            new MessageButton()
+            new ButtonBuilder()
                 .setCustomId('chasseur')
                 .setLabel('Chasseur')
                 .setStyle("PRIMARY"),
-            new MessageButton()
+            new ButtonBuilder()
                 .setCustomId('loup')
                 .setLabel('Loup-Garou')
                 .setStyle("PRIMARY")
         )
-    // const row2 = new MessageActionRow()    
+    // const row2 = new ActionRowBuilder()    
     //     .addComponents(
-    //         new MessageButton()
+    //         new ButtonBuilder()
     // 			.setCustomId('6')
     // 			.setLabel('Click me!')
     // 			.setStyle("PRIMARY"),
-    //         new MessageButton()
+    //         new ButtonBuilder()
     // 			.setCustomId('7')
     // 			.setLabel('Click me!')
     // 			.setStyle("PRIMARY"),
-    //         new MessageButton()
+    //         new ButtonBuilder()
     // 			.setCustomId('8')
     // 			.setLabel('Click me!')
     // 			.setStyle("PRIMARY"),
-    //         new MessageButton()
+    //         new ButtonBuilder()
     // 			.setCustomId('9')
     // 			.setLabel('Click me!')
     // 			.setStyle("PRIMARY"),
-    //         new MessageButton()
+    //         new ButtonBuilder()
     // 			.setCustomId('10')
     // 			.setLabel('Click me!')
     // 			.setStyle("PRIMARY")
     //     )
-    // const row3 = new MessageActionRow()
+    // const row3 = new ActionRowBuilder()
     //     .addComponents(
-    //         new MessageButton()
+    //         new ButtonBuilder()
     // 			.setCustomId('11')
     // 			.setLabel('Click me!')
     // 			.setStyle("PRIMARY"),
-    //         new MessageButton()
+    //         new ButtonBuilder()
     // 			.setCustomId('12')
     // 			.setLabel('Click me!')
     // 			.setStyle("PRIMARY"),
-    //         new MessageButton()
+    //         new ButtonBuilder()
     // 			.setCustomId('13')
     // 			.setLabel('Click me!')
     // 			.setStyle("PRIMARY"),
-    //         new MessageButton()
+    //         new ButtonBuilder()
     // 			.setCustomId('14')
     // 			.setLabel('Click me!')
     // 			.setStyle("PRIMARY"),
-    //         new MessageButton()
+    //         new ButtonBuilder()
     // 			.setCustomId('15')
     // 			.setLabel('Click me!')
     // 			.setStyle("PRIMARY")
     //     )
-    // const row4 = new MessageActionRow()
+    // const row4 = new ActionRowBuilder()
     //     .addComponents(
-    //         new MessageButton()
+    //         new ButtonBuilder()
     // 			.setCustomId('16')
     // 			.setLabel('Click me!')
     // 			.setStyle("PRIMARY"),
-    //         new MessageButton()
+    //         new ButtonBuilder()
     // 			.setCustomId('17')
     // 			.setLabel('Click me!')
     // 			.setStyle("PRIMARY"),
-    //         new MessageButton()
+    //         new ButtonBuilder()
     // 			.setCustomId('18')
     // 			.setLabel('Click me!')
     // 			.setStyle("PRIMARY"),
-    //         new MessageButton()
+    //         new ButtonBuilder()
     // 			.setCustomId('19')
     // 			.setLabel('Click me!')
     // 			.setStyle("PRIMARY"),
-    //         new MessageButton()
+    //         new ButtonBuilder()
     // 			.setCustomId('20')
     // 			.setLabel('Click me!')
     // 			.setStyle("PRIMARY")
     //     )
-    const config = new MessageActionRow()
+    const config = new ActionRowBuilder()
         .addComponents(
-            new MessageButton()
+            new ButtonBuilder()
                 .setCustomId('clear')
                 .setLabel('Reinitialiser')
                 .setStyle("DANGER"),
-            new MessageButton()
+            new ButtonBuilder()
                 .setLabel('Informations Rôles')
                 .setURL("https://www.notion.so/Informations-R-les-Loup-Garou-d05aac21c86d4127a4f46ab0bcd435f5")
-                .setStyle('LINK'),
+                .setStyle(ButtonStyle.Link),
         )
     await interaction.editReply({ embeds: [getRoleEmbed], components: [row,config] }).then(msg => {
         allRoles = [];
@@ -167,7 +167,7 @@ async function getRolesPerso(interaction, date, game, resolve) {
         })
         collector.on('end', async collected => {
             if (allRoles.length !== game.allPlayersId.length) {
-                const errorEmbed = new MessageEmbed()
+                const errorEmbed = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription(`Vous avez mis trop de temps à choisir les rôles du village !\n\n> *Vous pouvez relancer une partie pour recommencer*`)
                     .setThumbnail("https://media.discordapp.net/attachments/905980338017284197/1027940276775419955/lmt-logo-white.png?width=661&height=671")
@@ -176,7 +176,7 @@ async function getRolesPerso(interaction, date, game, resolve) {
                 game.end = true;
                 resolve();
             }
-            const continueEmbed = new MessageEmbed()
+            const continueEmbed = new EmbedBuilder()
                 .setColor('#2f3136')
                 .setDescription(`Vous avez bien choisi les rôles du village !\n\n> *Je m'occupe de preparer la partie !*`)
                 .setThumbnail("https://media.discordapp.net/attachments/905980338017284197/1027940276775419955/lmt-logo-white.png?width=661&height=671")
@@ -195,18 +195,18 @@ async function confirmChoice(game, date, msg, allRoles, resolve) {
         filter,
         time: 30000
     });
-    const confirmEmbed = new MessageEmbed()
+    const confirmEmbed = new EmbedBuilder()
         .setColor('#2f3136')
         .setDescription(`Êtes-vous d'utiliser ces rôles pour cette partie ?\n\n**Rôles** :\n\n> ${allRoles.map(role => role.name).join('\n> ')}`)
         .setThumbnail("https://media.discordapp.net/attachments/905980338017284197/1027940276775419955/lmt-logo-white.png?width=661&height=671")
         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
-    const confirmRow = new MessageActionRow()
+    const confirmRow = new ActionRowBuilder()
         .addComponents(
-            new MessageButton()
+            new ButtonBuilder()
                 .setCustomId('yes')
                 .setLabel('Oui, c\'est parti !')
                 .setStyle("SUCCESS"),
-            new MessageButton()
+            new ButtonBuilder()
                 .setCustomId('no')
                 .setLabel('Non, on recommence')
                 .setStyle("DANGER")

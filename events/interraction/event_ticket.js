@@ -1,4 +1,4 @@
-const {MessageEmbed, Permissions, MessageActionRow, MessageButton} = require('discord.js');
+const {EmbedBuilder, PermissionsBitField, ActionRowBuilder, ButtonBuilder} = require('discord.js');
 let date = new Date()
 
 module.exports = {
@@ -8,15 +8,15 @@ module.exports = {
         let interaction = params[0];
         let db = params[3]
         db.get("SELECT ticket_id FROM servers WHERE guild_id = ?", interaction.member.guild.id, (err, res) => {
-            const fail = new MessageEmbed()
+            const fail = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription('<a:LMT__arrow:831817537388937277> **Le systeme de ticket n\'est pas configuré !**')
+                .setDescription('<a:LMT_arrow:1065548690862899240> **Le systeme de ticket n\'est pas configuré !**')
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             if (err) {
                 console.log(err)
-                const embed = new MessageEmbed()
+                const embed = new EmbedBuilder()
                     .setColor('#2f3136')
-                    .setDescription('<a:LMT__arrow:831817537388937277> Il y a eu une erreur...')
+                    .setDescription('<a:LMT_arrow:1065548690862899240> Il y a eu une erreur...')
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return interaction.reply({embeds:[embed],ephemeral:true});
             } else if (!res) {
@@ -34,16 +34,16 @@ module.exports = {
             db.all("SELECT user_id, deleted FROM tickets WHERE guild_id = ?", interaction.member.guild.id, async (err,res) => {
                 if (err) {
                     console.log(err)
-                    const embed = new MessageEmbed()
+                    const embed = new EmbedBuilder()
                         .setColor('#2f3136')
-                        .setDescription('<a:LMT__arrow:831817537388937277> Il y a eu une erreur...')
+                        .setDescription('<a:LMT_arrow:1065548690862899240> Il y a eu une erreur...')
                         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return interaction.reply({embeds:[embed],ephemeral:true});
                 }
                 if (res.some(x => x.deleted === 0 && x.user_id === interaction.member.user.id)) {
-                    const fail = new MessageEmbed()
+                    const fail = new EmbedBuilder()
                         .setColor('#2f3136')
-                        .setDescription('<a:LMT__arrow:831817537388937277> **Vous avez déjà un ticket ouvert à votre nom !**')
+                        .setDescription('<a:LMT_arrow:1065548690862899240> **Vous avez déjà un ticket ouvert à votre nom !**')
                         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return interaction.reply({embeds:[fail], ephemeral:true})
                 }
@@ -53,24 +53,24 @@ module.exports = {
                     parent: category,
                     permissionOverwrites: [{
                         id: interaction.member.guild.id,
-                        deny: [Permissions.FLAGS.VIEW_CHANNEL]
+                        deny: [PermissionsBitField.Flags.ViewChannel]
                     }] })
-                    chann.lockPermissions();
+                    chann.lockPermissionsBitField();
                     chann.permissionOverwrites.edit(interaction.member, {VIEW_CHANNEL:true, SEND_MESSAGES:true});
                 } catch (e) {
                     console.log(e)
                     return interaction.reply({content:'Une erreur est survenue !', ephemeral:true});
                 }
-                const row = new MessageActionRow()
+                const row = new ActionRowBuilder()
                     .addComponents(
-                        new MessageButton()
+                        new ButtonBuilder()
                             .setCustomId('ticket_close')
                             .setLabel('🔒 Fermer')
-                            .setStyle('SECONDARY')
+                            .setStyle(ButtonStyle.Secondary)
                     )
-                const mess = new MessageEmbed()
+                const mess = new EmbedBuilder()
                     .setColor('#2f3136')
-                    .setDescription(`<a:LMT__arrow:831817537388937277> **${interaction.member}, tu as ouvert un ticket !\n\nLe support est là pour répondre à tes questions**\n\n> Pour fermer le ticket appuie sur 🔒`)
+                    .setDescription(`<a:LMT_arrow:1065548690862899240> **${interaction.member}, tu as ouvert un ticket !\n\nLe support est là pour répondre à tes questions**\n\n> Pour fermer le ticket appuie sur 🔒`)
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 chann.send({embeds:[mess],components:[row]});
                 here = await chann.send({content:'@here'});

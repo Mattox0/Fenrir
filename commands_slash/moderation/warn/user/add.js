@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 
 module.exports = {
     async execute(interaction, date, db) {
@@ -16,9 +16,9 @@ module.exports = {
                 }
             }
             db.run("INSERT INTO warns (warn_id,user_id, guild_id, modo_id, warn_date,raison) VALUES (?,?,?,?,?,?)",warn_id,person.id,interaction.member.guild.id,interaction.member.id,new Date(),raison, (err) => {if (err) console.log(err)})
-            const win = new MessageEmbed()
+            const win = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription(`<a:LMT__arrow:831817537388937277> **${person} a été averti !**`)
+                .setDescription(`<a:LMT_arrow:1065548690862899240> **${person} a été averti !**`)
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             interaction.reply({embeds:[win]});
             try {

@@ -1,4 +1,4 @@
-const { MessageEmbed, Permissions, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 
 module.exports = {
     async execute(interaction, db, date) {
@@ -8,32 +8,32 @@ module.exports = {
         db.get("SELECT * FROM profile WHERE user_id = ?", utilisateur.id, async (err, res) => {
             if (err) return console.log(err);
             if (!res) {
-                const fail = new MessageEmbed() 
+                const fail = new EmbedBuilder() 
                     .setColor('#2f3136')
-                    .setDescription('<a:LMT__arrow:831817537388937277> **Vous n\'avez pas encore créer votre profil !**\n\n> \`/profile edit\`')
+                    .setDescription('<a:LMT_arrow:1065548690862899240> **Vous n\'avez pas encore créer votre profil !**\n\n> \`/profile edit\`')
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return interaction.reply({embeds:[fail]});
             }
-            const row = new MessageActionRow()
+            const row = new ActionRowBuilder()
                 .addComponents(
-                    new MessageButton()
+                    new ButtonBuilder()
                         .setCustomId('like_profile')
                         .setLabel('Like')
                         .setEmoji('❤️')
-                        .setStyle('SUCCESS'),
-                    new MessageButton()
+                        .setStyle(ButtonStyle.Success),
+                    new ButtonBuilder()
                         .setCustomId('unlike_profile')
                         .setLabel('Unlike')
                         .setEmoji('💔')
-                        .setStyle('DANGER')
+                        .setStyle(ButtonStyle.Danger)
                 )
             res.likes = JSON.parse(res.likes)
-            const view = new MessageEmbed()
+            const view = new EmbedBuilder()
                 .setColor(`#${res.couleur_hexa ? res.couleur_hexa : '2f3136'}`)
                 .setAuthor({name:`${utilisateur.user.username} ・ ${res.likes.likes.length} ❤️`, iconURL:utilisateur.user.displayAvatarURL({dynamic: true})})
                 .setThumbnail(`${res.image ? res.image : utilisateur.user.displayAvatarURL({dynamic: true})}`)
                 .setFooter({text:`${res.footer ? res.footer : `LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`}`})
-                .setDescription(`${res.description ? res.description : ''}\n\n${ res.pseudo ? `> \`Pseudo\` <a:LMT__arrow:831817537388937277> ${res.pseudo}\n` : ''}${ res.film ? `> \`Film favoris\` <a:LMT__arrow:831817537388937277> ${res.film}\n` : ''}${ res.musique ? `> \`Style musical\` <a:LMT__arrow:831817537388937277> ${res.musique}\n` : ''}${res.couleur ? `> \`Couleur favorite\` <a:LMT__arrow:831817537388937277> ${res.couleur}\n` : ''}${ res.repas ? `> \`Repas favoris\` <a:LMT__arrow:831817537388937277> ${res.repas}\n` : ''}${res.adjectifs ? `> \`Personnalité\` <a:LMT__arrow:831817537388937277> ${res.adjectifs}` : ''}`)
+                .setDescription(`${res.description ? res.description : ''}\n\n${ res.pseudo ? `> \`Pseudo\` <a:LMT_arrow:1065548690862899240> ${res.pseudo}\n` : ''}${ res.film ? `> \`Film favoris\` <a:LMT_arrow:1065548690862899240> ${res.film}\n` : ''}${ res.musique ? `> \`Style musical\` <a:LMT_arrow:1065548690862899240> ${res.musique}\n` : ''}${res.couleur ? `> \`Couleur favorite\` <a:LMT_arrow:1065548690862899240> ${res.couleur}\n` : ''}${ res.repas ? `> \`Repas favoris\` <a:LMT_arrow:1065548690862899240> ${res.repas}\n` : ''}${res.adjectifs ? `> \`Personnalité\` <a:LMT_arrow:1065548690862899240> ${res.adjectifs}` : ''}`)
             return interaction.reply({content:`${utilisateur}, **Voici ton profil :**`,embeds:[view], components:[row]});
         })
     }

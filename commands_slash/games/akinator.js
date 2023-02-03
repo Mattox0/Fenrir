@@ -1,6 +1,6 @@
 const {Aki} = require("aki-api");
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js")
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js")
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -13,54 +13,49 @@ module.exports = {
         const aki = new Aki({ region });
         await aki.start();
 
-        const row1 = new MessageActionRow()
+        const row1 = new ActionRowBuilder()
             .addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('oui')
                     .setEmoji('✅')
                     .setLabel('Oui')
-                    .setStyle('SECONDARY'),
-                new MessageButton()
+                    .setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder()
                     .setCustomId('non')
                     .setEmoji('❌')
                     .setLabel('Non')
-                    .setStyle('SECONDARY'),
-                new MessageButton()
+                    .setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder()
                     .setCustomId('jsp')
                     .setEmoji('❓')
                     .setLabel('Je ne sais pas')
-                    .setStyle('SECONDARY')
+                    .setStyle(ButtonStyle.Secondary)
             )
-        const row2 = new MessageActionRow()
+        const row2 = new ActionRowBuilder()
             .addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('prob')
                     .setEmoji('👍')
                     .setLabel('Probablement')
-                    .setStyle('SECONDARY'),
-                new MessageButton()
+                    .setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder()
                     .setCustomId('probpas')
                     .setEmoji('👎')
                     .setLabel('Probablement pas')
-                    .setStyle('SECONDARY')
+                    .setStyle(ButtonStyle.Secondary)
             )
-        const row3 = new MessageActionRow()
+        const row3 = new ActionRowBuilder()
             .addComponents(
-                new MessageButton()
-                    .setCustomId('back')
-                    .setEmoji('↪️')
-                    .setLabel('Arrière')
-                    .setStyle('PRIMARY'),
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId('stop')
                     .setEmoji('🛑')
                     .setLabel('Arreter')
-                    .setStyle('DANGER')
+                    .setStyle(ButtonStyle.Danger)
             )
-        const start = new MessageEmbed()
+        const start = new EmbedBuilder()
             .setColor('#2f3136')
             .setTitle(`Question 1`)
-            .setDescription(`<a:LMT__arrow:831817537388937277> **${aki.question}**\n\n> \`Progression :\` **${Math.round(aki.progress)}%**`)
+            .setDescription(`<a:LMT_arrow:1065548690862899240> **${aki.question}**\n\n> \`Progression :\` **${Math.round(aki.progress)}%**`)
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         await interaction.deferReply()
         await interaction.editReply({embeds:[start], components:[row1, row2, row3]}).then(async (msg) => {
@@ -95,10 +90,10 @@ module.exports = {
                 }
                 await aki.step(answer);
                 count++
-                const step = new MessageEmbed()
+                const step = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setTitle(`Question ${count}`)
-                    .setDescription(`<a:LMT__arrow:831817537388937277> **${aki.question}**\n\n> \`Progression :\` **${Math.round(aki.progress)}%**`)
+                    .setDescription(`<a:LMT_arrow:1065548690862899240> **${aki.question}**\n\n> \`Progression :\` **${Math.round(aki.progress)}%**`)
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 await msg.edit({embeds:[step]})
                 if (aki.progress >= 70 || aki.currentStep >= 78) {
@@ -108,33 +103,33 @@ module.exports = {
             })
             collector.on('end', async () => {
                 if (aki.progress < 70 && aki.currentStep < 78) {
-                    const fail = new MessageEmbed()
+                    const fail = new EmbedBuilder()
                         .setColor('#2f3136')
-                        .setDescription('<a:LMT__arrow:831817537388937277> **La partie à été stoppé !**')
+                        .setDescription('<a:LMT_arrow:1065548690862899240> **La partie à été stoppé !**')
                         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return msg.edit({embeds:[fail],components:[]});
                 } else if (aki.currentStep >= 78) {
-                    const fail = new MessageEmbed()
+                    const fail = new EmbedBuilder()
                         .setColor('#2f3136')
-                        .setDescription('<a:LMT__arrow:831817537388937277> **Je ne suis pas arrivé à trouver ton personnage !**')
+                        .setDescription('<a:LMT_arrow:1065548690862899240> **Je ne suis pas arrivé à trouver ton personnage !**')
                         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return msg.edit({embeds:[fail],components:[]});
                 }
                 let winner = aki.answers[0]
-                const row = new MessageActionRow()
+                const row = new ActionRowBuilder()
                     .addComponents(
-                        new MessageButton()
+                        new ButtonBuilder()
                             .setCustomId('winner')
                             .setEmoji('🏆')
                             .setLabel('Bien joué')
-                            .setStyle('SUCCESS'),
-                        new MessageButton()
+                            .setStyle(ButtonStyle.Success),
+                        new ButtonBuilder()
                             .setCustomId('others')
                             .setEmoji('❌')
                             .setLabel('Non ! Voir les autres résultats')
-                            .setStyle('DANGER')
+                            .setStyle(ButtonStyle.Danger)
                     )
-                const win = new MessageEmbed()
+                const win = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setTitle(`Trouvé : ${winner.name}`)
                     .setDescription(winner.description)
@@ -158,7 +153,7 @@ module.exports = {
                                     description += `> **${count}#** - ${elem}\n`;
                                     count++;
                                 })
-                                const other = new MessageEmbed()
+                                const other = new EmbedBuilder()
                                     .setColor('#2f3136')
                                     .setTitle('Résultats :')
                                     .setDescription(description)

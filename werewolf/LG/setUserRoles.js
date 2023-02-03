@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 
 async function setUserRoles(interaction, date, game, resolve) {
     allIds = game.allPlayersId;
@@ -10,7 +10,7 @@ async function setUserRoles(interaction, date, game, resolve) {
         player.idPlayer = allIdRandoms[0];
         allIdRandoms.shift();
     });
-    const setRolesEmbed = new MessageEmbed()
+    const setRolesEmbed = new EmbedBuilder()
         .setColor('#2f3136')
         .setDescription(`Les rôles ont été distribués aux village !\n\n> *Encore un peu de patience*`)
         .setThumbnail("https://media.discordapp.net/attachments/905980338017284197/1027940276775419955/lmt-logo-white.png?width=661&height=671")

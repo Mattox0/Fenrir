@@ -6,14 +6,6 @@ module.exports = {
         .setDescription('Affiche vos animaux préférées')
         .addSubcommand(subcommand =>
             subcommand
-                .setName('axolot')
-                .setDescription('Affiche la photo d\'un axolot'))
-        .addSubcommand(subcommand =>
-            subcommand
-                .setName('bird')
-                .setDescription('Affiche la photo d\'un oiseau'))
-        .addSubcommand(subcommand =>
-            subcommand
                 .setName('bunny')
                 .setDescription('Affiche la photo d\'un lapin'))
         .addSubcommand(subcommand =>
@@ -28,10 +20,6 @@ module.exports = {
             subcommand
                 .setName('duck')
                 .setDescription('Affiche la photo d\'un canard'))
-        .addSubcommand(subcommand =>
-            subcommand
-                .setName('elephant')
-                .setDescription('Affiche la photo d\'un elephant'))
         .addSubcommand(subcommand =>
             subcommand
                 .setName('fox')

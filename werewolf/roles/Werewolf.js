@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 const lock = require("./../LG/lock.js");
 const unlock = require("./../LG/lock.js");
 const Player = require("./Player.js");
@@ -16,7 +16,7 @@ class Werewolf extends Player {
             return resolve();
         }
         const message = await village.messages.fetch(game.config.messageId);
-        const WerewolfEmbed = new MessageEmbed()
+        const WerewolfEmbed = new EmbedBuilder()
             .setColor('#2f3136')
             .setDescription(`Les Loup Garou font leurs choix !\n\n> Il ont 60 secondes pour se décider !`)
             .setThumbnail("https://media.discordapp.net/attachments/905980338017284197/1027940276775419955/lmt-logo-white.png?width=661&height=671")

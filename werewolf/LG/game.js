@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 const Werewolf = require("../roles/Werewolf.js");
 const Seer = require("../roles/Seer.js");
 const Villager = require("../roles/Villager.js");

@@ -1,4 +1,4 @@
-const { MessageEmbed, Permissions } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField } = require("discord.js");
 const schedule = require('node-schedule');
 
 module.exports = {
@@ -6,9 +6,9 @@ module.exports = {
         let channel = interaction.options.getChannel('channel');
         if (!channel) channel = interaction.channel;
         if (channel.type !== "GUILD_TEXT") {
-            const fail = new MessageEmbed()
+            const fail = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription('<a:LMT__arrow:831817537388937277> **Le salon doit être __textuel__ !**')
+                .setDescription('<a:LMT_arrow:1065548690862899240> **Le salon doit être __textuel__ !**')
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({embeds:[fail],ephemeral:true});
         }
@@ -26,9 +26,9 @@ module.exports = {
             db.run('INSERT INTO interserveur (guild_id_1, channel_id_1, code) VALUES (?,?,?)',interaction.member.guild.id, channel.id, code, (err) => {if (err) console.log(err);})
             let dateFin = new Date();
             dateFin.setMinutes(dateFin.getMinutes() + 5);
-            const win = new MessageEmbed()
+            const win = new EmbedBuilder()
                 .setColor('#2F3136')
-                .setDescription(`<a:LMT__arrow:831817537388937277> **La connexion est mise en place !**\n\nFaites \`/interserveur join ${code}\` dans l'autre salon !\n\n> **Votre code :** \`${code}\``)
+                .setDescription(`<a:LMT_arrow:1065548690862899240> **La connexion est mise en place !**\n\nFaites \`/interserveur join ${code}\` dans l'autre salon !\n\n> **Votre code :** \`${code}\``)
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             interaction.reply({embeds:[win]});
             new schedule.scheduleJob(dateFin, async function() {

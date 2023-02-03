@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton  } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const schedule = require("node-schedule")
 
 module.exports = {
@@ -6,15 +6,15 @@ module.exports = {
         let message_id = interaction.options.getString('message_id')
         db.get('SELECT * FROM giveaways WHERE message_id = ?',message_id, async (err,res) => {
             if (err || !res) {
-                const fail = new MessageEmbed()
+                const fail = new EmbedBuilder()
                     .setColor('#2f3136')
-                    .setDescription('<a:LMT__arrow:831817537388937277> **Ce message ne corresponds pas à un giveaway actif**\n\n> \`/giveaway end <ID>\`')
+                    .setDescription('<a:LMT_arrow:1065548690862899240> **Ce message ne corresponds pas à un giveaway actif**\n\n> \`/giveaway end <ID>\`')
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return interaction.reply({embeds:[fail],ephemeral:true});
             }
             let chann = await client.channels.fetch(res.channel_id)
             let msg = await chann.messages.fetch(res.message_id)
-            const fail = new MessageEmbed()
+            const fail = new EmbedBuilder()
                 .setColor('#2f3136')
                 .setTitle('Giveaway <a:LMT_fete2:911791997428334622>')
                 .setThumbnail('https://media.discordapp.net/attachments/883117525842423898/911778659604500510/831817670822723597.gif')
@@ -31,7 +31,7 @@ module.exports = {
                     let index = participants.indexOf(gagnant);
                     if (index > -1) participants.splice(index, 1);
                 }
-                const win = new MessageEmbed()
+                const win = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setTitle('Giveaway <a:LMT_fete2:911791997428334622>')
                     .setThumbnail('https://media.discordapp.net/attachments/883117525842423898/911778659604500510/831817670822723597.gif')

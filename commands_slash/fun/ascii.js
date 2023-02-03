@@ -1,6 +1,6 @@
 const figlet = require('figlet');
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -22,13 +22,13 @@ module.exports = {
             whitespaceBreak: true
         }, async function(err, data) {
             if (err) {
-                const fail = new MessageEmbed()
+                const fail = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription(`<a:LMT__arrow:831817537388937277> **Je n'arrive pas à trouver ce thème !**`)
+                .setDescription(`<a:LMT_arrow:1065548690862899240> **Je n'arrive pas à trouver ce thème !**`)
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return interaction.reply({embeds:[fail], ephemeral:true})
             }
-            const ascii = new MessageEmbed()
+            const ascii = new EmbedBuilder()
                 .setColor('#2f3136')
                 .setDescription(`> **Attention aux mots trop long ! | Retrouvez tous les [thèmes disponibles](https://github.com/patorjk/figlet.js/tree/master/fonts)**\n\`\`\`${data}\`\`\``)
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
