@@ -73,3 +73,7 @@ duel
 morpion
 puissance4
 rps
+poll -> si fini enlever durée
+clear -> a refaire
+colormind
+

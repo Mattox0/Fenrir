@@ -1,30 +1,32 @@
-const { EmbedBuilder, PermissionsBitField } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField, AuditLogEvent } = require("discord.js");
+const kick = require("../../commands_slash/moderation/kick");
 
 module.exports = {
 	name: 'guildMemberRemove',
 	async execute(...params) {
+        // console.log("memberremove -> ", params)
         let Member = params[0];
         let db = params[1];
         let date = new Date();
-        if (Member.guild.id === "707953787477688360") {
-            db.run("DELETE FROM reminderMember WHERE user_id = ?",Member.user.id, (err) => {if (err) console.log(err)});
-        }
-        db.get("SELECT guildMemberRemove, logs_id FROM logs WHERE guild_id = ?",Member.guild.id, async (err, res) => {
+        db.query("SELECT guildMemberRemove, logs_id FROM logs WHERE guild_id = ?", Member.guild.id, async (err, res) => {
             if (err) {return console.log(err) }
-            if (!res) return
+            if (res.length === 0) return;
+            res = res[0];
             if (res.guildMemberRemove) {
                 let chann = await Member.guild.channels.cache.find(x => x.id === res.logs_id);
                 if (!chann) return;
                 const fetchedLogs = await Member.guild.fetchAuditLogs({
                     limit: 1,
-                    type: 'MEMBER_KICK',
+                    type: AuditLogEvent.MemberKick,
                 });
                 const kickLog = fetchedLogs.entries.first();
                 time = Math.abs(date - Member.joinedTimestamp);
+                nbTime = `${Math.floor(time / (1000))} secondes`;
                 if (Math.floor(time / (1000)) > 1) nbTime = `${Math.floor(time / (1000))} secondes`;
                 if (Math.floor(time / (1000*60)) > 1) nbTime = `${Math.floor(time / (1000*60))} minutes`;
                 if (Math.floor(time / (1000*60*60)) > 1) nbTime = `${Math.floor(time / (1000*60*60))} heures` ;
                 if(Math.floor(time / (1000*60*60*24)) > 1) nbTime = `${Math.floor(time / (1000*60*60*24))} jours`;
+                if ((await Member.guild.bans.fetch()).has(Member.id)) return
                 if (!kickLog || !(kickLog.target.id === Member.id)) {
                     const event = new EmbedBuilder()
                         .setColor('#2f3136')
@@ -42,7 +44,5 @@ module.exports = {
                 }
             }
         })
-        // 1640726528840
-        // 1640728806
     }
 }      

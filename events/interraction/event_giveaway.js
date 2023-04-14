@@ -7,11 +7,12 @@ module.exports = {
     execute(...params) {
         let interraction = params[0]
         let db = params[3]
-        db.get('SELECT * FROM giveaways WHERE message_id = ?',interraction.message.id, (err, result) => {
+        db.query('SELECT * FROM giveaways WHERE message_id = ?', interraction.message.id, (err, result) => {
             if (err) {
                 return console.log(err)
             }
-            if (!result) return interraction.reply({content:`Ce giveaways est déjà fini !`,ephemeral:true})
+            if (result.length === 0) return interraction.reply({content:`Ce giveaways est déjà fini !`,ephemeral:true})
+            result = result[0]
             let participants = result.participants
             let nbParticipants
             let allParticipants
@@ -23,8 +24,8 @@ module.exports = {
                 allParticipants = []
             }
             if (!allParticipants.includes(interraction.member.id)) {
-                if (participants) db.run('UPDATE giveaways SET participants = ? WHERE message_id = ?',`${participants} ${interraction.member.id}`,interraction.message.id, err => {if (err) console.log(err)})
-                else db.run('UPDATE giveaways SET participants = ? WHERE message_id = ?',`${interraction.member.id}`,interraction.message.id, err => {if (err) console.log(err)})
+                if (participants) db.query('UPDATE giveaways SET participants = ? WHERE message_id = ?', [`${participants} ${interraction.member.id}`,interraction.message.id], err => {if (err) console.log(err)})
+                else db.query('UPDATE giveaways SET participants = ? WHERE message_id = ?', [`${interraction.member.id}`,interraction.message.id], err => {if (err) console.log(err)})
                 const embed = new EmbedBuilder()
                 .setColor('#2f3136')
                 .setTitle('Giveaway <a:LMT_fete2:911791997428334622>')

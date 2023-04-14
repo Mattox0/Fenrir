@@ -2,10 +2,10 @@ const { EmbedBuilder, PermissionsBitField, ActionRowBuilder, ButtonBuilder, Butt
 
 module.exports = {
     async execute(interaction, db, date, client) {
-        db.all("SELECT * FROM interserveur WHERE guild_id_1 = ? OR guild_id_2 = ?", interaction.member.guild.id,interaction.member.guild.id, async (err, res) => {
+        db.query("SELECT * FROM interserveur WHERE guild_id_1 = ? OR guild_id_2 = ?", [interaction.member.guild.id,interaction.member.guild.id], async (err, res) => {
             let description = `<a:LMT_arrow:1065548690862899240> **Le système d'interserveur sert à connecter deux salons de deux serveur différents.**\n\n> \`/interserveur open\` pour ouvrir une connexion\n> \`/interserveur join <code>\` dans un autre salon pour rejoindre une connexion.\n\n**Vos interserveurs :**`;
             if (err) return console.log(err);
-            if (!res) {
+            if (res.length === 0) {
                 description += "Ce serveur n'a aucun interserveur avec un autre.";
                 const fail = new EmbedBuilder()
                     .setColor('#2f3136')

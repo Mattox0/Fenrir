@@ -5,9 +5,9 @@ module.exports = {
         let listemois = ["janvier","février","mars","avril","mai","juin","juillet","aout","septembre","novembre","octobre","décembre"];
         let pages = [];
         let nbpage = 1;
-        db.all('SELECT * FROM anniversaires WHERE guild_id = ?',interaction.member.guild.id, async (err,res) => {
-            if (err || !res) {
-                console.log(err);
+        db.query('SELECT * FROM anniversaires WHERE guild_id = ?',interaction.member.guild.id, async (err,res) => {
+            if (err) return console.log("[Anniversaire list] =>  ", err);
+            if (res.length === 0) {
                 const error = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription('<a:LMT_arrow:1065548690862899240> **Il n\'y aucun anniversaire sur ce serveur !**')
@@ -67,26 +67,26 @@ module.exports = {
             interaction.editReply({embeds : [pages[0]],components:[row]}).then(msg => {
                 count = 0
                 if (pages.length > 1) {
-                    isComponent = true
-                    msg.components[0].components[3].setDisabled(false)
-                    msg.components[0].components[2].setDisabled(false)
+                    isComponent = true;
+                    msg.components[0].components[3].setDisabled(false);
+                    msg.components[0].components[2].setDisabled(false);
                 }
-                const filter = interaction => interaction.message.id === msg.id
-                const collector = msg.channel.createMessageComponentCollector({ filter, time:60000})
+                const filter = interaction => interaction.message.id === msg.id;
+                const collector = msg.channel.createMessageComponentCollector({ filter, time:60000});
                 collector.on('collect', collected => {
                     switch (collected.customId) {
                         case '1':
-                            count = 0
+                            count = 0; 
                             if (isComponent) {
-                                msg.components[0].components[0].setDisabled(true)
-                                msg.components[0].components[1].setDisabled(true)
-                                msg.components[0].components[3].setDisabled(false)
-                                msg.components[0].components[2].setDisabled(false)
+                                msg.components[0].components[0].setDisabled(true);
+                                msg.components[0].components[1].setDisabled(true);
+                                msg.components[0].components[3].setDisabled(false);
+                                msg.components[0].components[2].setDisabled(false);
                             }
-                            msg.edit({embeds:[pages[count]],components:[row]})
+                            msg.edit({embeds:[pages[count]],components:[row]});
                             break
                         case '-1':
-                            count = count - 1
+                            count = count - 1;
                             if (isComponent) {
                                 if (count === 0) {
                                     msg.components[0].components[0].setDisabled(true)
@@ -100,39 +100,39 @@ module.exports = {
                                     msg.components[0].components[2].setDisabled(true)
                                 }
                             }
-                            msg.edit({embeds:[pages[count]],components:[row]})
+                            msg.edit({embeds:[pages[count]],components:[row]});
                             break
                         case '+1':
-                            count = count + 1
+                            count = count + 1;
                             if (isComponent) {
                                 if (count === pages.length - 1) {
-                                    msg.components[0].components[3].setDisabled(true)
-                                    msg.components[0].components[2].setDisabled(true)
-                                    msg.components[0].components[1].setDisabled(false)
-                                    msg.components[0].components[0].setDisabled(false)
+                                    msg.components[0].components[3].setDisabled(true);
+                                    msg.components[0].components[2].setDisabled(true);
+                                    msg.components[0].components[1].setDisabled(false);
+                                    msg.components[0].components[0].setDisabled(false);
                                 } else {
-                                    msg.components[0].components[3].setDisabled(false)
-                                    msg.components[0].components[2].setDisabled(false)
-                                    msg.components[0].components[1].setDisabled(true)
-                                    msg.components[0].components[0].setDisabled(true)
+                                    msg.components[0].components[3].setDisabled(false);
+                                    msg.components[0].components[2].setDisabled(false);
+                                    msg.components[0].components[1].setDisabled(true);
+                                    msg.components[0].components[0].setDisabled(true);
                                 }
                             }
-                            msg.edit({embeds:[pages[count]],components:[row]})
-                            break
+                            msg.edit({embeds:[pages[count]],components:[row]});
+                            break;
                         case '2':
-                            count = pages.length - 1
+                            count = pages.length - 1;
                             if (isComponent) {
-                                msg.components[0].components[3].setDisabled(true)
-                                msg.components[0].components[2].setDisabled(true)
-                                msg.components[0].components[0].setDisabled(false)
-                                msg.components[0].components[1].setDisabled(false)
+                                msg.components[0].components[3].setDisabled(true);
+                                msg.components[0].components[2].setDisabled(true);
+                                msg.components[0].components[0].setDisabled(false);
+                                msg.components[0].components[1].setDisabled(false);
                             }
-                            msg.edit({embeds:[pages[count]],components:[row]})
-                            break
+                            msg.edit({embeds:[pages[count]],components:[row]});
+                            break;
                     }
                 })
                 collector.on('end', () => {
-                    msg.edit({embeds:[pages[count]],components:[]})
+                    msg.edit({embeds:[pages[count]],components:[]});
                 })
             })
         })

@@ -4,7 +4,7 @@ async function end(interaction, date, game, resolve) {
     await wait(5000);
     if (game.config.roleId) {
         let role = await interaction.guild.roles.cache.find(x => x.id === game.config.roleId);
-        console.log(role);
+        // console.log(role);
         role.delete().catch(console.error);
     }
     if (game.config.categoryId) {

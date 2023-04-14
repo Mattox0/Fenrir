@@ -1,4 +1,4 @@
-const { EmbedBuilder, ButtonBuilder, ActionRowBuilder } = require("discord.js");
+const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ChannelType, ButtonStyle } = require("discord.js");
 const lock = require("./lock.js");
 
 async function askCupidon(interaction ,date, game, resolve) {
@@ -22,18 +22,19 @@ async function askCupidon(interaction ,date, game, resolve) {
         message.edit({ embeds: [CupidEmbed], components: [] })
     }
     // creation salon cupidon
-    let cupidChannel = await interaction.guild.channels.create("cupidon", {
-        type: "GUILD_TEXT",
+    let cupidChannel = await interaction.guild.channels.create({
+        name: "cupidon",
+        type: ChannelType.GuildText,
         parent: game.config.categoryId,
         permissionOverwrites: [{
             id: game.allPlayersRoles.find(x => x.name === "Cupidon").idPlayer,
-            allow: ["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY", "ADD_REACTIONS"],
+            allow: [ViewChannel, SendMessages, ReadMessageHistory, AddReactions],
         }, {
             id: game.config.roleId,
-            deny: ["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY", "ADD_REACTIONS"],
+            deny: [ViewChannel, SendMessages, ReadMessageHistory, AddReactions ],
         }, {
             id: interaction.guild.roles.everyone,
-            deny: ["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY", "ADD_REACTIONS"],
+            deny: [ViewChannel, SendMessages, ReadMessageHistory, AddReactions ],
         }]
     })
     game.config.cupidonChannelId = cupidChannel.id;
@@ -129,25 +130,26 @@ async function askCupidon(interaction ,date, game, resolve) {
             await message.edit({ embeds: [SucceedCupid], components: [] });
             if (game.allPlayersRoles.find(x => x.name === "Cupidon").lover1 && game.allPlayersRoles.find(x => x.name === "Cupidon").lover2) {
                 // creation salon amoureux
-                let lovedChannel = await interaction.guild.channels.create("amoureux", {
-                    type: "GUILD_TEXT",
+                let lovedChannel = await interaction.guild.channels.create({
+                    name: "amoureux",
+                    type: ChannelType.GuildText,
                     parent: game.config.categoryId,
                     permissionOverwrites: [
                         {
                             id: game.config.roleId,
-                            deny: ['VIEW_CHANNEL'],
+                            deny: [ViewChannel],
                         },
                         {
                             id: game.allPlayersRoles.find(x => x.name === "Cupidon").lover1,
-                            allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'],
+                            allow: [ViewChannel, SendMessages],
                         },
                         {
                             id: game.allPlayersRoles.find(x => x.name === "Cupidon").lover2,
-                            allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'],
+                            allow: [ViewChannel, SendMessages],
                         },
                         {
                             id: interaction.guild.roles.everyone,
-                            deny: ['VIEW_CHANNEL'],
+                            deny: [ViewChannel],
                         }
                     ],
                 })

@@ -6,11 +6,11 @@ module.exports = {
 		tab = ['giveaways','giveaways_remove','poll','ticket_close','ticket_reopen','ticket_save','ticket_delete','ticket','like_profile','unlike_profile','select_help'];
 		poll = ['poll1','poll2','poll3','poll4','poll5','poll6','poll7','poll8','poll8','poll9']
 		tab.forEach(item => {
-			if (interraction.customId) if (interraction.customId === item) {client.events.get(item).execute(interraction,client,Config,db);return};
-		})
+			if (interraction.customId) if (interraction.customId.split('-')[0] === item) {client.events.get(item).execute(interraction,client,Config,db);return};
+		});
 		poll.forEach(item => {
 			if (interraction.customId) if (interraction.customId === item) {client.events.get('poll').execute(interraction,client,db);return};
-		})
+		});
 		if (!interraction.isCommand()) return;
 		const command = client.slash_commands.get(interraction.commandName);
 

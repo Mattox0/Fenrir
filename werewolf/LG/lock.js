@@ -1,12 +1,12 @@
 async function unlock(channel, game) {
     await channel.permissionOverwrites.edit(game.config.roleId, {
-        SEND_MESSAGES: true,
+        SendMessages: true,
     });
 }
 
 async function lock(channel, game) {
     await channel.permissionOverwrites.edit(game.config.roleId, {
-        SEND_MESSAGES: false,
+        SendMessages: false,
     });
 }
 module.exports = lock, unlock;

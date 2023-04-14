@@ -10,7 +10,6 @@ module.exports = {
         .addUserOption(option => option.setName('utilisateur').setDescription('Si vous choississez un utilisateur, seuls ses messages seront supprimés').setRequired(false)),
     async execute(...params) {
         let interaction = params[0];
-        let db = params[4];
         let date = params[2];
         if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
             const fail = new EmbedBuilder()
@@ -23,13 +22,13 @@ module.exports = {
         let amount = interaction.options.getInteger('messages');
         let user = interaction.options.getUser('utilisateur');
         let messages = await interaction.channel.messages.fetch();
-
+        console.log(messages)
         if (user) {
             const targetMessages = messages.filter((m) => m.author.id === user.id );
-            await interaction.channel.bulkDelete(targetMessages.first(amount), true);
+            let messagesBulk = await interaction.channel.bulkDelete(targetMessages.first(amount), true);
             const win = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription(`<a:LMT_arrow:1065548690862899240> **${amount} messages de ${user} ont été supprimés avec succès**`)
+                .setDescription(`<a:LMT_arrow:1065548690862899240> **${messagesBulk.size} messages de ${user} ont été supprimés avec succès**`)
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             await interaction.reply({embeds:[win]});
             await wait(5000);

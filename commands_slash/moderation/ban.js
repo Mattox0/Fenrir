@@ -45,9 +45,9 @@ module.exports = {
             if (heure>0) dateFin.setHours(dateFin.getHours() + parseInt(heure)); 
             if (minute>0) dateFin.setMinutes(dateFin.getMinutes() + parseInt(minute));
             if (mois>0) dateFin.setMonth(dateFin.getMonth() + parseInt(mois));
-            dureeString = `Jusqu'au : <t:${Math.ceil(dateFin / 1000)}:F>.`
+            dureeString = `Jusqu'au : <t:${Math.ceil(dateFin / 1000)}:F>`
         } else {
-            dureeString = "Permanent.";
+            dureeString = "Permanent";
         }
         person = await interaction.member.guild.members.cache.find(x => x.id === person.id);
         let purge = interaction.options.getBoolean('purge');
@@ -56,26 +56,26 @@ module.exports = {
         person.ban({reason : raison, days : daysPurge}).then((member) => {
             const ban = new EmbedBuilder()
                 .setColor('#2f3136')
-                .setDescription(`**${member} a été banni !\n\n${interaction.member} a décidé de vous éliminer, et sa sentence est __irrévocable__.**\n\n__Pour la raison suivante :__\n> ${raison}.\n\n__Durée :__\n> ${dureeString}`)
+                .setDescription(`**${member} a été banni !\n\n${interaction.member} a décidé de vous éliminer, et sa sentence est irrévocable.**\n\n> Raison : ${raison}\n\n> Durée : ${dureeString}`)
                 .setThumbnail('https://cdn.discordapp.com/attachments/883117525842423898/920829502861492314/727224531021987880.png')
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({ embeds : [ban]});
         }).catch((e) => {
             console.log(e)
             const fail = new EmbedBuilder()
-            .setColor('#2f3136')
-            .setDescription(`<a:LMT_arrow:1065548690862899240> **Mon rôle doit être au dessus des autres pour que je puisse ban**`)
-            .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
+                .setColor('#2f3136')
+                .setDescription(`<a:LMT_arrow:1065548690862899240> **Mon rôle doit être au dessus des autres pour que je puisse ban**`)
+                .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({ embeds : [fail],ephemeral:true });
         });
         if (duree) {
-            db.run("INSERT INTO bans (user_id, guild_id, deban) VALUES (?,?,?)",person.user.id,interaction.member.guild.id,dateFin, (err) => {if (err) console.log(err)});
+            db.query("INSERT INTO bans (user_id, guild_id, deban) VALUES (?,?,?)", [person.user.id, interaction.member.guild.id, dateFin], (err) => {if (err) console.log(err)});
             new schedule.scheduleJob(dateFin, function() {
                 try {
-                    db.run('DELETE FROM bans WHERE user_id = ?',person.user.id, (err) => {if (err) throw err });
+                    db.query('DELETE FROM bans WHERE user_id = ?', person.user.id, (err) => {if (err) throw err });
                     interaction.member.guild.members.unban(person.user);
                 } catch (e) {
-                    console.log(e);
+                    console.log("Ban error -> ", e);
                 }
             })
         }

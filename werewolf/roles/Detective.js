@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType} = require("discord.js");
 const lock = require("./../LG/lock.js");
 const unlock = require("./../LG/lock.js");
 const Player = require("./Player.js");
@@ -29,21 +29,22 @@ class Detective extends Player {
         }
         let detectiveChannel = interaction.guild.channels.cache.find(channel => channel.id === game.config.detectiveChannelId);
         if (!detectiveChannel) {
-            detectiveChannel = await interaction.guild.channels.create("detective", {
-                type: "GUILD_TEXT",
+            detectiveChannel = await interaction.guild.channels.create({
+                name: "detective",
+                type: ChannelType.GuildText,
                 parent: game.config.categoryId,
                 permissionOverwrites: [
                     {
                         id: game.config.roleId,
-                        deny: ['VIEW_CHANNEL'],
+                        deny: [ViewChannel],
                     },
                     {
                         id: game.allPlayersRoles.find(role => role.name === "Detective").idPlayer,
-                        allow: ['VIEW_CHANNEL'],
+                        allow: [ViewChannel],
                     },
                     {
                         id: interaction.guild.roles.everyone,
-                        deny: ['VIEW_CHANNEL'],
+                        deny: [ViewChannel],
                     }
                 ]
             })

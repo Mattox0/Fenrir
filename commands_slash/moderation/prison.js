@@ -1,11 +1,11 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { EmbedBuilder,  PermissionsBitField, AttachmentBuilder } = require("discord.js");
+const { EmbedBuilder,  PermissionsBitField, AttachmentBuilder, ChannelType } = require("discord.js");
 const Canvas = require('canvas')
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('prison')
-        .setDescription('Met quelqu\'un en prison | Attention cette commande nuke le tribunal | /addprison pour l\'ajouter')
+        .setDescription('Met quelqu\'un en prison | Attention cette commande recrée le tribunal | /addprison pour l\'ajouter')
         .addUserOption(option => option.setName('utilisateur').setDescription('Le fautif :)').setRequired(true))
         .addStringOption(option => option.setName('raison').setDescription('La raison de la mise en prison').setRequired(false)),
     async execute(...params) {
@@ -23,10 +23,10 @@ module.exports = {
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({embeds:[noperm],ephemeral:true});
         }
-        db.get("SELECT * FROM servers WHERE guild_id = ?",interaction.member.guild.id, async (err, res) => {
-            if (err || !res) {
-                return console.log(err);
-            }
+        db.query("SELECT * FROM servers WHERE guild_id = ?", interaction.member.guild.id, async (err, res) => {
+            if (err) return console.log(err);
+            if (res.length === 0) return;
+            res = res[0];
             if (res.prison_id === null) {
                 const fail = new EmbedBuilder()
                     .setColor('#2f3136')
@@ -58,7 +58,7 @@ module.exports = {
                 context.drawImage(personI, 0, 0, canvas.width, canvas.height);
                 let background = await Canvas.loadImage('./Images/jail.png')
                 context.drawImage(background, 0, 0, canvas.width, canvas.height);
-                const attachment = new AttachmentBuilder(canvas.toBuffer(), 'jail.png')
+                const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: 'jail.png'})
                 const embed = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription(`**${person} a été envoyé en prison !**\n\nSon sort sera débattu à la suite d'une discussion avec l'équipe de Modération`)
@@ -66,9 +66,10 @@ module.exports = {
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 interaction.reply({ embeds: [embed],files:[attachment] });
             })
-            chann.delete();
-            chann = await interaction.member.guild.channels.create("tribunal", { 
-                type: "GUILD_TEXT",
+            if (chann) chann.delete();
+            chann = await interaction.member.guild.channels.create({
+                name: "tribunal", 
+                type: ChannelType.GuildText,
                 position : 1,
                 permissionOverwrites: [{
                     id: interaction.member.guild.id,
@@ -78,14 +79,14 @@ module.exports = {
                     allow:[PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages]
                 }]
             }).then((tribunal) => {
-                if (role) tribunal.permissionOverwrites.edit(role, { VIEW_CHANNEL: true, SEND_MESSAGES: true, ManageMessages: true });
+                if (role) tribunal.permissionOverwrites.edit(role, { ViewChannel: true, SendMessages: true, ManageMessages: true });
                 tribunal.send(`@here, ${person}`).then(mess => mess.delete());
                 const tribu = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription(`<a:LMT_arrow:1065548690862899240> **${person}, tu es convoqué dans le Tribunal !**\n\n**Le staff t'a convoqué dans notre prison, où tu devras t'expliquer pour les faits suivants qui te sont reprochés :**\n__${raison}__\n\n**Nous te rappelons que tu n'es pas ici pour t'amuser, mais pour répondre aux accusations.**`)
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 tribunal.send({embeds : [ tribu ]});
-                db.run("UPDATE servers SET prison_id = ? WHERE guild_id = ?",tribunal.id,interaction.member.guild.id, (err) => {if (err) console.log(err)});  
+                db.query("UPDATE servers SET prison_id = ? WHERE guild_id = ?", [tribunal.id, interaction.member.guild.id], (err) => {if (err) console.log(err)});  
             });
         })
     }

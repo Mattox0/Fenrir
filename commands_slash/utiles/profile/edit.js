@@ -2,10 +2,10 @@ const { EmbedBuilder, PermissionsBitField, ActionRowBuilder, ButtonBuilder, Butt
 
 module.exports = {
     async execute(interaction, db, date) {
-        db.get("SELECT * FROM profile WHERE user_id = ?", interaction.member.id, async (err, res) => {
+        db.query("SELECT * FROM profile WHERE user_id = ?", interaction.member.id, async (err, res) => {
             if (err) return console.log(err);
-            if (!res) {
-                await db.run("INSERT INTO profile(user_id, likes) VALUES (?, ?)", interaction.member.id, JSON.stringify({ likes : []}),(err) => {if (err) console.log("8", err)});
+            if (res.length === 0) {
+                db.query("INSERT INTO profile(user_id, likes) VALUES (?, ?)", [interaction.member.id, JSON.stringify({ likes : []})],(err) => {if (err) console.log("profile edit -> ", err)});
                 res = {
                     user_id : interaction.member.id,
                     description : null,
@@ -21,64 +21,72 @@ module.exports = {
                     likes : { likes : [] }
                 }
             } else {
+                res = res[0];
                 res.likes = JSON.parse(res.likes)
             }
             if (interaction.options.getString('description')) {
-                db.run("UPDATE profile SET description = ? WHERE user_id = ?", interaction.options.getString('description'), interaction.member.id, (err) => {if (err) console.log(err)});
-                description = interaction.options.getString('description')
+                description = interaction.options.getString('description').slice(0, 200)
+                db.query("UPDATE profile SET description = ? WHERE user_id = ?", [description, interaction.member.id], (err) => {if (err) console.log(err)});
             } else {description = res.description}
             if (interaction.options.getString('image')) {
-                db.run("UPDATE profile SET image = ? WHERE user_id = ?", interaction.options.getString('image'), interaction.member.id, (err) => {if (err) console.log(err)});
+                if (!isImgUrl(interaction.options.getString('image'))) {
+                    const fail = new EmbedBuilder()
+                        .setColor('#2f3136')
+                        .setDescription('<a:LMT_arrow:1065548690862899240> **\`image\` n\'est pas dans le bon format \`ur\`**')
+                        .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
+                    return interaction.reply({embeds:[fail], ephemeral:true});
+                }
                 image = interaction.options.getString('image');
+                db.query("UPDATE profile SET image = ? WHERE user_id = ?", [image, interaction.member.id], (err) => {if (err) console.log(err)});
             } else {image = res.image}
             if (interaction.options.getString('footer')) {
-                db.run("UPDATE profile SET footer = ? WHERE user_id = ?", interaction.options.getString('footer'), interaction.member.id, (err) => {if (err) console.log(err)});
-                footer = interaction.options.getString('footer');
+                footer = interaction.options.getString('footer').slice(0, 50)
+                db.query("UPDATE profile SET footer = ? WHERE user_id = ?", [footer, interaction.member.id], (err) => {if (err) console.log(err)});
             } else {footer = res.footer}
             if (interaction.options.getString('couleur_hexa')) {
-                if (interaction.options.getString('couleur_hexa').length !== 6) {
+                if (!interaction.options.getString('couleur_hexa').match(/[0-9A-Fa-f]{6}/g)) {
                     const fail = new EmbedBuilder()
                     .setColor('#2f3136')
-                    .setDescription('<a:LMT_arrow:1065548690862899240> **\`couleur_hexa\` n\'est pas dans le bon format (hexadécimal)**')
+                    .setDescription('<a:LMT_arrow:1065548690862899240> **\`couleur_hexa\` n\'est pas dans le bon format \`hexadécimal\`**')
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return interaction.reply({embeds:[fail], ephemeral:true});
                 }
-                db.run("UPDATE profile SET couleur_hexa = ? WHERE user_id = ?", interaction.options.getString('couleur_hexa'), interaction.member.id, (err) => {if (err) console.log(err)});
                 couleur_hexa = interaction.options.getString('couleur_hexa');
+                db.query("UPDATE profile SET couleur_hexa = ? WHERE user_id = ?", [interaction.options.getString('couleur_hexa'), interaction.member.id], (err) => {if (err) console.log(err)});
             } else {couleur_hexa = res.couleur_hexa}
             if (interaction.options.getString('film')) {
-                db.run("UPDATE profile SET film = ? WHERE user_id = ?", interaction.options.getString('film'), interaction.member.id, (err) => {if (err) console.log(err)});
-                film = interaction.options.getString('film');
+                film = interaction.options.getString('film').slice(0, 50);
+                db.query("UPDATE profile SET film = ? WHERE user_id = ?", [film, interaction.member.id], (err) => {if (err) console.log(err)});
             } else {film = res.film}
             if (interaction.options.getString('musique')) {
-                db.run("UPDATE profile SET musique = ? WHERE user_id = ?", interaction.options.getString('musique'), interaction.member.id, (err) => {if (err) console.log(err)});
-                musique = interaction.options.getString('musique');
+                musique = interaction.options.getString('musique').slice(0, 50);
+                db.query("UPDATE profile SET musique = ? WHERE user_id = ?", [musique, interaction.member.id], (err) => {if (err) console.log(err)});
             } else {musique = res.musique}
             if (interaction.options.getString('couleur')) {
-                db.run("UPDATE profile SET couleur = ? WHERE user_id = ?", interaction.options.getString('couleur'), interaction.member.id, (err) => {if (err) console.log(err)});
-                couleur = interaction.options.getString('couleur');
+                couleur = interaction.options.getString('couleur').slice(0, 30);
+                db.query("UPDATE profile SET couleur = ? WHERE user_id = ?", [couleur, interaction.member.id], (err) => {if (err) console.log(err)});
             } else {couleur = res.couleur}
             if (interaction.options.getString('repas')) {
-                db.run("UPDATE profile SET repas = ? WHERE user_id = ?", interaction.options.getString('repas'), interaction.member.id, (err) => {if (err) console.log(err)});
-                repas = interaction.options.getString('repas');
+                repas = interaction.options.getString('repas').slice(0, 30);
+                db.query("UPDATE profile SET repas = ? WHERE user_id = ?", [repas, interaction.member.id], (err) => {if (err) console.log(err)});
             } else {repas = res.repas}
             if (interaction.options.getString('adjectifs')) {
-                db.run("UPDATE profile SET adjectifs = ? WHERE user_id = ?", interaction.options.getString('adjectifs'), interaction.member.id, (err) => {if (err) console.log(err)});
-                adjectifs = interaction.options.getString('adjectifs');
+                adjectifs = interaction.options.getString('adjectifs').slice(0, 50);
+                db.query("UPDATE profile SET adjectifs = ? WHERE user_id = ?", [adjectifs, interaction.member.id], (err) => {if (err) console.log(err)});
             } else {adjectifs = res.adjectifs}
             if (interaction.options.getString('pseudo')) {
-                db.run("UPDATE profile SET pseudo = ? WHERE user_id = ?", interaction.options.getString('pseudo'), interaction.member.id, (err) => {if (err) console.log(err)});
-                pseudo = interaction.options.getString('pseudo');
+                pseudo = interaction.options.getString('pseudo').slice(0, 30);
+                db.query("UPDATE profile SET pseudo = ? WHERE user_id = ?", [pseudo, interaction.member.id], (err) => {if (err) console.log(err)});
             } else {pseudo = res.pseudo}
             const row = new ActionRowBuilder()
                 .addComponents(
                     new ButtonBuilder()
-                        .setCustomId('like_profile')
+                        .setCustomId(`like_profile-${interaction.member.id}`)
                         .setLabel('Like')
                         .setEmoji('❤️')
                         .setStyle(ButtonStyle.Success),
                     new ButtonBuilder()
-                        .setCustomId('unlike_profile')
+                        .setCustomId(`unlike_profile-${interaction.member.id}`)
                         .setLabel('Unlike')
                         .setEmoji('💔')
                         .setStyle(ButtonStyle.Danger)
@@ -92,4 +100,8 @@ module.exports = {
             return interaction.reply({content:`${interaction.member}, **Voici votre nouveau profil :**`,embeds:[view],components:[row]});
         })
     }
+}
+
+function isImgUrl(url) {
+    return /\.(jpg|jpeg|png|webp|avif|gif)$/.test(url)
 }

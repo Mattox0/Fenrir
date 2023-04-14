@@ -17,23 +17,23 @@ async function getRolesPerso(interaction, date, game, resolve) {
             new ButtonBuilder()
                 .setCustomId('villageois')
                 .setLabel('Villageois')
-                .setStyle("PRIMARY"),
+                .setStyle(ButtonStyle.Primary),
             new ButtonBuilder()
                 .setCustomId('voyante')
                 .setLabel('Voyante')
-                .setStyle("PRIMARY"),
+                .setStyle(ButtonStyle.Primary),
             new ButtonBuilder()
                 .setCustomId('sorciere')
                 .setLabel('Sorcière')
-                .setStyle("PRIMARY"),
+                .setStyle(ButtonStyle.Primary),
             new ButtonBuilder()
                 .setCustomId('chasseur')
                 .setLabel('Chasseur')
-                .setStyle("PRIMARY"),
+                .setStyle(ButtonStyle.Primary),
             new ButtonBuilder()
                 .setCustomId('loup')
                 .setLabel('Loup-Garou')
-                .setStyle("PRIMARY")
+                .setStyle(ButtonStyle.Primary)
         )
     // const row2 = new ActionRowBuilder()    
     //     .addComponents(
@@ -109,7 +109,7 @@ async function getRolesPerso(interaction, date, game, resolve) {
             new ButtonBuilder()
                 .setCustomId('clear')
                 .setLabel('Reinitialiser')
-                .setStyle("DANGER"),
+                .setStyle(ButtonStyle.Danger),
             new ButtonBuilder()
                 .setLabel('Informations Rôles')
                 .setURL("https://www.notion.so/Informations-R-les-Loup-Garou-d05aac21c86d4127a4f46ab0bcd435f5")
@@ -205,11 +205,11 @@ async function confirmChoice(game, date, msg, allRoles, resolve) {
             new ButtonBuilder()
                 .setCustomId('yes')
                 .setLabel('Oui, c\'est parti !')
-                .setStyle("SUCCESS"),
+                .setStyle(ButtonStyle.Success),
             new ButtonBuilder()
                 .setCustomId('no')
                 .setLabel('Non, on recommence')
-                .setStyle("DANGER")
+                .setStyle(ButtonStyle.Danger)
         )
     await msg.edit({ embeds: [confirmEmbed], components: [confirmRow] });
     collector.on("collect", async collected => {

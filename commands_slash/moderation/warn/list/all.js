@@ -3,8 +3,9 @@ const wait = require('util').promisify(setTimeout);
 
 module.exports = {
     async execute(interaction, date, db) {
-        db.all("SELECT * FROM warns WHERE guild_id = ?", interaction.member.guild.id, async (err, res) => {
-            if (!res) {
+        db.query("SELECT * FROM warns WHERE guild_id = ?", interaction.member.guild.id, async (err, res) => {
+            if (err) return console.log(err)
+            if (res.lengh === 0) {
                 const fail = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription(`<a:LMT_arrow:1065548690862899240> **Il n'y aucun warns sur ce serveur**`)

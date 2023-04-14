@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionsBitField } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField, AuditLogEvent } = require("discord.js");
 
 module.exports = {
 	name: 'roleCreate',
@@ -6,15 +6,16 @@ module.exports = {
         let role = params[0];
         let db = params[1];
         let date = new Date()
-        db.get("SELECT roleCreate, logs_id FROM logs WHERE guild_id = ?",role.guild.id, async (err, res) => {
+        db.query("SELECT roleCreate, logs_id FROM logs WHERE guild_id = ?", role.guild.id, async (err, res) => {
             if (err) {return console.log(err) }
-            if (!res) return;
+            if (res.length === 0) return;
+            res = res[0];
             if (res.roleCreate) {
                 let chann = await role.guild.channels.cache.find(x => x.id === res.logs_id);
                 if (!chann) return;
                 const fetchedLogs = await role.guild.fetchAuditLogs({
                     limit: 1,
-                    type: 'ROLE_CREATE',
+                    type: AuditLogEvent.RoleCreate,
                 });
                 const deletionLog = fetchedLogs.entries.first();
                 if (!deletionLog) {

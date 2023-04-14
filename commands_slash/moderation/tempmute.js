@@ -9,7 +9,7 @@ module.exports = {
         .addIntegerOption(option => 
             option
             .setName('temps')
-            .setDescription('temps du slowmode')
+            .setDescription('temps du timeout')
             .setRequired(true)
             .addChoices({ name:'0 seconde', value: 0 })
             .addChoices({ name:'60 secondes', value: 60 * 1000 })
@@ -31,19 +31,19 @@ module.exports = {
         let time = interaction.options.getInteger('temps');
         let user = interaction.options.getUser('utilisateur');
         tab = ['0 seconde','60 secondes','5 minutes','1 heure','1 jour','1 semaine']
-        tab2 = [0, 60 * 1000, 5 * 60 * 1000, 1000 * 60 * 60,1000 * 60 * 60 * 24,1000 * 60 * 60 * 24 * 7]
+        tab2 = [0, 60 * 1000, 5 * 60 * 1000, 1000 * 60 * 60, 1000 * 60 * 60 * 24, 1000 * 60 * 60 * 24 * 7]
         let nb = tab2.indexOf(time)
         user = await interaction.guild.members.cache.find(x => x.id === user.id)
         if (time === 0) time = null;
-        console.log(user)
         try {
             user.timeout(time)
             const win = new EmbedBuilder()
                 .setColor('#2f3136')
                 .setDescription(`<a:LMT_arrow:1065548690862899240> **${user} a bien été mute pour ${tab[nb]}**`)
+                .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({embeds:[win]})
         } catch(e) {
-            console.log(e);
+            console.log("Timeout error -> ", e);
         }
     }
 }

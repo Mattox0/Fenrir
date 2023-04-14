@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType} = require("discord.js");
 const { lock, unlock } = require("../LG/lock.js");
 const Player = require("./Player.js");
 
@@ -28,21 +28,22 @@ class Seer extends Player {
         }
         let seerChannel = interaction.guild.channels.cache.find(channel => channel.id === game.config.seerChannelId);
         if (!seerChannel) {
-            seerChannel = await interaction.guild.channels.create("voyante", {
-                type: "GUILD_TEXT",
+            seerChannel = await interaction.guild.channels.create({
+                name: "voyante",
+                type: ChannelType.GuildText,
                 parent: game.config.categoryId,
                 permissionOverwrites: [
                     {
                         id: game.config.roleId,
-                        deny: ['VIEW_CHANNEL'],
+                        deny: [ViewChannel],
                     },
                     {
                         id: game.allPlayersRoles.find(role => role.name === "Voyante").idPlayer,
-                        allow: ['VIEW_CHANNEL'],
+                        allow: [ViewChannel],
                     },
                     {
                         id: interaction.guild.roles.everyone,
-                        deny: ['VIEW_CHANNEL'],
+                        deny: [ViewChannel],
                     }
                 ]
             })

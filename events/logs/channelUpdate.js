@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, AuditLogEvent } = require("discord.js");
 
 
 module.exports = {
@@ -8,15 +8,16 @@ module.exports = {
         let newChann = params[1];
         let db = params[2];
         let date = new Date()
-        db.get("SELECT channelUpdate, logs_id FROM logs WHERE guild_id = ?",oldChann.guild.id, async (err, res) => {
-            if (err) {return console.log(err) }
-            if (!res) {return}
+        db.query("SELECT channelUpdate, logs_id FROM logs WHERE guild_id = ?", oldChann.guild.id, async (err, res) => {
+            if (err) return console.log(err)
+            if (res.length === 0) return
+            res = res[0];
             if (res.channelUpdate) {
                 let chann = await oldChann.guild.channels.cache.find(x => x.id === res.logs_id);
                 if (!chann) return;
                 const fetchedLogs = await newChann.guild.fetchAuditLogs({
                     limit: 1,
-                    type: 'CHANNEL_UPDATE',
+                    type: AuditLogEvent.ChannelUpdate,
                 });
                 const deletionLog = fetchedLogs.entries.first();
                 let event;

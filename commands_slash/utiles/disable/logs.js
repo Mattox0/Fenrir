@@ -2,8 +2,8 @@ const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
     async execute(interaction, db, date) {
-        db.run("UPDATE logs SET logs_id = ? WHERE guild_id = ?", null, interaction.member.guild.id, (err) => {if (err) console.log(err)});
-        db.run('UPDATE servers SET logs_id = ? WHERE guild_id = ?',null, interaction.member.guild.id, (err) => {
+        db.query("UPDATE logs SET logs_id = ? WHERE guild_id = ?", [null, interaction.member.guild.id], (err) => {if (err) console.log(err)});
+        db.query('UPDATE servers SET logs_id = ? WHERE guild_id = ?', [null, interaction.member.guild.id], (err) => {
             if (err) return console.log(err);
             const win = new EmbedBuilder()
                 .setColor('#2f3136')

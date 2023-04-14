@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType} = require("discord.js");
 
 async function setDiscordRoles(interaction, date, game, resolve) {
     // creer un role LG + l'assigner à tous les joueurs
@@ -13,20 +13,22 @@ async function setDiscordRoles(interaction, date, game, resolve) {
         user?.roles.add(role).catch(console.error);
     })
     // creer une catégorie LG + mettre les permissions de roles LG
-    let category = await interaction.guild.channels.create("Loup garou", { 
-        type: "GUILD_CATEGORY",
+    let category = await interaction.guild.channels.create({
+        name: "Loup garou", 
+        type: ChannelType.GuildCategory,
         permissionOverwrites: [{
             id: interaction.guild.roles.everyone,
-            deny: ["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY", "ADD_REACTIONS"],
+            deny: [ViewChannel, SendMessages, ReadMessageHistory, AddReactions],
         },{
             id: game.config.roleId,
-            allow: ["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY", "ADD_REACTIONS"],
+            allow: [ViewChannel, SendMessages, ReadMessageHistory, AddReactions],
         }]
     }).catch(console.error);
     game.config.categoryId = category.id;
     // creer un salon village dans la catégorie
-    let village = await interaction.guild.channels.create("village", {
-        type: "GUILD_TEXT",
+    let village = await interaction.guild.channels.create({
+        name: "village",
+        type: ChannelType.GuildText,
     }).then(channel=> channel.setParent(category)).catch(console.error);
     game.config.villageId = village.id;
     resolve();

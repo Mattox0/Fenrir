@@ -13,7 +13,7 @@ module.exports = {
         if (!person) person = interaction.user;
         const id = new EmbedBuilder()
             .setColor('#2f3136')
-            .setDescription(`${person} <a:LMT_arrow:1065548690862899240> ${person.id}`)
+            .setDescription(`${person} <a:LMT_arrow:1065548690862899240> **${person.id}**`)
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         return interaction.reply({ embeds : [id]});
     }

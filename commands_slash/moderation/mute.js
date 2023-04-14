@@ -20,8 +20,8 @@ module.exports = {
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({ embeds : [fail],ephemeral : true});
         }
-        db.get("SELECT mute_id FROM servers WHERE guild_id = ?",interaction.member.guild.id, async(err, res) => {
-            if (err || !res) {
+        db.query("SELECT mute_id FROM servers WHERE guild_id = ?", interaction.member.guild.id, async(err, res) => {
+            if (err) {
                 console.error(error);
                 const echec = new EmbedBuilder()
                     .setColor('#2f3136')
@@ -29,6 +29,8 @@ module.exports = {
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 await interaction.reply({ embeds:[echec], ephemeral: true });
             }
+            if (res.length === 0) return;
+            res = res[0];
             let mute;
             if (res.mute_id !== null) {
                 mute = await interaction.member.guild.roles.cache.find(x => x.id === res.mute_id);
@@ -37,11 +39,11 @@ module.exports = {
                 mute = await interaction.member.guild.roles.create({
                     name: 'Muted',
                     color: '#666666',
-                    reason: 'N\'y touche pas ! j\'en ai besoin pour les mutes',
+                    reason: 'N\'y touche pas ! J\'en ai besoin pour les mutes',
                 });
             }
             interaction.member.guild.channels.cache.forEach(x => {
-                x.permissionOverwrites.edit(mute, { SEND_MESSAGES: false, ADD_REACTIONS:false});
+                x.permissionOverwrites.edit(mute, { SendMessages: false, AddReactions:false});
             })
             let dateFin = new Date();
             let duree = interaction.options.getString('durée');
@@ -76,16 +78,16 @@ module.exports = {
             }).catch(err => {
                 console.log(err);
                 const fail = new EmbedBuilder()
-                .setColor('#2f3136')
-                .setDescription(`<a:LMT_arrow:1065548690862899240> **Mon rôle doit être au dessus des autres pour que je puisse donner le rôle !**`)
-                .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
+                    .setColor('#2f3136')
+                    .setDescription(`<a:LMT_arrow:1065548690862899240> **Mon rôle doit être au dessus des autres pour que je puisse donner le rôle !**`)
+                    .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return interaction.reply({ embeds : [fail],ephemeral:true });
             });
             if (duree) {
-                db.run("INSERT INTO mute (user_id, guild_id, end_date) VALUES (?,?,?)",person.user.id,interaction.member.guild.id,dateFin, (err) => {if (err) console.log(err)});
+                db.query("INSERT INTO mute (user_id, guild_id, end_date) VALUES (?,?,?)",person.user.id,interaction.member.guild.id,dateFin, (err) => {if (err) console.log(err)});
                 new schedule.scheduleJob(dateFin, function() {
                     try {
-                        db.run('DELETE FROM mute WHERE user_id = ? AND end_date = ?',person.user.id,dateFin, (err) => {if (err) throw err });
+                        db.query('DELETE FROM mute WHERE user_id = ? AND end_date = ?',person.user.id,dateFin, (err) => {if (err) throw err });
                         person.roles.remove(mute);
                     } catch (e) {
                         console.log(e);

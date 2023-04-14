@@ -36,7 +36,7 @@ module.exports = {
         if (heure>0) dateFin.setHours(dateFin.getHours() + parseInt(heure)); 
         if (minute>0) dateFin.setMinutes(dateFin.getMinutes() + parseInt(minute));
         if (seconde>0) dateFin.setSeconds(dateFin.getSeconds() + parseInt(seconde));
-        db.run('INSERT INTO remindme(dateFin,user_id,raison,message_id,guild_id) VALUES (?,?,?,?,?)',dateFin,interaction.user.id,raison,interaction.id,interaction.member.guild.id, (err) => {if (err) console.log(err)})
+        db.query('INSERT INTO remindme(dateFin,user_id,raison,message_id,guild_id) VALUES (?,?,?,?,?)', [dateFin,interaction.user.id,raison,interaction.id,interaction.member.guild.id], (err) => {if (err) console.log(err)})
         const rappel = new EmbedBuilder()
             .setColor('#2f3136')
             .setDescription(`<a:LMT_arrow:1065548690862899240> **Votre rappel a été enregistré pour** <t:${Math.floor((+ dateFin) / 1000)}:F>`)
@@ -44,7 +44,7 @@ module.exports = {
         await interaction.reply({ embeds:[rappel]});
         new schedule.scheduleJob(dateFin, function() {
             interaction.member.send(`**Tu avais demandé un rappel** : ${raison}`);
-            db.run('DELETE FROM remindme WHERE message_id = ?',interaction.id, (err) => {if (err) console.log(err) });
+            db.query('DELETE FROM remindme WHERE message_id = ?',interaction.id, (err) => {if (err) console.log(err) });
         })
     }
 }

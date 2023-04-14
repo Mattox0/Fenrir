@@ -1,15 +1,16 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, AuditLogEvent } = require("discord.js");
 
 module.exports = {
 	name: 'messageDeleteBulk',
 	async execute(...params) {
         let messages = params[0];
-        let db = params[1];
-        let client = params[2];
+        let db = params[2];
+        let client = params[3];
         let date = new Date();
-        db.get("SELECT messageDelete, logs_id FROM logs WHERE guild_id = ?",messages.first().guildId, async (err, res) => {
-            if (err) {return console.log(err) }
-            if (!res) {return}
+        db.query("SELECT messageDelete, logs_id FROM logs WHERE guild_id = ?", messages.first().guildId, async (err, res) => {
+            if (err) return console.log(err);
+            if (res.length === 0) return;
+            res = res[0];
             if (res.messageDelete) {
                 let guild = await client.guilds.fetch(messages.first().guildId)
                 let chann = await guild.channels.cache.find(x => x.id === res.logs_id);
@@ -17,7 +18,7 @@ module.exports = {
                 if (!chann) return;
                 const fetchedLogs = await guild.fetchAuditLogs({
                     limit: 1,
-                    type: 'MESSAGE_BULK_DELETE',
+                    type: AuditLogEvent.MessageBulkDelete,
                 });
                 const deletionLog = fetchedLogs.entries.first();
                 if (!deletionLog) {

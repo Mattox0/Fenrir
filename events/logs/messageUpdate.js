@@ -7,9 +7,10 @@ module.exports = {
         let newMessage = params[1];
         let db = params[2];
         let date = new Date()
-        db.get("SELECT messageUpdate, logs_id FROM logs WHERE guild_id = ?",newMessage.guild.id, async (err, res) => {
+        db.query("SELECT messageUpdate, logs_id FROM logs WHERE guild_id = ?", newMessage.guild.id, async (err, res) => {
             if (err) {return console.log(err) }
-            if (!res) return
+            if (res.length === 0) return
+            res = res[0];
             if (res.messageUpdate) {
                 let chann = await newMessage.guild.channels.cache.find(x => x.id === res.logs_id);
                 if (!chann) return;

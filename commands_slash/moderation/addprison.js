@@ -23,10 +23,10 @@ module.exports = {
         let raison = interaction.options.getString('raison');
         if (!raison) raison = "Aucune raison n'a été donnée";
         person = await interaction.member.guild.members.cache.find(x => x.id === person.id)
-        db.get("SELECT * FROM servers WHERE guild_id = ?",interaction.member.guild.id, async (err, res) => {
-            if (err || !res) {
-                return console.log(err);
-            }
+        db.query("SELECT * FROM servers WHERE guild_id = ?", interaction.member.guild.id, async (err, res) => {
+            if (err) return console.log(err);
+            if (res.length === 0) return;
+            res = res[0];
             if (res.prison_id === null) {
                 const fail = new EmbedBuilder()
                     .setColor('#2f3136')
@@ -57,10 +57,10 @@ module.exports = {
                 context.drawImage(personI, 0, 0, canvas.width, canvas.height);
                 let background = await Canvas.loadImage('./Images/jail.png')
                 context.drawImage(background, 0, 0, canvas.width, canvas.height);
-                const attachment = new AttachmentBuilder(canvas.toBuffer(), 'jail.png')
+                const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: 'jail.png'})
                 const embed = new EmbedBuilder()
                     .setColor('#2f3136')
-                    .setDescription(`**${person} a été envoyé en prison !**\n\nSon sort sera débattu à la suite d'une discussion avec l'équipe de modération`)
+                    .setDescription(`**${person} a été envoyé en prison !**\n\n Son sort sera débattu à la suite d'une discussion avec l'équipe de modération`)
                     .setThumbnail('attachment://jail.png')
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 interaction.reply({ embeds: [embed],files:[attachment] });
@@ -70,7 +70,7 @@ module.exports = {
                 .setDescription(`<a:LMT_arrow:1065548690862899240> **${person}, tu es convoqué dans le tribunal !**\n\n**Le staff t'a convoqué dans notre prison, où tu devras t'expliquer pour les faits suivants qui te sont reprochés :**\n__${raison}__\n\n**Nous te rappelons que tu n'es pas ici pour t'amuser, mais pour répondre aux accusations.**`)
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             chann.send({embeds : [ tribu ]});
-            db.run("UPDATE servers SET prison_id = ? WHERE guild_id = ?",chann.id,interaction.member.guild.id, (err) => {if (err) console.log(err)});
+            db.query("UPDATE servers SET prison_id = ? WHERE guild_id = ?", [chann.id,interaction.member.guild.id], (err) => {if (err) console.log(err)});
         })
     }
 }

@@ -2,14 +2,15 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("d
 
 module.exports = {
     async execute(interaction, date, db) {
-        db.get("SELECT * FROM anniversaires WHERE user_id = ?",interaction.member.user.id, async (err, res) => {
-            if (err || !res) {
+        db.query("SELECT * FROM anniversaires WHERE user_id = ?", interaction.member.user.id, async (err, res) => {
+            if (err || res.length === 0) {
                 const fail = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     .setDescription('<a:LMT_arrow:1065548690862899240> **Tu n\'as pas encore enregistré ton anniversaire !**')
                 return interaction.reply({embeds:[fail],ephemeral:true});
             }
+            res = res[0];
             const row = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
@@ -40,7 +41,7 @@ module.exports = {
                     collected.first().deferUpdate(); // évite le chargement infinie de l'intérraction
                     switch (collected.first().customId) {
                         case 'Oui':
-                            db.run("DELETE FROM anniversaires WHERE user_id = ?",interaction.member.user.id, (err) => {if (err) return console.log(err)});
+                            db.query("DELETE FROM anniversaires WHERE user_id = ?", interaction.member.user.id, (err) => {if (err) return console.log(err)});
                             const win = new EmbedBuilder()
                                 .setColor('#2f3136')
                                 .setDescription(`<a:LMT_arrow:1065548690862899240> **Ton anniversaire a bien été supprimé !**`)

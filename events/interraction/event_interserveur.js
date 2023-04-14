@@ -12,9 +12,10 @@ module.exports = {
         if (message.author.bot) return
         let guild = message.member.guild;
         let channel = message.channel;
-        db.get("SELECT * FROM interserveur WHERE guild_id_1 = ? AND channel_id_1 = ? OR guild_id_2 = ? AND channel_id_2 = ?", guild.id, channel.id, guild.id, channel.id, async (err, res) => {
+        db.query("SELECT * FROM interserveur WHERE guild_id_1 = ? AND channel_id_1 = ? OR guild_id_2 = ? AND channel_id_2 = ?", [guild.id, channel.id, guild.id, channel.id], async (err, res) => {
             if (err) return console.log(err);
-            if (!res) return;
+            if (res.length === 0) return;
+            res = res[0]
             if (!res.guild_id_2) return;
             if (res.guild_id_1 === guild.id && res.channel_id_1 === channel.id) {
                 let guild2 = await client.guilds.cache.get(res.guild_id_2);

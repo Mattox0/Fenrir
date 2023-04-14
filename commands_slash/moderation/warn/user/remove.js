@@ -3,8 +3,9 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("d
 module.exports = {
     async execute(interaction, date, db) {
         let id = interaction.options.getString('id');
-        db.get("SELECT * FROM warns WHERE warn_id = ?",id, async (err, res) => {
-            if (err || !res) {
+        db.query("SELECT * FROM warns WHERE warn_id = ?", id, async (err, res) => {
+            if (err) return console.log(err);
+            if (res.length === 0) {
                 const fail = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription('<a:LMT_arrow:1065548690862899240> **Je ne trouve pas la référence de ce warn**')
@@ -42,7 +43,7 @@ module.exports = {
                     }
                     switch (collected.first().customId) {
                         case 'Oui':
-                            db.run("DELETE FROM warns WHERE warn_id = ?",id, (err) => {if (err) console.log(err)});
+                            db.query("DELETE FROM warns WHERE warn_id = ?", id, (err) => {if (err) console.log(err)});
                             const win = new EmbedBuilder()
                                 .setColor('#2f3136')
                                 .setDescription(`<a:LMT_arrow:1065548690862899240> **Le warn \`${id}\` a bien été supprimé !**`)

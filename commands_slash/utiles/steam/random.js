@@ -3,6 +3,12 @@ const fetch = require('node-fetch')
 
 module.exports = {
     async execute(interaction, db, date) {
+        await interaction.deferReply()
+        const wait = new EmbedBuilder()
+            .setColor('#2f3136')
+            .setDescription('<a:LMT_arrow:1065548690862899240> **Chargement de votre requête**')
+            .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
+        await interaction.editReply({embeds:[wait]})
         fetch('https://api.steampowered.com/ISteamApps/GetAppList/v0002/?format=json')
         .then(response => response.json())
         .then(data => {
@@ -74,7 +80,7 @@ module.exports = {
                     .setTitle(data[num].data.name)
                     .setDescription(`${data[num].data.short_description}\n\n${prix}${platforms}${release}`)
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
-                await interaction.reply({embeds:[win], components:[row]})
+                await interaction.editReply({embeds:[win], components:[row]})
             })
         })
     }

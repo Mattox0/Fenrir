@@ -1,20 +1,21 @@
-const { EmbedBuilder, PermissionsBitField } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField, ChannelType } = require("discord.js");
 
 module.exports = {
     async execute(interaction, db, date) {
         let bot = interaction.options.getBoolean('bot');
         let online = interaction.options.getBoolean('online');
         await interaction.deferReply();
-        db.get("SELECT stats_id, stats_bot_id, stats_online_id FROM servers WHERE guild_id = ?",interaction.member.guild.id, async (err, res) => {
-            if (err) {return console.log("BONJOUR", err)}
-            if (!res) {return interaction.reply('Je ne trouve pas votre serveur, merci de me re-inviter, sinon contacter le support (mes MPs)')}
+        db.query("SELECT stats_id, stats_bot_id, stats_online_id FROM servers WHERE guild_id = ?", interaction.member.guild.id, async (err, res) => {
+            if (err) {return console.log("Setup stats -> ", err)}
+            if (res.length === 0) {return interaction.reply('Je ne trouve pas votre serveur, merci de me re-inviter, sinon contacter le support (mes MPs)')}
+            res = res[0]
             if (res.stats_id !== null) {
                 allMembers = await interaction.member.guild.members.cache.find(x => x.id === res.stats_id);
             }
             let count = 1;
             let allCount = 1;
-            if (bot) allCount++
-            if (online) allCount++
+            if (bot) allCount++;
+            if (online) allCount++;
             const ask = new EmbedBuilder()
                 .setColor('#2f3136')
                 .setDescription('<a:LMT_arrow:1065548690862899240> **Quel nom aura votre salon \`Membres\` ?**\n\n> <a:LMT__attention:924423639431020574> Mettre {nb}\n> Exemple : \`Membres : {nb}\`')
@@ -43,8 +44,9 @@ module.exports = {
                         let allMembers = await interaction.member.guild.channels.cache.find(x => x.id === res.stats_id);
                         nb = interaction.member.guild.memberCount;
                         if (!allMembers) {
-                            allMembers = await interaction.member.guild.channels.create(collect.first().content.replace('{nb}',nb), { 
-                                type: "GUILD_VOICE",
+                            allMembers = await interaction.member.guild.channels.create({
+                                name: collect.first().content.replace('{nb}',nb), 
+                                type: ChannelType.GuildVoice,
                                 position : 1,
                                 permissionOverwrites: [{
                                     id: interaction.member.guild.id,
@@ -54,7 +56,7 @@ module.exports = {
                         } else {
                             allMembers.setName(collect.first().content.replace('{nb}',nb))
                         }
-                        await db.run("UPDATE servers SET stats_id = ?, stats_message = ? WHERE guild_id = ?",allMembers.id , collect.first().content, interaction.member.guild.id, (err) => {if (err) {console.log(err);console.log("BONJOUR C'EST MOI")}})
+                        db.query("UPDATE servers SET stats_id = ?, stats_message = ? WHERE guild_id = ?", [allMembers.id, collect.first().content, interaction.member.guild.id], (err) => {if (err) {console.log(err);}})
                         resolve()
                     })
                 }))
@@ -87,10 +89,10 @@ module.exports = {
                             }
                             let nbBot = await interaction.member.guild.channels.cache.find(x => x.id === res.stats_bot_id);
                             let nb = await interaction.member.guild.members.cache.filter(x => x.user.bot).size;
-                            console.log(nb);
                             if (!nbBot) {
-                                nbBot = await interaction.member.guild.channels.create(collect.first().content.replace('{nb}',nb), { 
-                                    type: "GUILD_VOICE",
+                                nbBot = await interaction.member.guild.channels.create({
+                                    name: collect.first().content.replace('{nb}',nb), 
+                                    type: ChannelType.GuildVoice,
                                     position : 1,
                                     permissionOverwrites: [{
                                         id: interaction.member.guild.id,
@@ -100,7 +102,7 @@ module.exports = {
                             } else {
                                 nbBot.setName(collect.first().content.replace('{nb}',nb))
                             }
-                            db.run("UPDATE servers SET stats_bot_id = ?, stats_bot_message = ? WHERE guild_id = ?",nbBot.id,collect.first().content, interaction.member.guild.id, (err) => {if (err) console.log(err) })
+                            db.query("UPDATE servers SET stats_bot_id = ?, stats_bot_message = ? WHERE guild_id = ?", [nbBot.id,collect.first().content, interaction.member.guild.id], (err) => {if (err) console.log(err) })
                             resolve()
                         })
                     }))
@@ -134,10 +136,11 @@ module.exports = {
                             }
                             let nbOnline = await interaction.member.guild.channels.cache.find(x => x.id === res.stats_online_id);
                             guildWithPresence = await interaction.member.guild.members.fetch({withPresences : true});
-                            let onlines = guildWithPresence.filter((online) => online.presence?.status === "online" || online.presence?.status === "idle" || online.presence?.status === "dnd").size;                            console.log(onlines);
+                            let onlines = guildWithPresence.filter((online) => online.presence?.status === "online" || online.presence?.status === "idle" || online.presence?.status === "dnd").size;
                             if (!nbOnline) {
-                                nbOnline = await interaction.member.guild.channels.create(collect.first().content.replace('{nb}',onlines), { 
-                                    type: "GUILD_VOICE",
+                                nbOnline = await interaction.member.guild.channels.create({
+                                    name: collect.first().content.replace('{nb}',onlines),  
+                                    type: ChannelType.GuildVoice,
                                     position : 1,
                                     permissionOverwrites: [{
                                         id: interaction.member.guild.id,
@@ -147,7 +150,7 @@ module.exports = {
                             } else {
                                 nbOnline.setName(collect.first().content.replace('{nb}',onlines))
                             }
-                            db.run("UPDATE servers SET stats_online_id = ?, stats_online_message = ? WHERE guild_id = ?",nbOnline.id,collect.first().content, interaction.member.guild.id, (err) => {if (err) console.log(err) })
+                            db.query("UPDATE servers SET stats_online_id = ?, stats_online_message = ? WHERE guild_id = ?", [nbOnline.id ,collect.first().content, interaction.member.guild.id], (err) => {if (err) console.log(err) })
                             resolve()
                         })
                     }))

@@ -3,67 +3,79 @@ const client = new Client({ partials: [Partials.Channel, Partials.Message], inte
 const fs = require("fs");
 const Config = require("./config.json");
 const sqlite3 = require("sqlite3");
+const { createConnection } = require('mysql2');
 const schedule = require('node-schedule');
 require('./deploy_commands').build();
 
-let db = new sqlite3.Database("./lmt-bot.db", (err) => {
-    if (err) {
-        console.log(err);
-    }
-})
+let con = createConnection(Config.mysql);
+
+con.connect(err => {
+    // Console log if there is an error
+    if (err) return console.log(err);
+
+    // No error found?
+    console.log(`Database has been connected!`);
+});
 
 console.log("------- SCHEDULE ---------")
 // !! BIRTHDAY
-const addAnniv = schedule.scheduleJob('0 0 0 * * *', function() {
-    db.each("SELECT * FROM anniversaires INNER JOIN servers ON anniversaires.guild_id = servers.guild_id", async (err, res) => {
-        if (err || !res) {
-            return;
+schedule.scheduleJob('0 0 0 * * *', function() {
+    con.query("SELECT * FROM anniversaires INNER JOIN servers ON anniversaires.guild_id = servers.guild_id", async (err, rows) => {
+        if (err) {
+            return console.log(err);
         }
-        let date = new Date();
-        if (res.anniv_id !== 1) {
-            return;
-        }
-        let dates = res.date.split('/');
-        let guild = client.guilds.cache.get(res.guild_id);
-        const role = guild.roles.cache.find(role => role.id === res.anniv_role_id);
-        const channel = guild.channels.cache.find(channel => channel.id === res.anniv_channel_id);
-        if (dates[0] == date.getDate() && dates[1] == date.getMonth() + 1) {
-            let user = await guild.members.fetch(res.user_id);
-            user.roles.add(role).catch(err => console.log(err)).then(user => {
-                const anniv = new EmbedBuilder()
-                    .setColor('#2f3136')
-                    .setDescription(`<a:LMT_arrow:831817537388937277> **C\'est l\'anniversaire de ${user} !**\nSouhaitez lui un bon anniversaire !`)
-                    .setThumbnail('https://cdn.discordapp.com/attachments/708012118619717783/901498201629143120/882249649736527892.gif')
-                    .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
-                return channel.send({embeds:[anniv]});
-            })
+        if (rows.length === 0) return;
+        for (let res of rows) {
+            console.log(res);
+            let date = new Date();
+            if (res.anniv_id !== 1) {
+                return;
+            }
+            let dates = res.date.split('/');
+            let guild = client.guilds.cache.get(res.guild_id);
+            const role = guild.roles.cache.find(role => role.id === res.anniv_role_id);
+            const channel = guild.channels.cache.find(channel => channel.id === res.anniv_channel_id);
+            if (dates[0] == date.getDate() && dates[1] == date.getMonth() + 1) {
+                let user = await guild.members.fetch(res.user_id);
+                user.roles.add(role).catch(err => console.log(err)).then(user => {
+                    const anniv = new EmbedBuilder()
+                        .setColor('#2f3136')
+                        .setDescription(`<a:LMT_arrow:831817537388937277> **C\'est l\'anniversaire de ${user} !**\nSouhaitez lui un bon anniversaire !`)
+                        .setThumbnail('https://cdn.discordapp.com/attachments/708012118619717783/901498201629143120/882249649736527892.gif')
+                        .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
+                    return channel.send({embeds:[anniv]});
+                })
+            }
         }
     })
 });
 console.log(`| addAnniv ✅`)
-const removeAnniv = schedule.scheduleJob('0 59 23 * * *', function() {
-    db.each("SELECT * FROM anniversaires INNER JOIN servers ON anniversaires.guild_id = servers.guild_id", async (err, res) => {
-        if (err || !res) {
-            return;
+schedule.scheduleJob('0 59 23 * * *', function() {
+    con.query("SELECT * FROM anniversaires INNER JOIN servers ON anniversaires.guild_id = servers.guild_id", async (err, rows) => {
+        if (err) {
+            return console.log(err);
         }
-        if (res.anniv_id !== 1) {
-            return
-        }
-        let date = new Date();
-        let dates = res.date.split('/');
-        let guild = client.guilds.cache.get(res.guild_id);
-        const role = guild.roles.cache.find(role => role.id === res.anniv_role_id)
-        if (dates[0] == date.getDate() && dates[1] == date.getMonth()+1) {
-            let user = await guild.members.fetch(res.user_id)
-            user.roles.remove(role).catch(err => console.log(err))
+        if (rows.length === 0) return;
+        for (let res of rows) {
+            if (res.anniv_id !== 1) {
+                return
+            }
+            let date = new Date();
+            let dates = res.date.split('/');
+            let guild = client.guilds.cache.get(res.guild_id);
+            const role = guild.roles.cache.find(role => role.id === res.anniv_role_id)
+            if (dates[0] == date.getDate() && dates[1] == date.getMonth()+1) {
+                let user = await guild.members.fetch(res.user_id)
+                user.roles.remove(role).catch(err => console.log(err))
+            }
         }
     });
 });
 console.log(`| removeAnniv ✅`)
 
 // SERVER STATS
-const job3 = schedule.scheduleJob('*/5 * * * *', async function() {
-    require(`./events/interraction/event_stats.js`).execute(client, db);
+schedule.scheduleJob('*/5 * * * *', async function() {
+    require(`./events/interraction/event_stats.js`).execute(client, con);
 });
 console.log(`| serverStats ✅\n`)
 
@@ -72,23 +84,23 @@ console.log("------- EVENTS DISCORD ---------")
 for (const file of eventDiscord) {
     const event = require(`./events/discord/${file}`);
     if (event.once) {
-        client.once(event.name, (...args) => event.execute(...args,db));
+        client.once(event.name, (...args) => event.execute(...args,con));
     } else {
-        client.on(event.name, (...args) => event.execute(...args,client,Config,db));
+        client.on(event.name, (...args) => event.execute(...args,client,Config,con));
     }
     console.log(`| ${file} ✅`)
 }
 console.log("--------------------------------\n")
 
-
+// ! A CORRIGER 
 const eventLogs = fs.readdirSync('./events/logs').filter(file => file.endsWith('.js'));
 console.log("------- EVENTS LOGS ---------")
 for (const file of eventLogs) {
     const event = require(`./events/logs/${file}`);
     if (event.once) {
-        client.once(event.name, (...args) => event.execute(...args,db));
+        client.once(event.name, (...args) => event.execute(...args,con));
     } else {
-        client.on(event.name, (...args) => event.execute(...args,db,client));
+        client.on(event.name, (...args) => event.execute(...args,con,client));
     }
     console.log(`| ${file} ✅`)
 }
@@ -108,18 +120,6 @@ console.log("--------------------------------\n")
 //         client.commands.set(command.name, command)
 //     }
 // }
-
-// DM
-client.commands = new Collection()
-const commandFiles = fs.readdirSync("./dm").filter(file => file.endsWith('.js'));
-console.log("------------ DM ------------")
-for (const file of commandFiles) {
-    const command = require(`./dm/${file}`)
-    client.commands.set(command.name, command)
-    console.log(`| ${file} ✅`)
-}
-console.log("--------------------------------\n")
-// DM
 
 client.events = new Collection()
 const eventsFiles = fs.readdirSync("./events").filter(file => !file.endsWith('.js') && file !== 'discord');

@@ -8,9 +8,6 @@ module.exports = {
 		let chann = client.channels.cache.get('906228965604229190');
         if (message.channel instanceof DMChannel && !message.author.bot) client.commands.get('dm2').execute(message, message.content.split(" "), date, db , client, chann);
         if (message.channel == chann && !message.author.bot) client.commands.get('dm').execute(message, message.content.split(" "), date, db , client);
-        if (message.content.startsWith("!d bump")) client.events.get('event_bump').execute(message, message.content.split(" "), date, db , client);
-        if (message.content.startsWith("*p")) client.events.get('p').execute(message, message.content.split(" "), date, db , client);
-        if (message.content.startsWith("*r")) client.events.get('r').execute(message, message.content.split(" "), date, db , client);
         return;
 	}
 };

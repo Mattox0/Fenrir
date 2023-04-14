@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionsBitField } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField, AuditLogEvent } = require("discord.js");
 
 module.exports = {
 	name: 'stickerCreate',
@@ -6,15 +6,16 @@ module.exports = {
         let sticker = params[0];
         let db = params[1];
         let date = new Date()
-        db.get("SELECT stickerCreate, logs_id FROM logs WHERE guild_id = ?",sticker.guild.id, async (err, res) => {
+        db.query("SELECT stickerCreate, logs_id FROM logs WHERE guild_id = ?", sticker.guild.id, async (err, res) => {
             if (err) {return console.log(err) }
-            if (!res) return
+            if (res.length === 0) return;
+            res = res[0];
             if (res.stickerCreate) {
                 let chann = await sticker.guild.channels.cache.find(x => x.id === res.logs_id);
                 if (!chann) return;
                 const fetchedLogs = await sticker.guild.fetchAuditLogs({
                     limit: 1,
-                    type: 'STICKER_CREATE',
+                    type: AuditLogEvent.StickerCreate,
                 });
                 const deletionLog = fetchedLogs.entries.first();
                 if (!deletionLog) {

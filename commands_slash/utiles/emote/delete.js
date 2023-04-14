@@ -62,10 +62,9 @@ module.exports = {
                             emoji.delete()
                             const win = new EmbedBuilder()
                                 .setColor('#2f3136')
-                                .setDescription(`<a:LMT_arrow:1065548690862899240> **L'emote \`:${emoji.name}:\` a bien été supprimé !**`)
+                                .setDescription(`<a:LMT_arrow:1065548690862899240> **L'emote a bien été supprimé !**`)
                                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                             return msg.edit({embeds:[win],components:[]})
-                            break
                         case 'Non':
                             const no = new EmbedBuilder()
                                 .setColor('#2f3136')

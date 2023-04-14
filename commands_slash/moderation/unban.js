@@ -29,7 +29,7 @@ module.exports = {
             return interaction.reply({embeds : [ fail ],ephemeral : true});
         }
         interaction.member.guild.members.unban(person.user).then((member) => {
-            db.run('DELETE FROM bans WHERE user_id = ?',member.id, (err) => {if (err) throw err });
+            db.query('DELETE FROM bans WHERE user_id = ?', member.id, (err) => {if (err) console.log(err); });
             const unban = new EmbedBuilder()
                 .setColor('#2f3136')
                 .setDescription(`<a:LMT_arrow:1065548690862899240> **${member} a été débanni par ${interaction.member}!**`)
@@ -37,9 +37,9 @@ module.exports = {
             return interaction.reply({ embeds : [unban]});
         }).catch(() => {
             const fail = new EmbedBuilder()
-            .setColor('#2f3136')
-            .setDescription(`<a:LMT_arrow:1065548690862899240> **Je n'ai pas réussi à unban cet utilisateur**`)
-            .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
+                .setColor('#2f3136')
+                .setDescription(`<a:LMT_arrow:1065548690862899240> **Je n'ai pas réussi à unban cet utilisateur**`)
+                .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({ embeds : [ fail ],ephemeral:true });
         });
     }

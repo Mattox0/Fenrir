@@ -1,9 +1,9 @@
-const { EmbedBuilder, PermissionsBitField, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
+const { EmbedBuilder, PermissionsBitField, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType} = require("discord.js");
 
 module.exports = {
     async execute(interaction, db, date) {
         let channel = interaction.options.getChannel('channel');
-        if (channel.type !== 'GUILD_TEXT') {
+        if (channel.type !== ChannelType.GuildText) {
             const fail = new EmbedBuilder()
                 .setColor('#2f3136')
                 .setDescription('<a:LMT_arrow:1065548690862899240> **Le salon doit être __textuel__**')
@@ -12,17 +12,19 @@ module.exports = {
         }
         let category = await interaction.member.guild.channels.cache.find(channel => channel.name === "TICKETS")
         if (!category || category.deleted) {
-            category = await interaction.member.guild.channels.create("TICKETS", { 
-            type: "GUILD_CATEGORY",
-            position : 1,
-            permissionOverwrites: [{
-                id: interaction.member.guild.id,
-                deny: [PermissionsBitField.Flags.ViewChannel]
-            }] });
+            category = await interaction.member.guild.channels.create({
+                name: "TICKETS", 
+                type: ChannelType.GuildCategory,
+                position : 1,
+                permissionOverwrites: [{
+                    id: interaction.member.guild.id,
+                    deny: [PermissionsBitField.Flags.ViewChannel]
+                }] 
+            });
         }
         let role = interaction.options.getRole('role');
-        if (role) category.permissionOverwrites.edit(role, { VIEW_CHANNEL: true, SEND_MESSAGES: true, ManageMessages: true });
-        db.run("UPDATE servers SET ticket_id = ? WHERE guild_id = ?",category.id, interaction.member.guild.id, (err) => {
+        if (role) category.permissionOverwrites.edit(role, { ViewChannel: true, SendMessages: true, ManageMessages: true });
+        db.query("UPDATE servers SET ticket_id = ? WHERE guild_id = ?", [category.id, interaction.member.guild.id], (err) => {
             if (err) {
                 console.log(err);
                 const fail = new EmbedBuilder()

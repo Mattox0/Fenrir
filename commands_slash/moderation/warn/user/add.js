@@ -5,7 +5,8 @@ module.exports = {
         let person = interaction.options.getUser('utilisateur');
         let raison = interaction.options.getString('raison');
         if (!raison) raison = "Aucune raison spécifiée";
-        db.all("SELECT * FROM warns", (err, res) => {
+        db.query("SELECT * FROM warns", (err, res) => {
+            if (err) return err;
             let tab = res.map(x => x = x.warn_id)
             let warn_id = "";
             while (tab.includes(warn_id) || warn_id === "") {
@@ -15,7 +16,7 @@ module.exports = {
                     warn_id += charset.charAt(Math.floor(Math.random() * charset.length));
                 }
             }
-            db.run("INSERT INTO warns (warn_id,user_id, guild_id, modo_id, warn_date,raison) VALUES (?,?,?,?,?,?)",warn_id,person.id,interaction.member.guild.id,interaction.member.id,new Date(),raison, (err) => {if (err) console.log(err)})
+            db.query("INSERT INTO warns (warn_id,user_id, guild_id, modo_id, warn_date,raison) VALUES (?,?,?,?,?,?)", [warn_id,person.id,interaction.member.guild.id,interaction.member.id,new Date(),raison], (err) => {if (err) console.log(err)})
             const win = new EmbedBuilder()
                 .setColor('#2f3136')
                 .setDescription(`<a:LMT_arrow:1065548690862899240> **${person} a été averti !**`)
@@ -24,7 +25,7 @@ module.exports = {
             try {
                 person.send({content:`Tu as été averti pour la raison suivante :\n\n> \`${raison}\``});
             } catch (e) {
-                console.log(e);
+                console.log("Warn user add -> ", e);
             }
         })
     }

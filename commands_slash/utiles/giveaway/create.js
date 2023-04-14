@@ -1,10 +1,10 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType} = require("discord.js");
 const schedule = require("node-schedule")
 
 module.exports = {
     async execute(interaction, db, date, client) {
         let channel = interaction.options.getChannel('channel')
-        if (channel.type !== "GUILD_TEXT") {
+        if (channel.type !== ChannelType.GuildText) {
             const fail = new EmbedBuilder()
                 .setColor('#2f3136')
                 .setDescription('<a:LMT_arrow:1065548690862899240> **Le salon doit être __textuel__ !**')
@@ -24,7 +24,7 @@ module.exports = {
             if (x === 'd') {day = time.replace(/[^0-9]/g, '');time ="";if (day=="") return interaction.reply({embeds:[failTime],ephemeral:true});continue}
             if (x === "h") {heure = time.replace(/[^0-9]/g, '');time="";if (heure=="") return interaction.reply({embeds:[failTime],ephemeral:true});continue}
             if (x === "m") {minute = time.replace(/[^0-9]/g, '');time="";if (minute=="") return interaction.reply({embeds:[failTime],ephemeral:true});continue}
-            time += x
+            time += x;
         }
         if (time != "") return interaction.reply({embeds:[failTime],ephemeral:true})
         if (day>0) dateFin.setDate(dateFin.getDate() + parseInt(day));
@@ -51,7 +51,7 @@ module.exports = {
             )
         const All = new EmbedBuilder()
         .setColor('#2f3136')
-        .setDescription(`<a:LMT_arrow:1065548690862899240> **Tout est bon pour toi ?**\n\n<:LMT__point:879168876968026173> __Salon__ : ${channel}\n<:LMT__point:879168876968026173> __Le__ : <t:${Math.round(+dateFin/1000)}>\n<:LMT__point:879168876968026173> __Gagnants__ : ${winners}\n<:LMT__point:879168876968026173> __Récompense__ : ${prize}`)
+        .setDescription(`<a:LMT_arrow:1065548690862899240> **Tout est bon pour toi ?**\n\n> **Salon** : ${channel}\n> **Date de fin** : <t:${Math.round(+dateFin/1000)}>\n> **Gagnants** : ${winners}\n> **Récompense** : ${prize}`)
         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         await interaction.deferReply();
         interaction.editReply({embeds:[All],components:[row]}).then(msg => {
@@ -95,16 +95,17 @@ module.exports = {
                             .setDescription(`Organisé par ${interaction.member}\n\n**Fin le :** <t:${Math.round(+dateFin/1000)}>\n\n**Nombre de gagnant(s) :** ${winners}\n\n**Récompense :** ${prize}\n\n**Nombre de participant(s) :** 0`)
                             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                         const msggiveaway = await channel.send({embeds:[giveaway],components:[row]})
-                        db.run('INSERT INTO giveaways(message_id,channel_id,winners,prize,duration,hostedBy,past,guild_id) VALUES (?,?,?,?,?,?,?,?)',msggiveaway.id,msggiveaway.channel.id,winners,prize,Math.round(+dateFin/1000),interaction.member.user.id,false,interaction.member.guild.id, err => {if (err) console.log(err)})
+                        db.query('INSERT INTO giveaways(message_id,channel_id,winners,prize,duration,hostedBy,past,guild_id) VALUES (?,?,?,?,?,?,?,?)', [msggiveaway.id,msggiveaway.channel.id,winners,prize,Math.round(+dateFin/1000),interaction.member.user.id,false,interaction.member.guild.id], err => {if (err) console.log("giveaway -> ", err)})
                         new schedule.scheduleJob(dateFin, async function() {
-                            db.get('SELECT * FROM giveaways WHERE message_id = ?',msggiveaway.id, async (err, res) => {
-                                if (!res) return
+                            db.query('SELECT * FROM giveaways WHERE message_id = ?',msggiveaway.id, async (err, res) => {
+                                if (res.length === 0) return;
+                                res = res[0];
                                 if (res.past === 1) {
                                     let fin = new Date(res.duration * 1000)
                                     fin.setDate(fin.getDate() + 1);
                                     new schedule.scheduleJob(fin, async function() {
-                                        db.run('DELETE FROM giveaways WHERE message_id = ?',result.message_id, (err) => {
-                                            if (err) console.log(err)
+                                        db.query('DELETE FROM giveaways WHERE message_id = ?', result.message_id, (err) => {
+                                            if (err) console.log("delete giveaways -> ", err)
                                         })
                                     })
                                     return
@@ -140,13 +141,13 @@ module.exports = {
                                     gagnants.length > 1 ? gagne = 'gagnent' : gagne = 'gagne'
                                     msg.reply({content:`<a:LMT_fete2:911791997428334622> **<@${gagnants.join('>, <@')}> ${gagne} ${res.prize} ! Félicitations !** <a:LMT_fete2:911791997428334622>`})
                                 }
-                                db.run('UPDATE giveaways SET past = ? WHERE message_id = ?',true,res.message_id, err => {
+                                db.query('UPDATE giveaways SET past = ? WHERE message_id = ?', [true,res.message_id], err => {
                                     if (err) console.log(err)
                                 })
                                 let fin = new Date(res.duration * 1000)
                                 fin.setDate(fin.getDate() + 1);
                                 new schedule.scheduleJob(fin, async function() {
-                                    db.run('DELETE FROM giveaways WHERE message_id = ?',res.message_id, (err) => {
+                                    db.query('DELETE FROM giveaways WHERE message_id = ?',res.message_id, (err) => {
                                         if (err) console.log(err)
                                     })
                                 })

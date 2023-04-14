@@ -2,9 +2,9 @@ const { EmbedBuilder, PermissionsBitField, ActionRowBuilder, ButtonBuilder, Butt
 
 module.exports = {
     async execute(interaction, db, date) {
-        db.get('SELECT * FROM privateroom WHERE guild_id = ? AND channel_id = ?', interaction.member.guild.id, interaction.member.voice.channelId, async (err, res) => {
+        db.query('SELECT * FROM privateroom WHERE guild_id = ? AND channel_id = ?', [interaction.member.guild.id, interaction.member.voice.channelId], async (err, res) => {
             if (err) {return console.log(err);}
-            if (!res) {
+            if (res.length === 0) {
                 const fail = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription('<a:LMT_arrow:1065548690862899240> **Vous n\'etes pas dans un salon privé**')
@@ -15,6 +15,7 @@ module.exports = {
             let permissions = channel.permissionsFor(interaction.member);
             if (permissions.has(PermissionsBitField.Flags.ManageChannels)) {
                 let name = interaction.options.getString('name');
+                if (name.length > 100) name = name.slice(0, 100);
                 channel.setName(name);
                 const win = new EmbedBuilder()
                     .setColor('#2f3136')

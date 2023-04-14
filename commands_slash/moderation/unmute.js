@@ -18,8 +18,8 @@ module.exports = {
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({ embeds : [fail],ephemeral : true});
         }
-        db.get("SELECT mute_id FROM servers WHERE guild_id = ?",interaction.member.guild.id, async(err, res) => {
-            if (err || !res) {
+        db.query("SELECT mute_id FROM servers WHERE guild_id = ?", interaction.member.guild.id, async(err, res) => {
+            if (err) {
                 console.error(error);
                 const echec = new EmbedBuilder()
                     .setColor('#2f3136')
@@ -27,10 +27,10 @@ module.exports = {
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 await interaction.reply({ embeds:[echec], ephemeral: true });
             }
+            if (res.length === 0) return;
+            res = res[0];
             let mute;
-            if (res.mute_id !== null) {
-                mute = await interaction.member.guild.roles.cache.find(x => x.id === res.mute_id);
-            }
+            if (res.mute_id !== null) mute = await interaction.member.guild.roles.cache.find(x => x.id === res.mute_id);
             if (!mute) {
                 const fail = new EmbedBuilder()
                     .setColor('#2f3136')

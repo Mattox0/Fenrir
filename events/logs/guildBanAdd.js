@@ -1,26 +1,33 @@
-const { EmbedBuilder, PermissionsBitField } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField, AuditLogEvent } = require("discord.js");
 
 module.exports = {
 	name: 'guildBanAdd',
 	async execute(...params) {
-        let Member = params[0];
+        let member = params[0];
         let db = params[1];
         let date = new Date();
-        db.get("SELECT guildBanAdd, logs_id FROM logs WHERE guild_id = ?",Member.guild.id, async (err, res) => {
+        db.query("SELECT guildBanAdd, logs_id FROM logs WHERE guild_id = ?", member.guild.id, async (err, res) => {
             if (err) {return console.log(err) }
-            if (!res) return;
+            if (res.length === 0) return;
+            res = res[0];
             if (res.guildBanAdd) {
-                let chann = await Member.guild.channels.cache.find(x => x.id === res.logs_id);
+                let chann = await member.guild.channels.cache.find(x => x.id === res.logs_id);
                 if (!chann) return;
-                const fetchedLogs = await Member.guild.fetchAuditLogs({
+                const fetchedLogs = await member.guild.fetchAuditLogs({
                     limit: 1,
-                    type: 'MEMBER_BAN_ADD',
+                    type: AuditLogEvent.MemberBanAdd,
                 });
                 const banLog = fetchedLogs.entries.first();
+                time = Math.abs(date - member.joinedTimestamp);
+                let nbTime = `${Math.floor(time / (1000))} secondes`;
+                if (Math.floor(time / (1000)) > 1) nbTime = `${Math.floor(time / (1000))} secondes`;
+                if (Math.floor(time / (1000*60)) > 1) nbTime = `${Math.floor(time / (1000*60))} minutes`;
+                if (Math.floor(time / (1000*60*60)) > 1) nbTime = `${Math.floor(time / (1000*60*60))} heures` ;
+                if(Math.floor(time / (1000*60*60*24)) > 1) nbTime = `${Math.floor(time / (1000*60*60*24))} jours`;
                 if (!banLog) {
                     const event = new EmbedBuilder()
                         .setColor('#2f3136')
-                        .setDescription(`<a:LMT_arrow:1065548690862899240> **${Member} a été banni** !\n\n**ID** : ${Member.id}\n\n**Date :** <t:${Math.ceil(date / 1000)}:F>`)
+                        .setDescription(`<a:LMT_arrow:1065548690862899240> **${member} a été banni** !\n\n**Membre depuis** : ${nbTime}\n\n**ID** : ${member.id}\n\n**Date :** <t:${Math.ceil(date / 1000)}:F>`)
                         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return chann.send({embeds:[event]});
                 } else {
@@ -28,7 +35,7 @@ module.exports = {
                         .setColor('#2f3136')
                         .setThumbnail(banLog.executor.displayAvatarURL({dynamic:true}))
                         .setAuthor({name:`${banLog.executor.username}#${banLog.executor.discriminator}`, iconURL:`${banLog.executor.displayAvatarURL()}`})
-                        .setDescription(`<a:LMT_arrow:1065548690862899240> **${Member.user} a été banni par ${banLog.executor}** !\n\n**ID** : ${Member.user.id}\n\n**Date :** <t:${Math.ceil(date / 1000)}:F>`)
+                        .setDescription(`<a:LMT_arrow:1065548690862899240> **${member.user} a été banni par ${banLog.executor}** !\n\n**Membre depuis** : ${nbTime}\n\n**ID** : ${member.user.id}\n\n**Date :** <t:${Math.ceil(date / 1000)}:F>`)
                         .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                     return chann.send({embeds:[event]});
                 }

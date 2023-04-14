@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionsBitField } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField, AuditLogEvent } = require("discord.js");
 
 module.exports = {
 	name: 'threadDelete',
@@ -6,15 +6,16 @@ module.exports = {
         let thread = params[0];
         let db = params[1];
         let date = new Date()
-        db.get("SELECT threadDelete, logs_id FROM logs WHERE guild_id = ?",thread.guild.id, async (err, res) => {
+        db.query("SELECT threadDelete, logs_id FROM logs WHERE guild_id = ?", thread.guild.id, async (err, res) => {
             if (err) {return console.log(err) }
-            if (!res) return;
+            if (res.length === 0) return;
+            res = res[0];
             if (res.threadDelete) {
                 let chann = await thread.guild.channels.cache.find(x => x.id === res.logs_id);
                 if (!chann) return;
                 const fetchedLogs = await thread.guild.fetchAuditLogs({
                     limit: 1,
-                    type: 'THREAD_DELETE',
+                    type: AuditLogEvent.ThreadDelete,
                 });
                 const deletionLog = fetchedLogs.entries.first();
                 if (!deletionLog) {

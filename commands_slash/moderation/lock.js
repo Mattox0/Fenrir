@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { EmbedBuilder,  PermissionsBitField } = require("discord.js");
+const { EmbedBuilder,  PermissionsBitField, ChannelType } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -21,9 +21,9 @@ module.exports = {
         let raison = interaction.options.getString('raison');
         if (!raison) raison = "Aucune raison spécifiée !";
         let channel = interaction.options.getChannel('channel');
-        if (!channel) channel = interaction.message.channel;
+        if (!channel) channel = interaction.member.guild.channels.cache.find(x => x.id === interaction.channelId);
         else {
-            if (channel.type !== 'GUILD_TEXT') {
+            if (channel.type !== ChannelType.GuildText) {
                 const fail = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription('<a:LMT_arrow:1065548690862899240> **Le salon doit être textuel !**')
@@ -31,15 +31,15 @@ module.exports = {
                 return interaction.reply({embeds:[fail],ephemeral:true});
             }
         }
-        channel.permissionOverwrites.edit(interaction.member.guild.id, {SEND_MESSAGES:false});
+        channel.permissionOverwrites.edit(interaction.member.guild.id, { SendMessages : false });
         const lock = new EmbedBuilder()
             .setColor('#2f3136')
             .setDescription(`<a:LMT_arrow:1065548690862899240> **${channel} à été verrouillé**\n\n*Si cette commande ne marche pas, vérifiez vos permissions*`)
             .setThumbnail('https://media.discordapp.net/attachments/883117525842423898/920759073614495785/1f512.png')
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             .addFields(
-                { name: `Raison`,value:`${raison}`,inline : true },
-                { name: `Modérateur`,value:`${interaction.member}`,inline : true},
+                { name: `Raison`, value:`${raison}`, inline : true },
+                { name: `Modérateur`, value:`${interaction.member}`, inline : true},
             )
         return interaction.reply({ embeds : [lock]});
     }

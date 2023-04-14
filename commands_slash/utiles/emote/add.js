@@ -24,8 +24,8 @@ module.exports = {
             if (count != 2) continue
             id += x
         }
-        if (emote.startsWith('<:')) emoji = await interaction.member.guild.emojis.create(`https://cdn.discordapp.com/emojis/${id}.png`, nom).catch((err) => {console.log(err);return interaction.reply({embeds:[fail], ephemeral:true})});
-        else emoji = await interaction.member.guild.emojis.create(`https://cdn.discordapp.com/emojis/${id}.gif`, nom).catch((err) => {console.log(err);return interaction.reply({embeds:[fail], ephemeral:true})});
+        if (emote.startsWith('<:')) emoji = await interaction.member.guild.emojis.create({ attachment: `https://cdn.discordapp.com/emojis/${id}.png`, name: nom}).catch((err) => {console.log(err);return interaction.reply({embeds:[fail], ephemeral:true})});
+        else emoji = await interaction.member.guild.emojis.create({ attachment: `https://cdn.discordapp.com/emojis/${id}.gif`, name: nom}).catch((err) => {console.log(err);return interaction.reply({embeds:[fail], ephemeral:true})});
         const win = new EmbedBuilder()
             .setColor('#2f3136')
             .setDescription(`<a:LMT_arrow:1065548690862899240> **L'emoji** ${emoji} **a bien été ajouté !**`)

@@ -1,9 +1,9 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, ChannelType } = require("discord.js");
 
 module.exports = {
     async execute(interaction, db, date) {
         let chann = interaction.options.getChannel('channel');
-        if (chann.type !== 'GUILD_TEXT') {
+        if (chann.type !== ChannelType.GuildText) {
             const fail = new EmbedBuilder()
                 .setColor('#2f3136')
                 .setDescription('<a:LMT_arrow:1065548690862899240> **Le salon doit être __textuel__**')
@@ -34,19 +34,19 @@ module.exports = {
         let threadCreate = interaction.options.getBoolean('thread') === false ? false : true;
         let threadDelete = threadCreate
 
-        db.run('UPDATE servers SET logs_id = ? WHERE guild_id = ?', chann.id, interaction.member.guild.id, (err) => {if (err) console.log(err)});
-        db.get("SELECT * FROM logs WHERE guild_id = ?",interaction.member.guild.id, (err, res) => {
+        db.promise().query('UPDATE servers SET logs_id = ? WHERE guild_id = ?', [chann.id, interaction.member.guild.id], (err) => {if (err) console.log(err)});
+        db.query("SELECT * FROM logs WHERE guild_id = ?", interaction.member.guild.id, (err, res) => {
             if (err) {return console.log(err)}
-            if (!res) {
-                db.run("INSERT INTO logs (guild_id, logs_id,channelCreate,channelDelete,channelUpdate,messageDelete,messageUpdate,roleCreate,roleDelete,roleUpdate,emojiCreate,emojiDelete,emojiUpdate,voiceStateUpdate,guildMemberUpdate,guildMemberRemove,guildBanAdd,guildBanRemove,inviteCreate,inviteDelete,guildMemberAdd,stickerCreate,stickerDelete,threadCreate,threadDelete) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",interaction.member.guild.id,chann.id,channelCreate,channelDelete,channelUpdate,messageDelete,messageUpdate,roleCreate,roleDelete,roleUpdate,emojiCreate,emojiDelete,emojiUpdate,voiceStateUpdate,guildMemberUpdate,guildMemberRemove,guildBanAdd,guildBanRemove,inviteCreate,inviteDelete,guildMemberAdd,stickerCreate,stickerDelete,threadCreate,threadDelete, (err, res) => {if (err) console.log(err)});
+            if (res.length === 0) {
+                db.query("INSERT INTO logs (guild_id, logs_id,channelCreate,channelDelete,channelUpdate,messageDelete,messageUpdate,roleCreate,roleDelete,roleUpdate,emojiCreate,emojiDelete,emojiUpdate,voiceStateUpdate,guildMemberUpdate,guildMemberRemove,guildBanAdd,guildBanRemove,inviteCreate,inviteDelete,guildMemberAdd,stickerCreate,stickerDelete,threadCreate,threadDelete) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [interaction.member.guild.id,chann.id,channelCreate,channelDelete,channelUpdate,messageDelete,messageUpdate,roleCreate,roleDelete,roleUpdate,emojiCreate,emojiDelete,emojiUpdate,voiceStateUpdate,guildMemberUpdate,guildMemberRemove,guildBanAdd,guildBanRemove,inviteCreate,inviteDelete,guildMemberAdd,stickerCreate,stickerDelete,threadCreate,threadDelete], (err, res) => {if (err) console.log(err)});
             } else {
-                db.run("UPDATE logs SET logs_id = ?,channelCreate = ?,channelDelete = ?,channelUpdate = ?,messageDelete = ?,messageUpdate = ?,roleCreate = ?,roleDelete = ?,roleUpdate = ?,emojiCreate = ?,emojiDelete = ?,emojiUpdate = ?,voiceStateUpdate = ?,guildMemberUpdate = ?,guildMemberRemove = ?,guildBanAdd = ?,guildBanRemove = ?,inviteCreate = ?,inviteDelete = ?,guildMemberAdd = ?,stickerCreate = ?,stickerDelete = ?,threadCreate = ?,threadDelete = ? WHERE guild_id = ?",chann.id,channelCreate,channelDelete,channelUpdate,messageDelete,messageUpdate,roleCreate,roleDelete,roleUpdate,emojiCreate,emojiDelete,emojiUpdate,voiceStateUpdate,guildMemberUpdate,guildMemberRemove,guildBanAdd,guildBanRemove,inviteCreate,inviteDelete,guildMemberAdd,stickerCreate,stickerDelete,threadCreate,threadDelete, interaction.member.guild.id, (err, res) => {if (err) console.log(err)});
+                db.query("UPDATE logs SET logs_id = ?,channelCreate = ?,channelDelete = ?,channelUpdate = ?,messageDelete = ?,messageUpdate = ?,roleCreate = ?,roleDelete = ?,roleUpdate = ?,emojiCreate = ?,emojiDelete = ?,emojiUpdate = ?,voiceStateUpdate = ?,guildMemberUpdate = ?,guildMemberRemove = ?,guildBanAdd = ?,guildBanRemove = ?,inviteCreate = ?,inviteDelete = ?,guildMemberAdd = ?,stickerCreate = ?,stickerDelete = ?,threadCreate = ?,threadDelete = ? WHERE guild_id = ?", [chann.id,channelCreate,channelDelete,channelUpdate,messageDelete,messageUpdate,roleCreate,roleDelete,roleUpdate,emojiCreate,emojiDelete,emojiUpdate,voiceStateUpdate,guildMemberUpdate,guildMemberRemove,guildBanAdd,guildBanRemove,inviteCreate,inviteDelete,guildMemberAdd,stickerCreate,stickerDelete,threadCreate,threadDelete, interaction.member.guild.id], (err, res) => {if (err) console.log(err)});
             }
             const win = new EmbedBuilder()
                 .setColor('#2f3136')
                 .setDescription(`<a:LMT_arrow:1065548690862899240> **Le système de logs est maintenant actif\ndans le salon** ${chann}`)
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({embeds:[win]});
-        }) 
+        })
     }
 }

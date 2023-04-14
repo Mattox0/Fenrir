@@ -1,0 +1,9 @@
+{
+    "token":"{ INSERT-TOKEN-HERE }",
+    "mysql": {
+        "host": "localhost",
+        "user": "root",
+        "password": "root",
+        "database": "bot"
+    }
+}

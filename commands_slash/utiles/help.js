@@ -59,11 +59,6 @@ module.exports = {
                             description: 'Affichez vos animaux favoris',
                             value: 'animals',
                         },{
-                            label: 'Activitées',
-                            emoji:'📡',
-                            description: 'Lancez les activitées de Discord',
-                            value: 'activity',
-                        },{
                             label: 'Fun',
                             emoji:'🎉',
                             description: 'Toutes les commandes amusantes',

@@ -18,11 +18,6 @@ module.exports = {
 		commands.push(command.data.toJSON());
 		
 		const localCommands = [];
-		const localFiles = fs.readdirSync("./local").filter(file => file.endsWith('.js'))
-		for (const file of localFiles) {
-			const localCommand = require(`./local/${file}`); 
-			localCommands.push(localCommand.data.toJSON());
-		}
 		
 		const localCommand = require('./commands_slash/games/werewolf.js')
 		localCommands.push(localCommand.data.toJSON());

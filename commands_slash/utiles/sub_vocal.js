@@ -22,7 +22,7 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('add')
-                .setDescription('Donne les permissions à un utilisateur à un salon | Pour qu\'il puisse gérer ou rejoindre')
+                .setDescription('Donne les permissions à un utilisateur à un salon | Pour qu\'il puisse le gérer ou rejoindre')
                 .addUserOption(option => option.setName('utilisateur').setDescription('L\'utilisateur en question').setRequired(true))),
     async execute(...params) {
         let interaction = params[0];

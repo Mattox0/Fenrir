@@ -18,7 +18,7 @@ module.exports = {
             .setDescription('<a:LMT_arrow:1065548690862899240> **Souhaites-tu vraiment supprimer tous les warns du serveur ?**')
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         await interaction.deferReply()
-        interaction.editReply({embeds:[ask],components:[row]}).then(msg => {
+        interaction.editReply({embeds:[ask],components:[row]}).then(async msg => {
             const filter = interraction => interraction.user.id == interaction.member.id && interraction.message.id == msg.id
             const collector = await msg.channel.createMessageComponentCollector({filter, max:1, time:60000})
             collector.on('end', collected => {
@@ -31,7 +31,7 @@ module.exports = {
                 }
                 switch (collected.first().customId) {
                     case 'Oui':
-                        db.run("DELETE FROM warns WHERE guild_id = ?",interaction.member.guild.id, (err) => {if (err) console.log(err)});
+                        db.query("DELETE FROM warns WHERE guild_id = ?",interaction.member.guild.id, (err) => {if (err) console.log(err)});
                         const win = new EmbedBuilder()
                             .setColor('#2f3136')
                             .setDescription(`<a:LMT_arrow:1065548690862899240> **Tous les warns du serveur ont été supprimés !**`)

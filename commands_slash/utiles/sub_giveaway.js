@@ -10,15 +10,15 @@ module.exports = {
                 .setName('create')
                 .setDescription('Crée un giveaways !')
                 .addChannelOption(option => option.setName('channel').setDescription('Salon où ira le giveaways').setRequired(true))
-                .addStringOption(option => option.setName('temps').setDescription('Dans combien de temps se finira votre giveaways ? Exemple : "2d5h" -> 2 jours et 5 heures').setRequired(true))
+                .addStringOption(option => option.setName('temps').setDescription('Dans combien de temps se finira votre giveaways ? Exemple : 2d5h6m -> 2 jours, 5 heures et 6 minutes').setRequired(true))
                 .addStringOption(option => option.setName('récompense').setDescription('Que veux-tu faire gagner ? Exemple : "Un nitro"').setRequired(true))
-                .addIntegerOption(option => option.setName('winners').setDescription('Combien de gagnants ? Exemple : "2" (1 par défaut)').setRequired(false)))
-        .addSubcommand(subcommand => 
+                .addIntegerOption(option => option.setName('winners').setDescription('Combien de gagnants ? Exemple : 2 (1 par défaut)').setRequired(false)))
+        .addSubcommand(subcommand =>
             subcommand
                 .setName('end')
                 .setDescription('Finis un giveaway avant la date de fin')
                 .addStringOption(option => option.setName('message_id').setDescription('l\'ID du message où se situe le giveaway').setRequired(true)))
-        .addSubcommand(subcommand => 
+        .addSubcommand(subcommand =>
             subcommand
                 .setName('reroll')
                 .setDescription('Permet de relancer les résultats du giveaway')

@@ -31,7 +31,6 @@ module.exports = {
             allMessages.push("==== MESSAGES ====")
             allMessages.reverse();
             fs.writeFileSync("./messages.txt",allMessages.join("\n\n"))
-        
             await interaction.reply({content:'Une sauvegarde des messages :',files:["./messages.txt"]});
             fs.unlinkSync("./messages.txt");
         } catch (e) {

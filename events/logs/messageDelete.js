@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, AuditLogEvent } = require("discord.js");
 
 module.exports = {
 	name: 'messageDelete',
@@ -6,15 +6,16 @@ module.exports = {
         let message = params[0];
         let db = params[1];
         let date = new Date()
-        db.get("SELECT messageDelete, logs_id FROM logs WHERE guild_id = ?",message.guild.id, async (err, res) => {
+        db.query("SELECT messageDelete, logs_id FROM logs WHERE guild_id = ?", message.guild.id, async (err, res) => {
             if (err) {return console.log(err) }
-            if (!res) {return}
+            if (res.length === 0) return
+            res = res[0];
             if (res.messageDelete) {
                 let chann = await message.guild.channels.cache.find(x => x.id === res.logs_id);
                 if (!chann) return;
                 const fetchedLogs = await message.guild.fetchAuditLogs({
                     limit: 1,
-                    type: 'MESSAGE_DELETE',
+                    type: AuditLogEvent.MessageDelete,
                 });
                 const deletionLog = fetchedLogs.entries.first();
                 if (message.content === null) return;

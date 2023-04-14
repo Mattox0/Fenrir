@@ -5,8 +5,9 @@ module.exports = {
     async execute(interaction, date, db) {
         let person = interaction.options.getUser('utilisateur');
         person = await interaction.member.guild.members.cache.find(x => x.id === person.id);
-        db.all("SELECT * FROM warns WHERE user_id = ? AND guild_id = ?", person.user.id, interaction.member.guild.id, async (err, res) => {
-            if (!res) {
+        db.query("SELECT * FROM warns WHERE user_id = ? AND guild_id = ?", [person.user.id, interaction.member.guild.id], async (err, res) => {
+            if (err) return console.log(err);
+            if (res.length === 0) {
                 const fail = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription(`<a:LMT_arrow:1065548690862899240> **${person} n'a aucun warn !**`)

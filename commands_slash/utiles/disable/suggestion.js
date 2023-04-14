@@ -2,10 +2,10 @@ const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
     async execute(interaction, db, date) {
-        db.get("SELECT * FROM servers WHERE guild_id = ?", interaction.member.guild.id, async (err, res) => {
+        db.query("SELECT * FROM servers WHERE guild_id = ?", interaction.member.guild.id, async (err, res) => {
             if (err) return console.log(err);
-            if (!res) return;
-            db.run("UPDATE servers SET suggestion_id = ? WHERE guild_id = ?", null, interaction.member.guild.id, (err) => {if (err) console.log(err)});
+            if (res.length === 0) return;
+            db.query("UPDATE servers SET suggestion_id = ? WHERE guild_id = ?", [null, interaction.member.guild.id], (err) => {if (err) console.log(err)});
             const win = new EmbedBuilder()
                 .setColor('#2f3136')
                 .setDescription('<a:LMT_arrow:1065548690862899240> **Le système de suggestion a été désactivé**')

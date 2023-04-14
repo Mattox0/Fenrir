@@ -1,4 +1,8 @@
 {
+  "name": "bot",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "@discordjs/builders": "^1.4.0",
     "@discordjs/rest": "^1.5.0",
@@ -14,6 +18,7 @@
     "jsdom": "^18.1.1",
     "mathjs": "^10.6.4",
     "moment": "^2.29.4",
+    "mysql2": "^3.1.1",
     "node-fetch": "^2.6.8",
     "node-schedule": "^2.1.1",
     "nvm": "0.0.4",

@@ -2,16 +2,16 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("d
 
 module.exports = {
     async execute(interaction, db, date, client) {
-        db.all('SELECT * FROM giveaways WHERE guild_id = ? AND past = ?',interaction.member.guild.id,false, async (err, res) => {
+        db.query('SELECT * FROM giveaways WHERE guild_id = ? AND past = ?', [interaction.member.guild.id,false], async (err, res) => {
             if (err) return console.log(err);
-            if (!res) {
+            if (res.length === 0) {
                 const fail = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription('<a:LMT_arrow:1065548690862899240> **Il n\'y a aucun giveaway actif dans votre serveur**')
                     .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 return interaction.reply({embeds:[fail]})
             }
-            let description = []
+            let description = [];
             let countDesc = 0;
             let countPage = 1;
             let pages = [];

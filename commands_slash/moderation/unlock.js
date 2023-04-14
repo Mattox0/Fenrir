@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { EmbedBuilder,  PermissionsBitField } = require("discord.js");
+const { EmbedBuilder,  PermissionsBitField, ChannelType } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -8,6 +8,7 @@ module.exports = {
         .addChannelOption(option => option.setName('channel').setDescription('le salon a déverrouiller | Si vous ne mettez rien, ce sera le salon actuel').setRequired(false)),
     async execute(...params) {
         let interaction = params[0];
+        let date = params[2];
         if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
             const fail = new EmbedBuilder()
                 .setColor('#2f3136')
@@ -17,9 +18,9 @@ module.exports = {
             return interaction.reply({ embeds : [fail],ephemeral : true});
         }
         let channel = interaction.options.getChannel('channel');
-        if (!channel) channel = interaction.message.channel;
+        if (!channel) channel = interaction.member.guild.channels.cache.find(x => x.id === interaction.channelId);
         else {
-            if (channel.type !== 'GUILD_TEXT') {
+            if (channel.type !== ChannelType.GuildText) {
                 const fail = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setDescription('<a:LMT_arrow:1065548690862899240> **Le salon doit être textuel !**')
@@ -27,7 +28,7 @@ module.exports = {
                 return interaction.reply({embeds:[fail],ephemeral:true});
             }
         }
-        channel.permissionOverwrites.edit(interaction.member.guild.id, {SEND_MESSAGES:true});
+        channel.permissionOverwrites.edit(interaction.member.guild.id, { SendMessages : true });
         const unlock = new EmbedBuilder()
             .setColor('#2f3136')
             .setDescription(`<a:LMT_arrow:1065548690862899240> **${channel} à été déverrouillé par ${interaction.member}**\n\n*Si cette commande ne marche pas, vérifiez vos permissions*`)

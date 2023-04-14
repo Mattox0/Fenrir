@@ -4,7 +4,7 @@ module.exports = {
 	name: 'guildCreate',
 	async execute(guild,client,Config,db) {
         let date = new Date();
-        db.run('INSERT INTO servers (guild_id) VALUES (?)',guild.id, (err) => {if (err) return console.log(err)})
+        db.query('INSERT INTO servers (guild_id) VALUES (?)', guild.id, (err) => {if (err) return console.log(err)})
         let chann = guild.channels.cache.find(x => x.id === guild.systemChannelId);
         const bvn = new EmbedBuilder()
             .setColor('#2f3136')

@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionsBitField } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField, AuditLogEvent } = require("discord.js");
 
 module.exports = {
 	name: 'emojiCreate',
@@ -6,15 +6,16 @@ module.exports = {
         let emoji = params[0];
         let db = params[1];
         let date = new Date()
-        db.get("SELECT emojiCreate, logs_id FROM logs WHERE guild_id = ?",emoji.guild.id, async (err, res) => {
-            if (err) {return console.log(err) }
-            if (!res) return
+        db.query("SELECT emojiCreate, logs_id FROM logs WHERE guild_id = ?",emoji.guild.id, async (err, res) => {
+            if (err) return console.log(err)
+            if (res.length === 0) return
+            res = res[0];
             if (res.emojiCreate) {
                 let chann = await emoji.guild.channels.cache.find(x => x.id === res.logs_id);
                 if (!chann) return;
                 const fetchedLogs = await emoji.guild.fetchAuditLogs({
                     limit: 1,
-                    type: 'EMOJI_CREATE',
+                    type: AuditLogEvent.EmojiCreate,
                 });
                 const deletionLog = fetchedLogs.entries.first();
                 if (!deletionLog) {

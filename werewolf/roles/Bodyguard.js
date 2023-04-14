@@ -1,3 +1,4 @@
+const { ChannelType, ButtonStyle } = require("discord.js");
 const Player = require("./Player.js");
 
 class Bodyguard extends Player {
@@ -29,21 +30,22 @@ class Bodyguard extends Player {
         }
         let bodyguardChannel = interaction.guild.channels.cache.find(channel => channel.id === game.config.bodyguardChannelId);
         if (!bodyguardChannel) {
-            bodyguardChannel = await interaction.guild.channels.create("garde-du-corps", {
-                type: "GUILD_TEXT",
+            bodyguardChannel = await interaction.guild.channels.create({
+                name: "garde-du-corps",
+                type: ChannelType.GuildText,
                 parent: game.config.categoryId,
                 permissionOverwrites: [
                     {
                         id: game.config.roleId,
-                        deny: ['VIEW_CHANNEL'],
+                        deny: [ViewChannel],
                     },
                     {
                         id: game.allPlayersRoles.find(role => role.name === "Garde du Corps").idPlayer,
-                        allow: ['VIEW_CHANNEL'],
+                        allow: [ViewChannel],
                     },
                     {
                         id: interaction.guild.roles.everyone,
-                        deny: ['VIEW_CHANNEL'],
+                        deny: [ViewChannel],
                     }
                 ]
             })

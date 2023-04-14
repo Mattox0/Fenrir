@@ -9,7 +9,7 @@ module.exports = {
     async execute(...params) {
         let interaction = params[0];
         let date = params[2];
-        if (!interaction.member.permissions.has(PermissionsBitField.Flags.MANAGE_NICKNAMES)) {
+        if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageNicknames)) {
             const noperm = new EmbedBuilder()
                 .setColor('#2f3136')
                 .setDescription(`<a:LMT_arrow:1065548690862899240> **Désolé tu n'as pas la permission d'utiliser cette commande !**`)
@@ -31,7 +31,7 @@ module.exports = {
         person.setNickname(pseudo2);
         let embed = new EmbedBuilder()
             .setColor('#2f3136')
-            .setDescription(`<a:LMT_arrow:1065548690862899240> **\`${pseudo}\` devient \`${pseudo2}\`**`)
+            .setDescription(`<a:LMT_arrow:1065548690862899240> **\`${pseudo}\` devient \`${pseudo2}\`**\n> ${person}`)
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         return interaction.reply({embeds:[embed]});
     }

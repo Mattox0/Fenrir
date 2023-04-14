@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionsBitField } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField, AuditLogEvent } = require("discord.js");
 
 module.exports = {
 	name: 'roleUpdate',
@@ -7,15 +7,16 @@ module.exports = {
         let newRole = params[1];
         let db = params[2];
         let date = new Date()
-        db.get("SELECT roleUpdate, logs_id FROM logs WHERE guild_id = ?",oldRole.guild.id, async (err, res) => {
+        db.query ("SELECT roleUpdate, logs_id FROM logs WHERE guild_id = ?", oldRole.guild.id, async (err, res) => {
             if (err) {return console.log(err) }
-            if (!res) return;
+            if (res.length === 0) return;
+            res = res[0];
             if (res.roleUpdate) {
                 let chann = await oldRole.guild.channels.cache.find(x => x.id === res.logs_id);
                 if (!chann) return;
                 const fetchedLogs = await oldRole.guild.fetchAuditLogs({
                     limit: 1,
-                    type: 'ROLE_UPDATE',
+                    type: AuditLogEvent.RoleUpdate,
                 });
                 const deletionLog = fetchedLogs.entries.first();
                 let event;
@@ -41,7 +42,7 @@ module.exports = {
                 }
                 if (oldRole.color !== newRole.color) {
                     modif = true
-                    description += `> **Couleur** : \`#${newRole.color.toString(16)}\`\n`
+                    description += `> **Couleur** : \`#${oldRole.color.toString(16)}\` <a:LMT_arrow:1065548690862899240> \`${newRole.color.toString(16)}\`\n`
                 }
                 event.setDescription(description);
                 if (modif) return chann.send({embeds:[event]})

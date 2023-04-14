@@ -17,7 +17,6 @@ module.exports = {
         }
         const emoji = await interaction.member.guild.emojis.cache.find(emoji => emoji.name === nameE);
         if (!emoji) {
-            console.log("coucou")
             if (emote.startsWith('<:')) link = `https://cdn.discordapp.com/emojis/${id}.png`
             if (emote.startsWith('<a:')) link = `https://cdn.discordapp.com/emojis/${id}.gif`
             else {

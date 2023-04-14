@@ -20,15 +20,14 @@ module.exports = {
                 const setup = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setAuthor({name:'⚙️ ・ Setup - Tous les systèmes à installer pour votre serveur'})
-                    .setDescription(`>>> \`/setup anniversaire\` : Un système d'anniversaire complet
-                    \`/setup bumps\` : Un classement des bumps (avec Disboard)
+                    .setDescription(`>>> \`/setup infos\` : Un résumé des systèmes activés ou non 
+                    \`/setup anniversaire\` : Un système d'anniversaire complet
                     \`/setup logs\` : Un système de logs avec choix des parametres
                     \`/setup prison\` : Un système de prison pour aider à la modération
                     \`/setup privateroom\` : Un système de salons vocaux personalisé
                     \`/setup stats\` : Un système de comptage de membres
                     \`/setup suggestion\` : Un système de suggestions
                     \`/setup ticket\` : Un système de ticket
-                    \`/setup infos\` : Un résumé des systèmes activés ou non 
                     `)
                     .setFooter({text:`Choississez une catégorie dans le sélecteur ci-dessous`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 await interaction.message.edit({embeds:[setup]})
@@ -38,7 +37,6 @@ module.exports = {
                     .setColor('#2f3136')
                     .setAuthor({name:'🚫 ・ Disable - Un système pour désactiver les systèmes de setup'})
                     .setDescription(`>>> \`/disable anniversaire\` : Désactive le système d'anniversaire
-                    \`/disable bumps\` : Désactive le comptage et le classement des bumps
                     \`/disable logs\` : Désactive le système de logs 
                     \`/disable prison\` : Désactive le système de prison 
                     \`/disable privateroom\` : Désactive le système de salons vocaux personalisé
@@ -79,13 +77,10 @@ module.exports = {
                 const animals = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setAuthor({name:'🐶 ・ Animaux - Affichez vos animaux favoris'})
-                    .setDescription(`>>> \`/animals axolot\` : Affiche un axolot
-                    \`/animals bird\` : Affiche un oiseau
-                    \`/animals bunny\` : Affiche un lapin
+                    .setDescription(`>>> \`/animals bunny\` : Affiche un lapin
                     \`/animals cat\` : Affiche un chat
                     \`/animals dog\` : Affiche un chien
                     \`/animals duck\` : Affiche un canard
-                    \`/animals elephant\` : Affiche un elephant
                     \`/animals fox\` : Affiche un renard
                     \`/animals kangourou\` : Affiche un kangourou
                     \`/animals koala\` : Affiche un koala
@@ -97,27 +92,27 @@ module.exports = {
                     .setFooter({text:`Choississez une catégorie dans le sélecteur ci-dessous`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 await interaction.message.edit({embeds:[animals]})
                 return interaction.deferUpdate();
-            case 'activity' : 
-                const activity = new EmbedBuilder()
-                    .setColor('#2f3136')
-                    .setAuthor({name:'📡 ・ Activitées - Lancez les activitées de Discord'})
-                    .setDescription(`>>> \`/activity youtube\` : Lance l'activité Youtube Together
-                    \`/activity awkword\` : Lance l'activité Awkword
-                    \`/activity betrayal\` : Lance l'activité Betrayal
-                    \`/activity checkers\` : Lance l'activité Checkers
-                    \`/activity chess\` : Lance l'activité Chess
-                    \`/activity doodlecrew\` : Lance l'activité Doodlecrew
-                    \`/activity fishing\` : Lance l'activité Fishing
-                    \`/activity lettertile\` : Lance l'activité Lettertile
-                    \`/activity poker\` : Lance l'activité Poker
-                    \`/activity puttparty\` : Lance l'activité Puttparty
-                    \`/activity sketchyartists\` : Lance l'activité Sketchyartists
-                    \`/activity spellcast\` : Lance l'activité Spellcast
-                    \`/activity wordsnack\` : Lance l'activité Wordsnack
-                    `)
-                    .setFooter({text:`Choississez une catégorie dans le sélecteur ci-dessous`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
-                await interaction.message.edit({embeds:[activity]})
-                return interaction.deferUpdate();
+            // case 'activity' : 
+            //     const activity = new EmbedBuilder()
+            //         .setColor('#2f3136')
+            //         .setAuthor({name:'📡 ・ Activitées - Lancez les activitées de Discord'})
+            //         .setDescription(`>>> \`/activity youtube\` : Lance l'activité Youtube Together
+            //         \`/activity awkword\` : Lance l'activité Awkword
+            //         \`/activity betrayal\` : Lance l'activité Betrayal
+            //         \`/activity checkers\` : Lance l'activité Checkers
+            //         \`/activity chess\` : Lance l'activité Chess
+            //         \`/activity doodlecrew\` : Lance l'activité Doodlecrew
+            //         \`/activity fishing\` : Lance l'activité Fishing
+            //         \`/activity lettertile\` : Lance l'activité Lettertile
+            //         \`/activity poker\` : Lance l'activité Poker
+            //         \`/activity puttparty\` : Lance l'activité Puttparty
+            //         \`/activity sketchyartists\` : Lance l'activité Sketchyartists
+            //         \`/activity spellcast\` : Lance l'activité Spellcast
+            //         \`/activity wordsnack\` : Lance l'activité Wordsnack
+            //         `)
+            //         .setFooter({text:`Choississez une catégorie dans le sélecteur ci-dessous`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
+            //     await interaction.message.edit({embeds:[activity]})
+            //     return interaction.deferUpdate();
             case 'game' : 
                 const game = new EmbedBuilder()
                     .setColor('#2f3136')
@@ -163,13 +158,15 @@ module.exports = {
                     \`/banlist\` : Affiche la liste des bannis de votre serveur
                     \`/mute <user>\` : Mute un utilisateur
                     \`/unmute <user>\` : Démute un utilisateur
+                    \`/timeout <user>\` : Timeout un utilisateur
                     \`/clear <nb>\` : Supprime un nombre de message
                     \`/lock <channel>\` : Verrouille un salon
                     \`/unlock <channel>\` : Déverouille un salon
                     \`/prison <user>\` : Met un prison un utilisateur en clonant le channel
                     \`/addprison <user>\` : Ajoute un utilisateur en prison
-                    \`/liberate <user>\` : Libere un utilisateur de la prison
+                    \`/save <user>\` : Libere un utilisateur de la prison
                     \`/slowmode <temp> <channel>\` : Règle le slowmode d'un salon
+                    \`/normalise <user>\` : Modifie le pseudo inapproprié d'un utilisateur
                     \`/warn user add <user>\` : Ajoute un warn à un utilisateur
                     \`/warn user remove <user>\` : Retire un warn à un utilisateur
                     \`/warn clear all\` : Efface tous les avertissements du serveur
@@ -184,8 +181,8 @@ module.exports = {
                 const fun = new EmbedBuilder()
                     .setColor('#2f3136')
                     .setAuthor({name:'🎉 ・ Fun - Toutes les commandes amusantes'})
+                    // \`/achievement <texte>\` : Invoque une achievement minecraft
                     .setDescription(`>>> \`/8ball <question>\` : Posez votre question au bot !
-                    \`/achievement <texte>\` : Invoque une achievement minecraft
                     \`/anime <titre>\` : Toutes les informations d'un animé
                     \`/ascii <texte>\` : Affiche votre texte en format ASCII
                     \`/commit\` : Invente un nom de commit {Developper}
@@ -214,9 +211,10 @@ module.exports = {
                     \`/translate <from> <to> <texte>\` : Traduit le texte
                     \`/sugg <text>\` : Crée une suggestion
                     \`/rappel <temps> <raison>\` : Crée un rappel
+                    \`/banner <user>\` : Affiche la bannière de soi ou de quelqu'un
                     \`/pp <user>\` : Affiche la photo de profil de soi ou de quelqu'un
-                    \`/meteo <ville>\` : Affiche la météo d'une ville
-                    \`/poll\` : Crée un sondage avec les question réponses de votre choix
+                    \`/meteo <city>\` : Affiche la météo d'une ville
+                    \`/poll <choix1> <choix2> <etc>\` : Crée un sondage avec les question réponses de votre choix
                     \`/id <user>\` : Affiche l'id de soi ou de quelqu'un
                     \`/help\` : Affiche cette page
                     \`/count <text>\` : Compte le nombre de caractere dans une phrase
@@ -229,31 +227,31 @@ module.exports = {
                     \`/steam random\` : Affiche un jeu aléatoire sur Steam
                     \`/steam search\` : Affiche tous les jeux correspondants a votre recherche
 
-                    \`/emote add\` : Ajoute une emote au serveur
-                    \`/emote delete\` : Supprime une emote du serveur
-                    \`/emote rename\` : Renomme une emote du serveur
-                    \`/emote image\` : Affiche un emoji
+                    \`/emote add <name> <emote>\` : Ajoute une emote au serveur
+                    \`/emote delete <emote>\` : Supprime une emote du serveur
+                    \`/emote rename <name> <name>\` : Renomme une emote du serveur
+                    \`/emote image <emote>\` : Affiche un emoji
                     \`/emote list\` : Liste tous les emojis du serveurs
                     
-                    \`/anniv set\` : Ajoute ta date d'anniversaire
+                    \`/anniv set <MM/JJ>\` : Ajoute ta date d'anniversaire
                     \`/anniv delete\` : Supprime ta date d'anniversaire
-                    \`/anniv show\` : Affiche ta date d'anniversaire
+                    \`/anniv show <user>\` : Affiche ta date d'anniversaire
                     \`/anniv list\` : Affiche la liste des anniversaires
 
                     \`/giveaway create\` : Cree un giveaways
-                    \`/giveaway end\` : Fini un giveaways
-                    \`/giveaway cancel\` : Annule un giveaways
-                    \`/giveaway reroll\` : Relance le choix des gagnants
-                    \`/giveaway count\` : Liste les giveaways actif
+                    \`/giveaway end <id>\` : Fini un giveaways
+                    \`/giveaway cancel <id>\` : Annule un giveaways
+                    \`/giveaway reroll <id>\` : Relance le choix des gagnants
+                    \`/giveaway count <id>\` : Liste les giveaways actif
 
                     \`/interserveur open\` : Lance un code pour un interserveur
                     \`/interserveur join <code>\` : Rejoint l'interserveur
                     \`/interserveur infos\` : Affiche les informations de l'interserveur
 
                     \`/vocal private\` : Met le vocal en privé
-                    \`/vocal add\` : Ajoute un modérateur au vocal privé
-                    \`/vocal limit\` : Ajoute une limite au vocal privé
-                    \`/vocal rename\` : Renomme le nom du salon privé`)
+                    \`/vocal add <user>\` : Ajoute un modérateur au vocal privé
+                    \`/vocal limit <number>\` : Ajoute une limite au vocal privé
+                    \`/vocal rename <name>\` : Renomme le nom du salon privé`)
                     .setFooter({text:`Choississez une catégorie dans le sélecteur ci-dessous`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                 await interaction.message.edit({embeds:[utile]})
                 return interaction.deferUpdate();

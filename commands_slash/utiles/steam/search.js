@@ -27,6 +27,7 @@ module.exports = {
                 .then(response => response.json())
                 .then(async (data) => {
                     let num = `${x.appid}`
+                    if (!data[num].success) return;
                     let name = data[num].data.name.replaceAll(' ', '_');
                     let url = decodeURI(`https://store.steampowered.com/app/${num}/${name}/`)
                     url = encodeURI(url)

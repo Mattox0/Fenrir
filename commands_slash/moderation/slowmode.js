@@ -50,7 +50,7 @@ module.exports = {
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
             return interaction.reply({embeds:[win]})
         } catch(e) {
-            console.log(e);
+            console.log("Slowmode error -> ", e);
         }
     }
 }

@@ -28,7 +28,7 @@ module.exports = {
             .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
         await interaction.deferReply()
         interaction.editReply({embeds:[ask],components:[row]}).then(msg => {
-            const filter = m => m.message.id === msg.id && m.user.id == interaction.member.user.id
+            const filter = m => m.message.id === msg.id && m.user.id == interaction.member.user.id;
             const collector = msg.channel.createMessageComponentCollector({ filter, max:1,time:60000})
             collector.on('end', async collected => {
                 if (!collected.first()) {
@@ -41,21 +41,21 @@ module.exports = {
                 collected.first().deferUpdate(); // évite le chargement infinie de l'intérraction
                 switch (collected.first().customId) {
                     case 'Oui':
-                        db.get("SELECT * FROM anniversaires WHERE user_id = ?",interaction.member.user.id, (err, res) => {
+                        db.query("SELECT * FROM anniversaires WHERE user_id = ?", interaction.member.user.id, (err, res) => {
                             if (err) {console.log(err)}
                             let win = new EmbedBuilder()
                                 .setColor('#2f3136')
                                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
-                            if (!res || res.user_id === null) {
-                                db.run("INSERT INTO anniversaires (user_id,date,guild_id) VALUES (?,?,?)",interaction.member.user.id,dates.join('/'),interaction.member.guild.id, (err) => {if (err) console.log(err)})
-                                win.setDescription(`<a:LMT_arrow:1065548690862899240> **Votre anniversaire a bien été enregistré !** <:LMT_Agg:882250214050775090>`)
+                            if (res.length === 0 || res[0].user_id === null) {
+                                db.query("INSERT INTO anniversaires (user_id,date,guild_id) VALUES (?,?,?)", [interaction.member.user.id,dates.join('/'),interaction.member.guild.id], (err) => {if (err) console.log(err)})
+                                win.setDescription(`<a:LMT_arrow:1065548690862899240> **Votre anniversaire a bien été enregistré !** <:LMT_gg:1081997432986009721>`)
                             } else {
-                                db.run("UPDATE anniversaires SET date = ? WHERE user_id = ?",dates.join('/'),interaction.member.user.id, (err) => {if (err) console.log(err)})
-                                win.setDescription(`<a:LMT_arrow:1065548690862899240> **Votre anniversaire a bien été modifié !** <:LMT_Agg:882250214050775090>`)
+                                db.query("UPDATE anniversaires SET date = ? WHERE user_id = ?", [dates.join('/'),interaction.member.user.id], (err) => {if (err) console.log(err)})
+                                win.setDescription(`<a:LMT_arrow:1065548690862899240> **Votre anniversaire a bien été modifié !** <:LMT_gg:1081997432986009721>`)
                             }
                             return msg.edit({embeds:[win],components:[]});
                         })
-                        break
+                        break;
                     case 'Non':
                         const non = new EmbedBuilder()
                             .setColor('#2f3136')
