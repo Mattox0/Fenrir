@@ -1,7 +1,6 @@
 const fs = require('fs');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const config = require('./config.json');
 
 module.exports = {
 	async build() {
@@ -23,7 +22,7 @@ module.exports = {
 		localCommands.push(localCommand.data.toJSON());
 
 
-		const rest = new REST({ version: '9' }).setToken(config.token);
+		const rest = new REST({ version: '9' }).setToken(process.env.token);
 
 		await rest.put(Routes.applicationGuildCommands('784943061616427018','901980905579643001'), { body: localCommands })
 			.then(() => console.log('--- Commandes LOCALES ont été chargés ✅ ---'))

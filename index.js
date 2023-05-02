@@ -1,12 +1,17 @@
 const { Client, GatewayIntentBits, Partials, Collection } = require("discord.js")
 const client = new Client({ partials: [Partials.Channel, Partials.Message], intents: [ GatewayIntentBits.MessageContent ,GatewayIntentBits.GuildInvites, GatewayIntentBits.GuildBans, GatewayIntentBits.GuildEmojisAndStickers, GatewayIntentBits.GuildMembers, GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildPresences] })
 const fs = require("fs");
-const Config = require("./config.json");
+require('dotenv').config()
 const { createConnection } = require('mysql2');
 const schedule = require('node-schedule');
 require('./deploy_commands').build();
 
-let con = createConnection(Config.mysql);
+let con = createConnection({
+	host: process.env.host,
+	user: process.env.user,
+	password: process.env.password,
+	database: process.env.database
+});
 
 con.connect(err => {
     // Console log if there is an error
@@ -85,7 +90,7 @@ for (const file of eventDiscord) {
     if (event.once) {
         client.once(event.name, (...args) => event.execute(...args,con));
     } else {
-        client.on(event.name, (...args) => event.execute(...args,client,Config,con));
+        client.on(event.name, (...args) => event.execute(...args,client,con));
     }
     console.log(`| ${file} ✅`)
 }
@@ -156,7 +161,7 @@ client.slash_commands.set(command.data.name,command)
 console.log(`| werewolf.js ✅`)
 console.log("--------------------------------\n")
 
-client.login(Config.token);
+client.login(process.env.token);
 
 require('./website/server');
  

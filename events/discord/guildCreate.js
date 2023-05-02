@@ -2,7 +2,7 @@ const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
 	name: 'guildCreate',
-	async execute(guild,client,Config,db) {
+	async execute(guild,client,db) {
         let date = new Date();
         db.query('INSERT INTO servers (guild_id) VALUES (?)', guild.id, (err) => {if (err) return console.log(err)})
         let chann = guild.channels.cache.find(x => x.id === guild.systemChannelId);

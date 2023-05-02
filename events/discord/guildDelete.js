@@ -2,7 +2,7 @@ const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
 	name: 'guildDelete',
-	async execute(guild,client,Config,db) {
+	async execute(guild,client,db) {
         let date = new Date();
         db.query('DELETE FROM servers WHERE guild_id = ?', guild.id, (err) => {if (err) return console.log(err)})
         const bvn = new EmbedBuilder()

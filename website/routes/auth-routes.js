@@ -1,15 +1,14 @@
 const express = require('express');
-const config = require('../../config.json');
 const authClient = require('../modules/auth-client');
 
 const router = express.Router();
 
 router.get('/invite', (req, res) => {
-    res.redirect(`https://discord.com/api/oauth2/authorize?client_id=${config.clientId}&redirect_uri=${config.dashboardURL}/dashboard&response_type=code&scope=bot`);
+    res.redirect(`https://discord.com/api/oauth2/authorize?client_id=${process.env.clientId}&redirect_uri=${process.env.dashboardURL}/dashboard&response_type=code&scope=bot`);
 });
 
 router.get('/login', (req, res) => {
-    res.redirect(`https://discord.com/api/oauth2/authorize?client_id=${config.clientId}&redirect_uri=${config.dashboardURL}/auth&response_type=code&scope=identify%20guilds`);
+    res.redirect(`https://discord.com/api/oauth2/authorize?client_id=${process.env.clientId}&redirect_uri=${process.env.dashboardURL}/auth&response_type=code&scope=identify%20guilds`);
 });
 
 router.get('/auth', async (req, res) => {

@@ -2,11 +2,11 @@ const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
 	name: 'interactionCreate',
-	async execute(interraction,client,Config,db) {
+	async execute(interraction,client,db) {
 		tab = ['giveaways','giveaways_remove','poll','ticket_close','ticket_reopen','ticket_save','ticket_delete','ticket','like_profile','unlike_profile','select_help'];
 		poll = ['poll1','poll2','poll3','poll4','poll5','poll6','poll7','poll8','poll8','poll9']
 		tab.forEach(item => {
-			if (interraction.customId) if (interraction.customId.split('-')[0] === item) {client.events.get(item).execute(interraction,client,Config,db);return};
+			if (interraction.customId) if (interraction.customId.split('-')[0] === item) {client.events.get(item).execute(interraction,client,db);return};
 		});
 		poll.forEach(item => {
 			if (interraction.customId) if (interraction.customId === item) {client.events.get('poll').execute(interraction,client,db);return};
@@ -17,7 +17,7 @@ module.exports = {
 		if (!command) return;
 		let date = new Date();
 		try {
-			await command.execute(interraction,client,date,Config,db);
+			await command.execute(interraction,client,date,db);
 		} catch (error) {
 			console.error(error);
 			const echec = new EmbedBuilder()
