@@ -5,7 +5,7 @@ module.exports = {
         let listemois = ["janvier","février","mars","avril","mai","juin","juillet","aout","septembre","novembre","octobre","décembre"];
         let pages = [];
         let nbpage = 1;
-        db.query('SELECT * FROM anniversaires WHERE guild_id = ?',interaction.member.guild.id, async (err,res) => {
+        db.query('SELECT * FROM anniversaires',interaction.member.guild.id, async (err,res) => {
             if (err) return console.log("[Anniversaire list] =>  ", err);
             if (res.length === 0) {
                 const error = new EmbedBuilder()
@@ -17,7 +17,15 @@ module.exports = {
             count = 0;
             description = "";
             let dates = [];
-            res.forEach(async (item) => {
+            let result = [];
+            await interaction.member.guild.members.cache.forEach(async (member) => {
+                for (let i = 0; i < res.length; i++) {
+                    if (member.id === res[i].user_id) {
+                        result.push(res[i]);
+                    }
+                }
+            })
+            result.forEach(async (item) => {
                 count++;
                 dates = item.date.split('/');
                 description += `<@!${item.user_id}> <a:LMT_arrow:1065548690862899240> **${dates[0]} ${listemois[parseInt(dates[1]) - 1]}**\n\n`;

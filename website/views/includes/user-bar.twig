@@ -1,0 +1,12 @@
+<div class="panel">
+    <div class="panel-guild">
+        <div class="panel-guild-icon" style="background-image: url(https://cdn.discordapp.com/avatars/{{ user._id }}/{{ user._avatarHash }}.png?size=128"></div>
+        <h2 class="panel-guild-name">{{ user.username }}</h2>
+    </div>
+    <div class="panel-nav">
+        <a href="/dashboard/profil" class="panel-nav-item{% if page == 'profil' %} active{% endif %}">
+            <i class="fa-regular fa-user"></i>
+            <span class="panel-nav-name">Profil</span>
+        </a>
+    </div>
+</div>

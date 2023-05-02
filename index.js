@@ -2,7 +2,6 @@ const { Client, GatewayIntentBits, Partials, Collection } = require("discord.js"
 const client = new Client({ partials: [Partials.Channel, Partials.Message], intents: [ GatewayIntentBits.MessageContent ,GatewayIntentBits.GuildInvites, GatewayIntentBits.GuildBans, GatewayIntentBits.GuildEmojisAndStickers, GatewayIntentBits.GuildMembers, GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildPresences] })
 const fs = require("fs");
 const Config = require("./config.json");
-const sqlite3 = require("sqlite3");
 const { createConnection } = require('mysql2');
 const schedule = require('node-schedule');
 require('./deploy_commands').build();
@@ -157,4 +156,17 @@ client.slash_commands.set(command.data.name,command)
 console.log(`| werewolf.js ✅`)
 console.log("--------------------------------\n")
 
-client.login(Config.token)
+client.login(Config.token);
+
+require('./website/server');
+ 
+const getClient = () => {
+    return client;
+}
+
+const getDB = () => {
+    return con;
+}
+
+exports.getClient = getClient
+exports.getDB = getDB

@@ -6,6 +6,7 @@ module.exports = {
             if (err) {return console.log("Event stats -> ", err)}
             for (let res of rows) {
                 let guild = await client.guilds.cache.get(res.guild_id);
+                if (!guild) return;
                 let allMembers = await guild.channels.cache.find(x => x.id === res.stats_id);
                 if (allMembers) {
                     let nb = guild.memberCount;

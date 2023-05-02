@@ -10,9 +10,9 @@ Il est actuellement en développement et utilise discord.js v14.
 
 ### Prérequis
 
-☀️ NodeJS >=v16 `https://nodejs.org/en`
-☀️ npm >=v9
-☀️ Docker `https://www.docker.com/`
+* ☀️ NodeJS >=v16 `https://nodejs.org/en`
+* ☀️ npm >=v9
+* ☀️ Docker `https://www.docker.com/`
 
 ### Installation
 

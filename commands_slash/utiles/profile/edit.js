@@ -96,7 +96,7 @@ module.exports = {
                 .setAuthor({name:`${interaction.member.user.username} ・ ${res.likes.likes.length} ❤️`, iconURL:interaction.member.user.displayAvatarURL({dynamic: true})})
                 .setThumbnail(`${image ? image : interaction.member.user.displayAvatarURL({dynamic: true})}`)
                 .setFooter({text:`${footer ? footer : `LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`}`})
-                .setDescription(`${description ? description : ''}\n\n${ pseudo ? `> \`Pseudo\` <a:LMT_arrow:1065548690862899240> ${pseudo}\n` : ''}${ film ? `> \`Film favoris\` <a:LMT_arrow:1065548690862899240> ${film}\n` : ''}${ musique ? `> \`Style musical\` <a:LMT_arrow:1065548690862899240> ${musique}\n` : ''}${ couleur ? `> \`Couleur favorite\` <a:LMT_arrow:1065548690862899240> ${couleur}\n` : ''}${ repas ? `> \`Repas favoris\` <a:LMT_arrow:1065548690862899240> ${repas}\n` : ''}${adjectifs ? `> \`Personnalité\` <a:LMT_arrow:1065548690862899240> ${adjectifs}` : ''}`)
+                .setDescription(`${description ? description : ''}\n\n${ pseudo ? `> \`Pseudo\` <a:LMT_arrow:1065548690862899240> ${pseudo}\n` : ''}${ film ? `> \`Film favori\` <a:LMT_arrow:1065548690862899240> ${film}\n` : ''}${ musique ? `> \`Style musical\` <a:LMT_arrow:1065548690862899240> ${musique}\n` : ''}${ couleur ? `> \`Couleur favorite\` <a:LMT_arrow:1065548690862899240> ${couleur}\n` : ''}${ repas ? `> \`Plat favori\` <a:LMT_arrow:1065548690862899240> ${repas}\n` : ''}${adjectifs ? `> \`Personnalité\` <a:LMT_arrow:1065548690862899240> ${adjectifs}` : ''}`)
             return interaction.reply({content:`${interaction.member}, **Voici votre nouveau profil :**`,embeds:[view],components:[row]});
         })
     }

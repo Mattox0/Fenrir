@@ -18,7 +18,6 @@ module.exports = {
                 .addStringOption(option => option.setName('footer').setDescription('Ton pied de page').setRequired(false))
                 .addStringOption(option => option.setName('couleur_hexa').setDescription('La couleur du cadre (en hexadécimal)').setRequired(false))
                 .addStringOption(option => option.setName('pseudo').setDescription('Ton pseudo').setRequired(false))
-                .addStringOption(option => option.setName('couleur').setDescription('Ta couleur préféré').setRequired(false))
                 .addStringOption(option => option.setName('film').setDescription('Ton film préféré').setRequired(false))
                 .addStringOption(option => option.setName('musique').setDescription('Ton style de musique').setRequired(false))
                 .addStringOption(option => option.setName('repas').setDescription('Ton plat préféré').setRequired(false))

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Fenrir - Votre bot discord{% endblock %}</title>
+    <link rel="stylesheet" href="/styles/app.css">
+    <link rel="stylesheet" href="/styles/base.css">
+    <script src="https://kit.fontawesome.com/b1839c0da0.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    {% include 'includes/navbar.twig' %}
+    <main>
+        {% block body %}Pas de contenu{% endblock %}
+    </main>
+    {% block javascripts %}{% endblock %}
+</body>
+</html>

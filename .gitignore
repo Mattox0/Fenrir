@@ -1,7 +1,8 @@
 node_modules/
 lmt-bot.db
 config.ex.json
+config.json
 organisation.txt
 .vscode/
 old_command_slash/
-Database/
+/Database

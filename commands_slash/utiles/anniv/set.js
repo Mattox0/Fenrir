@@ -47,7 +47,7 @@ module.exports = {
                                 .setColor('#2f3136')
                                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
                             if (res.length === 0 || res[0].user_id === null) {
-                                db.query("INSERT INTO anniversaires (user_id,date,guild_id) VALUES (?,?,?)", [interaction.member.user.id,dates.join('/'),interaction.member.guild.id], (err) => {if (err) console.log(err)})
+                                db.query("INSERT INTO anniversaires (user_id,date) VALUES (?,?)", [interaction.member.user.id,dates.join('/')], (err) => {if (err) console.log(err)})
                                 win.setDescription(`<a:LMT_arrow:1065548690862899240> **Votre anniversaire a bien été enregistré !** <:LMT_gg:1081997432986009721>`)
                             } else {
                                 db.query("UPDATE anniversaires SET date = ? WHERE user_id = ?", [dates.join('/'),interaction.member.user.id], (err) => {if (err) console.log(err)})
