@@ -1,12 +1,14 @@
-const textareas = document.querySelectorAll('textarea');
+const textareas = document.querySelectorAll('textarea, input[type="text"]');
 
 for (var i = 0; i < textareas.length; i++) {
     textareas[i].addEventListener('input', count, false);
 }
 
 function count(e) {
-    let element = e.target
-    let count = element.nextElementSibling.children[0]
-    let length = element.value.length
-    count.innerHTML = `${length}`
+    const element = e.target;
+	const label = document.querySelector(`label[for='${element.id}']`);
+	if (!label) return;
+	const span = label.querySelector('span');
+	const current = element.value.length;
+	span.innerHTML = `${current}`;
 }

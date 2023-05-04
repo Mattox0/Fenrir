@@ -7,10 +7,10 @@ const schedule = require('node-schedule');
 require('./deploy_commands').build();
 
 let con = createConnection({
-	host: process.env.host,
-	user: process.env.user,
-	password: process.env.password,
-	database: process.env.database
+	host: process.env.mysql_host,
+	user: process.env.mysql_user,
+	password: process.env.mysql_password,
+	database: process.env.mysql_database
 });
 
 con.connect(err => {

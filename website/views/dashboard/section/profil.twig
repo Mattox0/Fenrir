@@ -1,4 +1,5 @@
 <div class="dash-content">
+	<form action="/dashboard/profil" method="post">
     <div class="dash-container child">
         <div class="dash-header">
             <h1 class="dash-title">Profil</h1>
@@ -13,9 +14,9 @@
                         Configurez votre anniversaire, un message sera envoyé lors de votre anniversaire dans vos serveurs ayant activé cette fonctionnalité.
                     </p>
                 </div>
-                <label for="17871819" class="switch-normal">
+                <label for="148211919620" class="switch-normal">
                     <div class="slider round{% if date is not null %} active{% endif %}"></div>
-                    <input id="17871819" type="checkbox" autocomplete="off">
+					<input id="148211919620" type="checkbox" name="birthday" {% if date is not null %}checked{% endif %}>
                 </label>
             </div>
             <div class="dash-parts" style="{% if date is null %}height: 0px; overflow: hidden;{% else %}height: auto; overflow: visible;{% endif %}">
@@ -24,17 +25,17 @@
                         <div class="birthday-day">
                             <h4 class="part-title">Jour</h4>
                             {% if day is not null %}
-                                <input type="text" name="day" maxlength="2" placeholder="{{ day }}">
+                                <input id="584720150435" type="text" name="day" maxlength="2" placeholder="{{ day }}">
                             {% else %}
-                                <input type="text" name="day" maxlength="2" placeholder="JJ">
+                                <input id="584720150435" type="text" name="day" maxlength="2" placeholder="JJ">
                             {% endif %}
                         </div>
                         <div class="birthday-month">
                             <h4 class="part-title">Mois</h4>
                             {% if month is not null %}
-                                <input type="text" name="day" maxlength="2" placeholder="{{ month }}">
+                                <input id="216374929769" type="text" name="day" maxlength="2" placeholder="{{ month }}">
                             {% else %}
-                                <input type="text" name="day" maxlength="2" placeholder="MM">
+                                <input id="216374929769" type="text" name="day" maxlength="2" placeholder="MM">
                             {% endif %}
                         </div>
                     </div>
@@ -51,9 +52,9 @@
                         Configurez votre profil public, il sera disponible avec la commande <code>/profile</code>.
                     </p>
                 </div>
-                <label for="549230473618" class="switch-normal">
+                <label for="666234912102" class="switch-normal">
                     <div class="slider round{% if profile is not null %} active{% endif %}"></div>
-                    <input id="549230473618" type="checkbox" autocomplete="off">
+                    <input name="profile" id="666234912102" type="checkbox" autocomplete="off" {% if profile is not null %}checked{% endif %}>
                 </label>
             </div>
             <div class="dash-parts" style="{% if profile is null %}height: 0px; overflow: hidden;{% else %}height: auto; overflow: visible;{% endif %}">
@@ -62,10 +63,13 @@
                         <h4 class="part-title">Pseudonyme</h4>
                         <div class="input-container">
                         {% if profile.pseudo is not null %}
-                            <input class="dash-input" type="text" name="pseudo" maxlength="32" placeholder="{{ profile.pseudo }}">
+                            <input id="520141303837" class="dash-input" type="text" name="pseudo" maxlength="32" placeholder="{{ profile.pseudo }}">
                         {% else %}
-                            <input class="dash-input" type="text" name="pseudo" maxlength="32" placeholder="Pseudonyme">
+                            <input id="520141303837" class="dash-input" type="text" name="pseudo" maxlength="32" placeholder="Pseudonyme">
                         {% endif %}
+						<label for="520141303837" class="counter">
+							<span class="count">0</span>/32
+						</label>
                         </div>
                     </div>
                     <div class="part rigth">
@@ -76,10 +80,13 @@
                             </div>
                             <div class="input-container color-input">
                                 {% if profile.couleur_hexa is not null %}
-                                    <input class="dash-input" type="text" name="couleur_hexa" maxlength="7" placeholder="{{ profile.couleur_hexa }}">
+                                    <input id="882231459708" class="dash-input" type="text" name="couleur_hexa" maxlength="7" placeholder="{{ profile.couleur_hexa }}">
                                 {% else %}
-                                    <input class="dash-input" type="text" name="couleur_hexa" maxlength="7" placeholder="#ffffff">
+                                    <input id="882231459708" class="dash-input" type="text" name="couleur_hexa" maxlength="7" placeholder="#ffffff">
                                 {% endif %}
+								<label for="882231459708" class="counter">
+									<span class="count">0</span>/7
+								</label>
                             </div>
                         </div>
                     </div>
@@ -87,11 +94,11 @@
                         <h4 class="part-title">Pied de page</h4>
                         <div class="input-container">
                             {% if profile.footer is not null %}
-                                <textarea class="dash-input" id="746589231012" name="footer" maxlength="1200" placeholder="{{ profile.footer }}"></textarea>
+                                <textarea id="637210305697" class="dash-input" name="footer" maxlength="1200" placeholder="{{ profile.footer }}"></textarea>
                             {% else %}
-                                <textarea class="dash-input" id="746589231012" name="footer" maxlength="1200" placeholder="Votre pied de page personalisé"></textarea>
+                                <textarea id="637210305697" class="dash-input" name="footer" maxlength="1200" placeholder="Votre pied de page personalisé"></textarea>
                             {% endif %}
-                            <label for="746589231012" class="counter">
+                            <label for="637210305697" class="counter">
                                 <span class="count">0</span>/1200
                             </label>
                         </div>
@@ -100,56 +107,78 @@
                         <div class="input-container">
                             <h4 class="part-title">Description</h4>
                             {% if profile.description is not null %}
-                                <textarea class="dash-input" id="746589231013" name="description" maxlength="2000" placeholder="{{ profile.description }}"></textarea>
+                                <textarea class="dash-input" id="284186951846" name="description" maxlength="2000" placeholder="{{ profile.description }}"></textarea>
                             {% else %}
-                                <textarea class="dash-input" id="746589231013" name="description" maxlength="2000" placeholder="Votre description personalisé"></textarea>
+                                <textarea class="dash-input" id="284186951846" name="description" maxlength="2000" placeholder="Votre description personalisé"></textarea>
                             {% endif %}
-                            <label for="746589231013" class="counter">
+                            <label for="284186951846" class="counter">
                                 <span class="count">0</span>/2000
                             </label>
                         </div>
                     </div>
                     <div class="part">
                         <h4 class="part-title">Photo de profil</h4>
-                        {% if profile.image is not null %}
-                            <input class="dash-input" type"text" name="image" placeholder="{{ profile.image }}">
-                        {% else %}
-                            <input class="dash-input" type"text" name="image" placeholder="Lien de votre image">
-                        {% endif %}
+							<div class="input-container">
+							{% if profile.image is not null %}
+								<input id="392720167665" class="dash-input " type"text" maxlength="200" name="image" placeholder="{{ profile.image }}">
+							{% else %}
+								<input id="392720167665" class="dash-input" type"text" maxlength="200" name="image" placeholder="Lien de votre image">
+							{% endif %}
+						</div>
                     </div>
                     <div class="part rigth">
                     </div>
                     <div class="part">
                         <h4 class="part-title">Adjectifs</h4>
-                        {% if profile.adjectifs is not null %}
-                            <input class="dash-input" type="text" name="adjectifs" maxlength="100" placeholder="{{ profile.adjectifs }}">
-                        {% else %}
-                            <input class="dash-input" type="text" name="adjectifs" maxlength="100" placeholder="3 adjectifs qui vous concernent">
-                        {% endif %}
+							<div class="input-container">
+							{% if profile.adjectifs is not null %}
+								<input id="921070860283" class="dash-input" type="text" maxlength="250" name="adjectifs" maxlength="100" placeholder="{{ profile.adjectifs }}">
+							{% else %}
+								<input id="921070860283" class="dash-input" type="text" maxlength="250" name="adjectifs" maxlength="100" placeholder="3 adjectifs qui vous concernent">
+							{% endif %}
+							<label for="921070860283" class="counter">
+								<span class="count">0</span>/250
+							</label>
+						</div>
                     </div>
                     <div class="part rigth">
                         <h4 class="part-title">Musique</h4>
-                        {% if profile.musique is not null %}
-                            <input class="dash-input" type="text" name="musique" maxlength="100" placeholder="{{ profile.musique }}">
-                        {% else %}
-                            <input class="dash-input" type="text" name="musique" maxlength="100" placeholder="Votre style musical préféré">
-                        {% endif %}
+							<div class="input-container">
+							{% if profile.musique is not null %}
+								<input id="352879152078" class="dash-input" type="text" name="musique" maxlength="100" placeholder="{{ profile.musique }}">
+							{% else %}
+								<input id="352879152078" class="dash-input" type="text" name="musique" maxlength="100" placeholder="Votre style musical préféré">
+							{% endif %}
+							<label for="352879152078" class="counter">
+								<span class="count">0</span>/100
+							</label>
+						</div>
                     </div>
                     <div class="part">
                         <h4 class="part-title">Repas</h4>
-                        {% if profile.repas is not null %}
-                            <input class="dash-input" type="text" name="repas" maxlength="100" placeholder="{{ profile.repas }}">
-                        {% else %}
-                            <input class="dash-input" type="text" name="repas" maxlength="100" placeholder="Votre repas préféré">
-                        {% endif %}
+							<div class="input-container">
+							{% if profile.repas is not null %}
+								<input id="407308911748" class="dash-input" type="text" name="repas" maxlength="100" placeholder="{{ profile.repas }}">
+							{% else %}
+								<input id="407308911748" class="dash-input" type="text" name="repas" maxlength="100" placeholder="Votre repas préféré">
+							{% endif %}
+							<label for="407308911748" class="counter">
+								<span class="count">0</span>/100
+							</label>
+						</div>
                     </div>
                     <div class="part rigth">
                         <h4 class="part-title">Film</h4>
-                        {% if profile.film is not null %}
-                            <input class="dash-input" type="text" name="film" maxlength="100" placeholder="{{ profile.film }}">
-                        {% else %}
-                            <input class="dash-input" type="text" name="film" maxlength="100" placeholder="Votre film préféré">
-                        {% endif %}
+							<div class="input-container">
+							{% if profile.film is not null %}
+								<input id="707819299871" class="dash-input" type="text" name="film" maxlength="100" placeholder="{{ profile.film }}">
+							{% else %}
+								<input id="707819299871" class="dash-input" type="text" name="film" maxlength="100" placeholder="Votre film préféré">
+							{% endif %}
+							<label for="707819299871" class="counter">
+								<span class="count">0</span>/100
+							</label>
+						</div>
                     </div>
                     <div class="part full">
                         <h4 class="part-title">Prévisualisation</h4>
@@ -169,7 +198,7 @@
                                     </h2>
                                 </div>
                                 <div class="embed">
-                                    <div class="left-bar" style="background-color: {% if profile.couleur_hexa is not null %}#{{ profile.couleur_hexa }}{% else %}#6db1bf{% endif %}"></div>
+                                    <div class="left-bar" embedid="882231459708" style="background-color: {% if profile.couleur_hexa is not null %}#{{ profile.couleur_hexa }}{% else %}#6db1bf{% endif %}"></div>
                                     <div class="embed-content">
                                         <div class="embed-container">
                                             <div class="embed-avatar">
@@ -179,47 +208,47 @@
                                             </div>
                                             <div class="embed-all">
                                                 {% if profile.description is not null %}
-                                                    <p class="embed-description">{{ profile.description }}</p>
+                                                    <p class="embed-description" embedid="284186951846">{{ profile.description }}</p>
                                                 {% else %}
-                                                    <p class="embed-description">Votre description personalisé</p>
+                                                    <p class="embed-description" embedid="284186951846">Votre description personalisé</p>
                                                 {% endif %}
                                                 {% if profile.pseudo is not null %}
-                                                    <p class="embed-pseudo"><span class="code">Pseudo</span> <i class="fr-arrow"></i> {{ profile.pseudo }}</p>
+                                                    <p class="embed-pseudo" embedid="520141303837"><span class="code">Pseudo</span> <i class="fr-arrow"></i> {{ profile.pseudo }}</p>
                                                 {% else %}
-                                                    <p class="embed-pseudo"></p>
+                                                    <p class="embed-pseudo" embedid="520141303837"></p>
                                                 {% endif %}
                                                 {% if profile.film is not null %}
-                                                    <p class="embed-film"><span class="code">Film favori</span> <i class="fr-arrow"></i> {{ profile.film }}</p>
+                                                    <p class="embed-film" embedid="707819299871"><span class="code">Film favori</span> <i class="fr-arrow"></i> {{ profile.film }}</p>
                                                 {% else %}
-                                                    <p class="embed-film"></p>
+                                                    <p class="embed-film" embedid="707819299871"></p>
                                                 {% endif %}
                                                 {% if profile.musique is not null %}
-                                                    <p class="embed-musique"><span class="code">Style musical</span> <i class="fr-arrow"></i> {{ profile.musique }}</p>
+                                                    <p class="embed-musique" embedid="352879152078"><span class="code">Style musical</span> <i class="fr-arrow"></i> {{ profile.musique }}</p>
                                                 {% else %}
-                                                    <p class="embed-musique"></p>
+                                                    <p class="embed-musique" embedid="352879152078"></p>
                                                 {% endif %}
                                                 {% if profile.repas is not null %}
-                                                    <p class="embed-repas"><span class="code">Plat favori</span> <i class="fr-arrow"></i> {{ profile.repas }}</p>
+                                                    <p class="embed-repas" embedid="407308911748"><span class="code">Plat favori</span> <i class="fr-arrow"></i> {{ profile.repas }}</p>
                                                 {% else %}
-                                                    <p class="embed-repas"></p>
+                                                    <p class="embed-repas" embedid="407308911748"></p>
                                                 {% endif %}
                                                 {% if profile.adjectifs is not null %}
-                                                    <p class="embed-adjectifs"><span class="code">Personalité</span> <i class="fr-arrow"></i> {{ profile.adjectifs }}</p>
+                                                    <p class="embed-adjectifs" embedid="921070860283"><span class="code">Personalité</span> <i class="fr-arrow"></i> {{ profile.adjectifs }}</p>
                                                 {% else %}
-                                                    <p class="embed-adjectifs"></p>
+                                                    <p class="embed-adjectifs" embedid="921070860283"></p>
                                                 {% endif %}
                                                 {% if profile.footer is not null %}
-                                                    <p class="embed-footer">{{ profile.footer }}</p>
+                                                    <p class="embed-footer" embedid="637210305697">{{ profile.footer }}</p>
                                                 {% else %}
-                                                    <p class="embed-footer">Votre pied de page personalisé</p>
+                                                    <p class="embed-footer" embedid="637210305697">Votre pied de page personalisé</p>
                                                 {% endif %}
                                             </div>
                                         </div>
                                         <div class="embed-img-container">
                                         {% if profile.picture is not null %}
-                                            <div class="embed-profile-picture" style="background-image: url({{ profile.image }});width: 64px;"></div>
+                                            <div class="embed-image" embedid="392720167665" style="background-image: url({{ profile.image }});width: 64px;"></div>
                                         {% else %}
-                                            <div class="embed-profile-picture"></div>
+                                            <div class="embed-image" embedid="392720167665"></div>
                                         {% endif %}
                                         </div>
                                     </div>
@@ -234,7 +263,9 @@
     <div class="savebar-container">
         <div class="spacer">
             <div id="my-data" style="display:none;">{{ profile|json_encode }}</div>
+            <div id="input-id" style="display:none;">{{ inputs|json_encode }}</div>
         </div>
         {% include 'includes/savebar.twig' %}
     </div>
+	</form>
 </div>

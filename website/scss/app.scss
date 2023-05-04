@@ -477,23 +477,6 @@ main {
                                 width: 6px;
                             }
                         }
-
-                        .counter {
-                            bottom: 12px;
-                            color: #4e4e4e;
-                            cursor: text;
-                            font-size: 13px;
-                            position: absolute;
-                            right: 12px;
-                            -webkit-user-select: none;
-                            -moz-user-select: none;
-                            user-select: none;
-
-                            .count {
-                                color: $fr-blue;
-                                margin-right: 2px;
-                            }
-                        }
                     }
 
                     .dash-previ {
@@ -699,7 +682,7 @@ main {
                                         padding: 10px 10px 0 10px;
                                     }
 
-                                    .embed-profile-picture {
+                                    .embed-image {
                                         height: 64px;
                                         max-width: 64px;
                                         background-size: cover;
@@ -830,8 +813,13 @@ main {
         z-index: 16;
 
         &.open {
-            animation: bounce-in-up 1s;
+            animation: bounce-up 1s;
         }
+
+		&.close {
+			animation: bounce-down 1s;
+			animation-fill-mode: forwards;
+		}
 
         .bar-content {
             background-color: #202225;
@@ -995,8 +983,7 @@ main {
         height: 0.625em;
         margin-right: 0.3em;
         width: 0.625em;
-		
-	    }
+	}
 }
 
 i.fr-arrow {
@@ -1014,6 +1001,23 @@ i.fr-arrow {
 
 button, input {
     overflow: visible;
+}
+
+.counter {
+	bottom: 12px;
+	color: #4e4e4e;
+	cursor: text;
+	font-size: 13px;
+	position: absolute;
+	right: 12px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+
+	.count {
+		color: $fr-blue;
+		margin-right: 2px;
+	}
 }
 
 @keyframes bounce-up {
@@ -1036,6 +1040,21 @@ button, input {
     }
     100% {
         transform: translateZ(0);
+    }
+}
+
+@keyframes bounce-down {
+	0%, 60%, 75%, 90%, 100% {
+        animation-timing-function: cubic-bezier(1,.355,.61,.215);
+    }
+    0% {
+        transform: translate3d(0,0,0);
+    }
+    60% {
+        transform: translate3d(0,-10px,0);
+    }
+    100% {
+        transform: translate3d(0,100px,0);
     }
 }
 

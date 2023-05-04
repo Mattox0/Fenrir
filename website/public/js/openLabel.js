@@ -15,7 +15,6 @@ function open(e) {
         nextElement = e.target.parentNode.parentNode.nextElementSibling
     }
     element.classList.toggle('active')
-    console.log(nextElement)
     if (nextElement.style.height == '0px') {
         nextElement.style.height = `${nextElement.children[0].offsetHeight}px`
         nextElement.style.overflow = `hidden`
