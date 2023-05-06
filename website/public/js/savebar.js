@@ -4,8 +4,8 @@ const profile = JSON.parse(myDataElement.textContent);
 const inputIds = document.getElementById('input-id');
 const allInputs = JSON.parse(inputIds.textContent);
 
-const inputs = document.querySelectorAll('input, textarea, select');
-inputs = Array.from(inputs).filter(element => element.type !== 'submit')
+const inputs = document.querySelectorAll('input:not([type=submit]), textarea, select');
+
 inputs.forEach(element => {
 	element.addEventListener('change', inputOnChange);
 	element.addEventListener('input', inputOnChange);

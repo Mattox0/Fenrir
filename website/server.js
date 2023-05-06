@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const middleware = require('./modules/middleware');
-
+const session = require('express-session')
 const authRoutes = require('./routes/auth-routes');
 const rootRoutes = require('./routes/root-routes');
 const dashboardRoutes = require('./routes/dashboard-routes');
@@ -14,6 +14,12 @@ app.set('view engine', 'twig');
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public/'));
 app.locals.basedir = `${__dirname}/public`
+app.use(session({
+	secret: 'secret',
+	resave: true,
+    saveUninitialized: true,
+	session: []
+}));
 
 app.set("twig options", {
     allowAsync: true

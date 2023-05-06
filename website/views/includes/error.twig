@@ -1,0 +1,9 @@
+<div id="message-error" class="{% if errors|length < 1 %}hidden{% endif %}">
+	<div class="dash-error">
+		<i class="fas fa-exclamation-triangle" style="color: #e30022;"></i>
+		{% for error in errors %}
+			<p>{{ error }}</p>
+		{% endfor %}
+		<i class="fa-solid fa-xmark"></i>
+	</div>
+</div>

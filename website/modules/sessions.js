@@ -41,22 +41,6 @@ function getManageableGuilds(authGuilds) {
   return guilds;
 }
 
-async function getBirthdate(id) {
-  const con = index.getDB();
-  let [date] = await con.promise().query(`SELECT date FROM anniversaires WHERE user_id = ${id}`)
-  if (date.length > 0) return date[0].date;
-  return null;
-}
-
-async function getProfile(id) {
-  const con = index.getDB();
-  let [profile] = await con.promise().query(`SELECT * FROM profile WHERE user_id = ${id}`)
-  if (profile.length > 0) return profile[0];
-  return null;
-}
-
 module.exports.get = get;
 module.exports.update = update;
 module.exports.guild = guild;
-module.exports.getBirthdate = getBirthdate;
-module.exports.getProfile = getProfile;

@@ -1,6 +1,8 @@
 const express = require('express');
 const { validateGuild } = require('../modules/middleware');
 const sessions = require('../modules/sessions');
+const birthdaySession = require('../modules/sessions/birthday');
+const profileSession = require('../modules/sessions/profile');
 
 const router = express.Router();
 
@@ -11,13 +13,15 @@ router.get('/dashboard', (req, res) => {
 });
 
 router.get('/dashboard/profil', async (req, res) => {
+	let errors = req.session.errors || [];
+	req.session.errors = null;
 	let inputs = {};
-    let date = await sessions.getBirthdate(res.locals.user._id);
+    let date = await birthdaySession.getBirthdate(res.locals.user._id);
     let day = date ? date.split('/')[0] : null;
     let month = date ? date.split('/')[1] : null;
-    let profile = await sessions.getProfile(res.locals.user._id);
+    let profile = await profileSession.getProfile(res.locals.user._id) || {description: null,image: null,footer: null, couleur_hexa: null, film: null, musique: null, repas: null, adjectifs: null, pseudo: null, likes: JSON.stringify({likes: []})}
 	profile.birthday = date ? true : false;
-	profile.profile = profile ? true : false;
+	profile.profile = profile.user_id ? true : false;
 	profile.day = day;
 	profile.month = month;
 	ids = [284186951846,392720167665,637210305697,882231459708,707819299871,352879152078,407308911748,921070860283,520141303837,148211919620,666234912102,584720150435,216374929769]
@@ -35,8 +39,23 @@ router.get('/dashboard/profil', async (req, res) => {
         month: month,
         profile: profile,
         profile_likes: profile_likes.length,
-		inputs: inputs
+		inputs: inputs,
+		errors: errors
     });
+});
+
+router.post('/dashboard/profil', async (req, res) => {
+	if (!req.body.birthday) await birthdaySession.deleteBirthday(res.locals.user._id);
+	else {
+		if (!await birthdaySession.isValidBirthday(req.body.day, req.body.month, res.locals.user._id)) {
+			req.session.errors = ['Merci de rentrer une date valide'];
+			return res.redirect('/dashboard/profil');
+		}
+		if (req.body.day && req.body.month) await birthdaySession.updateBirthday(res.locals.user._id, req.body.day, req.body.month);
+	}
+	if (!req.body.profile) await profileSession.deleteProfile(res.locals.user._id);
+	else await profileSession.updateProfile(res.locals.user._id, req.body);
+	res.redirect('/dashboard/profil');
 });
 
 

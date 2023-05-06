@@ -1,6 +1,7 @@
 <div class="dash-content">
-	<form action="/dashboard/profil" method="post">
-    <div class="dash-container child">
+	{% include 'includes/error.twig' %}
+	<form action="/dashboard/profil" class="child" method="post">
+    <div class="dash-container">
         <div class="dash-header">
             <h1 class="dash-title">Profil</h1>
         </div>
@@ -25,17 +26,17 @@
                         <div class="birthday-day">
                             <h4 class="part-title">Jour</h4>
                             {% if day is not null %}
-                                <input id="584720150435" type="text" name="day" maxlength="2" placeholder="{{ day }}">
+                                <input id="584720150435" type="text" name="day" maxlength="2" autocomplete="off" placeholder="{{ day }}">
                             {% else %}
-                                <input id="584720150435" type="text" name="day" maxlength="2" placeholder="JJ">
+                                <input id="584720150435" type="text" name="day" maxlength="2" autocomplete="off" placeholder="JJ">
                             {% endif %}
                         </div>
                         <div class="birthday-month">
                             <h4 class="part-title">Mois</h4>
                             {% if month is not null %}
-                                <input id="216374929769" type="text" name="day" maxlength="2" placeholder="{{ month }}">
+                                <input id="216374929769" type="text" name="month" maxlength="2" autocomplete="off" placeholder="{{ month }}">
                             {% else %}
-                                <input id="216374929769" type="text" name="day" maxlength="2" placeholder="MM">
+                                <input id="216374929769" type="text" name="month" maxlength="2" autocomplete="off" placeholder="MM">
                             {% endif %}
                         </div>
                     </div>
@@ -53,19 +54,19 @@
                     </p>
                 </div>
                 <label for="666234912102" class="switch-normal">
-                    <div class="slider round{% if profile is not null %} active{% endif %}"></div>
-                    <input name="profile" id="666234912102" type="checkbox" autocomplete="off" {% if profile is not null %}checked{% endif %}>
+                    <div class="slider round{% if profile.profile %} active{% endif %}"></div>
+                    <input name="profile" id="666234912102" type="checkbox" autocomplete="off" {% if profile.profile %}checked{% endif %}>
                 </label>
             </div>
-            <div class="dash-parts" style="{% if profile is null %}height: 0px; overflow: hidden;{% else %}height: auto; overflow: visible;{% endif %}">
+            <div class="dash-parts" style="{% if profile.profile %}height: auto; overflow: visible;{% else %}height: 0px; overflow: hidden;{% endif %}">
                 <div class="dash-parts-full">
                     <div class="part">
                         <h4 class="part-title">Pseudonyme</h4>
                         <div class="input-container">
                         {% if profile.pseudo is not null %}
-                            <input id="520141303837" class="dash-input" type="text" name="pseudo" maxlength="32" placeholder="{{ profile.pseudo }}">
+                            <input id="520141303837" class="dash-input" type="text" name="pseudo" maxlength="32" autocomplete="off" placeholder="{{ profile.pseudo }}">
                         {% else %}
-                            <input id="520141303837" class="dash-input" type="text" name="pseudo" maxlength="32" placeholder="Pseudonyme">
+                            <input id="520141303837" class="dash-input" type="text" name="pseudo" maxlength="32" autocomplete="off" placeholder="Pseudonyme">
                         {% endif %}
 						<label for="520141303837" class="counter">
 							<span class="count">0</span>/32
@@ -74,15 +75,15 @@
                     </div>
                     <div class="part rigth">
                         <h4 class="part-title">Couleur (en hexadecimal)</h4>
-                        <div class="color-picker">
+                        <div class="color-picker-container">
                             <div class="color-picker-view" style="border-color: {% if profile.couleur_hexa is not null %}#{{ profile.couleur_hexa }}{% else %}#ffffff{% endif %};color: {% if profile.couleur_hexa is not null %}#{{ profile.couleur_hexa }}{% else %}#ffffff{% endif %};">
                                 <i class="fa-sharp fa-solid fa-brush"></i>
                             </div>
-                            <div class="input-container color-input">
+                            <div class="input-container color-input" style="position: relative;">
                                 {% if profile.couleur_hexa is not null %}
-                                    <input id="882231459708" class="dash-input" type="text" name="couleur_hexa" maxlength="7" placeholder="{{ profile.couleur_hexa }}">
+                                    <input id="882231459708" class="dash-input" type="text" name="couleur_hexa" maxlength="7" autocomplete="off" placeholder="{{ profile.couleur_hexa }}">
                                 {% else %}
-                                    <input id="882231459708" class="dash-input" type="text" name="couleur_hexa" maxlength="7" placeholder="#ffffff">
+                                    <input id="882231459708" class="dash-input" type="text" name="couleur_hexa" maxlength="7" autocomplete="off" placeholder="#ffffff">
                                 {% endif %}
 								<label for="882231459708" class="counter">
 									<span class="count">0</span>/7
@@ -94,9 +95,9 @@
                         <h4 class="part-title">Pied de page</h4>
                         <div class="input-container">
                             {% if profile.footer is not null %}
-                                <textarea id="637210305697" class="dash-input" name="footer" maxlength="1200" placeholder="{{ profile.footer }}"></textarea>
+                                <textarea id="637210305697" class="dash-input" name="footer" maxlength="1200" autocomplete="off" placeholder="{{ profile.footer }}"></textarea>
                             {% else %}
-                                <textarea id="637210305697" class="dash-input" name="footer" maxlength="1200" placeholder="Votre pied de page personalisé"></textarea>
+                                <textarea id="637210305697" class="dash-input" name="footer" maxlength="1200" autocomplete="off" placeholder="Votre pied de page personalisé"></textarea>
                             {% endif %}
                             <label for="637210305697" class="counter">
                                 <span class="count">0</span>/1200
@@ -107,9 +108,9 @@
                         <div class="input-container">
                             <h4 class="part-title">Description</h4>
                             {% if profile.description is not null %}
-                                <textarea class="dash-input" id="284186951846" name="description" maxlength="2000" placeholder="{{ profile.description }}"></textarea>
+                                <textarea class="dash-input" id="284186951846" name="description" maxlength="2000" autocomplete="off" placeholder="{{ profile.description }}"></textarea>
                             {% else %}
-                                <textarea class="dash-input" id="284186951846" name="description" maxlength="2000" placeholder="Votre description personalisé"></textarea>
+                                <textarea class="dash-input" id="284186951846" name="description" maxlength="2000" autocomplete="off" placeholder="Votre description personalisée"></textarea>
                             {% endif %}
                             <label for="284186951846" class="counter">
                                 <span class="count">0</span>/2000
@@ -120,9 +121,9 @@
                         <h4 class="part-title">Photo de profil</h4>
 							<div class="input-container">
 							{% if profile.image is not null %}
-								<input id="392720167665" class="dash-input " type"text" maxlength="200" name="image" placeholder="{{ profile.image }}">
+								<input id="392720167665" class="dash-input " type"text" maxlength="200" name="image" autocomplete="off" placeholder="{{ profile.image }}">
 							{% else %}
-								<input id="392720167665" class="dash-input" type"text" maxlength="200" name="image" placeholder="Lien de votre image">
+								<input id="392720167665" class="dash-input" type"text" maxlength="200" name="image" autocomplete="off" placeholder="Lien de votre image">
 							{% endif %}
 						</div>
                     </div>
@@ -132,9 +133,9 @@
                         <h4 class="part-title">Adjectifs</h4>
 							<div class="input-container">
 							{% if profile.adjectifs is not null %}
-								<input id="921070860283" class="dash-input" type="text" maxlength="250" name="adjectifs" maxlength="100" placeholder="{{ profile.adjectifs }}">
+								<input id="921070860283" class="dash-input" type="text" maxlength="250" name="adjectifs" maxlength="100" autocomplete="off" placeholder="{{ profile.adjectifs }}">
 							{% else %}
-								<input id="921070860283" class="dash-input" type="text" maxlength="250" name="adjectifs" maxlength="100" placeholder="3 adjectifs qui vous concernent">
+								<input id="921070860283" class="dash-input" type="text" maxlength="250" name="adjectifs" maxlength="100" autocomplete="off" placeholder="3 adjectifs qui vous concernent">
 							{% endif %}
 							<label for="921070860283" class="counter">
 								<span class="count">0</span>/250
@@ -145,9 +146,9 @@
                         <h4 class="part-title">Musique</h4>
 							<div class="input-container">
 							{% if profile.musique is not null %}
-								<input id="352879152078" class="dash-input" type="text" name="musique" maxlength="100" placeholder="{{ profile.musique }}">
+								<input id="352879152078" class="dash-input" type="text" name="musique" maxlength="100" autocomplete="off" placeholder="{{ profile.musique }}">
 							{% else %}
-								<input id="352879152078" class="dash-input" type="text" name="musique" maxlength="100" placeholder="Votre style musical préféré">
+								<input id="352879152078" class="dash-input" type="text" name="musique" maxlength="100" autocomplete="off" placeholder="Votre style musical préféré">
 							{% endif %}
 							<label for="352879152078" class="counter">
 								<span class="count">0</span>/100
@@ -158,9 +159,9 @@
                         <h4 class="part-title">Repas</h4>
 							<div class="input-container">
 							{% if profile.repas is not null %}
-								<input id="407308911748" class="dash-input" type="text" name="repas" maxlength="100" placeholder="{{ profile.repas }}">
+								<input id="407308911748" class="dash-input" type="text" name="repas" maxlength="100" autocomplete="off" placeholder="{{ profile.repas }}">
 							{% else %}
-								<input id="407308911748" class="dash-input" type="text" name="repas" maxlength="100" placeholder="Votre repas préféré">
+								<input id="407308911748" class="dash-input" type="text" name="repas" maxlength="100" autocomplete="off" placeholder="Votre repas préféré">
 							{% endif %}
 							<label for="407308911748" class="counter">
 								<span class="count">0</span>/100
@@ -171,9 +172,9 @@
                         <h4 class="part-title">Film</h4>
 							<div class="input-container">
 							{% if profile.film is not null %}
-								<input id="707819299871" class="dash-input" type="text" name="film" maxlength="100" placeholder="{{ profile.film }}">
+								<input id="707819299871" class="dash-input" type="text" name="film" maxlength="100" autocomplete="off" placeholder="{{ profile.film }}">
 							{% else %}
-								<input id="707819299871" class="dash-input" type="text" name="film" maxlength="100" placeholder="Votre film préféré">
+								<input id="707819299871" class="dash-input" type="text" name="film" maxlength="100" autocomplete="off" placeholder="Votre film préféré">
 							{% endif %}
 							<label for="707819299871" class="counter">
 								<span class="count">0</span>/100

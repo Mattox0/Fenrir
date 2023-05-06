@@ -326,6 +326,22 @@ main {
     position: relative;
     z-index: 2;
 
+	.dash-error {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		gap: 10px;
+		position: absolute;
+		background-color: $fr-dark;
+		color: $fr-semiwhite;
+		top: 30px;
+		padding: 12px 15px 12px 15px;
+		border-radius: 4px;
+		border: 2px solid #E30022;
+		right: -600px;
+		animation: errorUp 0.5s ease-in-out forwards;
+	}
+
     .welcome-message {
         display: flex;
         align-items: center;
@@ -692,9 +708,9 @@ main {
                         }
                     }
 
-                    .color-picker {
-                        display: flex;
-                        position: relative;
+                    .color-picker-container {
+						display: flex;
+						position: relative;
 
                         .color-picker-view {
                             align-items: center;
@@ -714,7 +730,6 @@ main {
                         }
                     }
                 }
-            
             }
         }
     }
@@ -986,6 +1001,15 @@ main {
 	}
 }
 
+i.fa-xmark {
+	border-radius: 4px;
+	padding: 5px 7px;
+
+	&:hover {
+		background-color: $fr-darker;
+	}
+}
+
 i.fr-arrow {
     background-image: url("https://cdn.discordapp.com/attachments/901980905579643004/1102643580004212838/emoji.gif");
     height: 10px;
@@ -1056,6 +1080,18 @@ button, input {
     100% {
         transform: translate3d(0,100px,0);
     }
+}
+
+@keyframes errorUp {
+	0% {
+		transform: translate3d(0, 0, 0);
+	}
+	80% {
+		transform: translate3d(-650px, 0, 0);
+	}
+	100% {
+		transform: translate3d(-640px, 0, 0);
+	}
 }
 
 @keyframes loader_discord {

@@ -1,4 +1,4 @@
-const inputEmbeds = document.querySelectorAll('input, textarea');
+const inputEmbeds = document.querySelectorAll('input:not([type=submit]), textarea');
 
 inputEmbeds.forEach(element => {
 	element.addEventListener('input', inputOnChange);
