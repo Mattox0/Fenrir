@@ -4,9 +4,33 @@
         <h2 class="panel-guild-name">{{ guild.name }}</h2>
     </div>
     <div class="panel-nav">
-        <a href="/" class="panel-nav-item">
-            <i class="fa-regular fa-user"></i>
-            <span class="panel-nav-name">On verra</span>
+        <a href="/servers/{{ guild.id }}/birthday" class="panel-nav-item{% if page == 'birthday' %} active{% endif %}">
+            <i class="fa-solid fa-cake-candles"></i>
+            <span class="panel-nav-name">Anniversaires</span>
+        </a>
+        <a href="/servers/{{ guild.id }}/logs" class="panel-nav-item{% if page == 'logs' %} active{% endif %}">
+            <i class="fa-solid fa-hourglass-half"></i>
+            <span class="panel-nav-name">Logs</span>
+        </a>
+        <a href="/servers/{{ guild.id }}/jail" class="panel-nav-item{% if page == 'jail' %} active{% endif %}">
+            <i class="fa-solid fa-handcuffs"></i>
+            <span class="panel-nav-name">Prison</span>
+        </a>
+        <a href="/servers/{{ guild.id }}/room" class="panel-nav-item{% if page == 'room' %} active{% endif %}">
+            <i class="fa-solid fa-volume-high"></i>
+            <span class="panel-nav-name">Salons vocaux privées</span>
+        </a>
+        <a href="/servers/{{ guild.id }}/stats" class="panel-nav-item{% if page == 'stats' %} active{% endif %}">
+            <i class="fa-solid fa-book-open"></i>
+            <span class="panel-nav-name">Statistiques</span>
+        </a>
+        <a href="/servers/{{ guild.id }}/suggest" class="panel-nav-item{% if page == 'suggest' %} active{% endif %}">
+            <i class="fa-solid fa-user-check"></i>
+            <span class="panel-nav-name">Suggestions</span>
+        </a>
+        <a href="/servers/{{ guild.id }}/ticket" class="panel-nav-item{% if page == 'ticket' %} active{% endif %}">
+            <i class="fa-solid fa-ticket"></i>
+            <span class="panel-nav-name">Ticket</span>
         </a>
     </div>
 </div>

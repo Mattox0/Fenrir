@@ -729,6 +729,104 @@ main {
                             width: 46px;
                         }
                     }
+
+					.channel-selector {
+						font-size: 15px;
+						font-weight: 400;
+						position: relative;
+						-webkit-user-select: none;
+						-moz-user-select: none;
+						user-select: none;
+						border-radius: 3px;
+						color: $fr-white;
+
+						&.active .down svg {
+							transform: rotate(180deg);
+						}
+
+						.select-element {
+							align-items: center;
+							background: $fr-big;
+							border: 1px solid #1a1a1a;
+							border-radius: 3px;
+							display: flex;
+							height: 46px;
+							padding-left: 15px;
+							transition: border .25s ease-out;
+							width: 100%;
+							position: relative;
+
+							input {
+								background-color: transparent;
+								border: 0;
+								color: #fff;
+								height: 100%;
+								outline: 0;
+								width: 100%;
+								
+								&::placeholder {
+									color: $fr-white;
+								}
+							}
+
+							&.active:before {
+								content: url("/img/text-channel.svg");
+								height: 20px;
+								margin-right: 4px;
+								width: 20px;
+							}
+
+							.down {
+								cursor: pointer;
+								padding: 2px 0 2px 2px;
+								position: absolute;
+								right: 16px;
+							}
+						}
+
+						.select-elements {
+							background-color: $fr-big;
+							border: 1px solid #1a1a1a;
+							border-radius: 0 0 3px 3px;
+							box-shadow: 0 0 10px 0 rgba(0,0,0,.25);
+							max-height: 200px;
+							overflow-y: auto;
+							position: absolute;
+							scrollbar-color: $fr-blue #303030;
+							top: 45px;
+							width: 100%;
+							z-index: 1000;
+
+							.element {
+								align-items: center;
+								cursor: pointer;
+								display: flex;
+								font-weight: 500;
+								justify-content: space-between;
+								min-height: 46px;
+								padding: 0 14px;
+								position: relative;
+
+								.channel {
+									align-items: center;
+									display: flex;
+									flex: 1;
+									overflow: hidden;
+									white-space: nowrap;
+
+									.channel-icon {
+										margin-right: 6px;
+    									min-width: 20px;
+									}
+
+									.channel-name {
+										overflow: hidden;
+    									text-overflow: ellipsis;
+									}
+								}
+							}
+						}
+					}
                 }
             }
         }
@@ -746,6 +844,23 @@ main {
     padding: 16px 32px 32px 40px;
 
     &::-webkit-scrollbar {
+        -webkit-appearance: none;
+        appearance: none;
+        background-color: #303030;
+        border-radius: 10px;
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $fr-blue;
+        border-radius: 10px;
+        -webkit-transition: background-color .1s ease;
+        transition: background-color .1s ease;
+    }
+}
+
+.scollbar {
+	&::-webkit-scrollbar {
         -webkit-appearance: none;
         appearance: none;
         background-color: #303030;

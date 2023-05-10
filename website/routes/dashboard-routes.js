@@ -58,6 +58,19 @@ router.post('/dashboard/profil', async (req, res) => {
 	res.redirect('/dashboard/profil');
 });
 
+router.get('/servers/:id/birthday', validateGuild, async (req, res) => {
+	let birthday = await birthdaySession.getServerBirthday(req.params.id);
+	let guild = await sessions.guild(req.params.id);
+	if (birthday) {
+		birthday.anniv_channel_id = birthday.anniv_channel_id ? await sessions.channel(guild, birthday.anniv_channel_id) : null;
+		birthday.anniv_role_id = birthday.anniv_role_id ? await sessions.role(guild, birthday.anniv_role_id) : null;
+	}
+	res.render('dashboard/birthday.twig', {
+		savedGuild: guild,
+		page: 'birthday',
+		birthday: birthday,
+	})
+});
 
 router.get('/servers/:id', validateGuild, async (req, res) => {
     res.render('dashboard/show.twig', {
@@ -65,6 +78,7 @@ router.get('/servers/:id', validateGuild, async (req, res) => {
         page: req.params.id
     })
 });
+
 
 module.exports = router;
 

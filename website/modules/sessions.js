@@ -26,6 +26,14 @@ async function guild(id) {
     return index.getClient().guilds.cache.get(id);
 }
 
+async function channel(guild, id) {
+	return guild.channels.cache.get(id);
+}
+
+async function role(guild, id) {
+	return guild.roles.cache.get(id);
+}
+
 function getManageableGuilds(authGuilds) {
   const guilds = [];
   const bot = index.getClient();
@@ -44,3 +52,5 @@ function getManageableGuilds(authGuilds) {
 module.exports.get = get;
 module.exports.update = update;
 module.exports.guild = guild;
+module.exports.channel = channel;
+module.exports.role = role;
