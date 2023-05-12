@@ -1,21 +1,18 @@
 {% extends 'includes/base.twig' %}
 
-{% block title %}Dashboard - Fenrir
-{% endblock %}
+{% block title %}Dashboard - Fenrir{% endblock %}
 
 {% block body %}
 	{% include 'includes/sidebar.twig' %}
 	{% include 'includes/guild-bar.twig' %}
-	{% include 'dashboard/section/birthday.twig' %}
+	{% include 'dashboard/section/logs.twig' %}
 {% endblock %}
 
 {% block javascripts %}
 	<script src="/js/sidebar.js" type="text/javascript"></script>
 	<script src="/js/openLabel.js" type="text/javascript"></script>
-	<script src="/js/colorPicker.js" type="text/javascript"></script>
 	<script src="/js/textareaCount.js" type="text/javascript"></script>
 	<script src="/js/savebar.js" type="text/javascript"></script>
 	<script src="/js/error.js" type="text/javascript"></script>
 	<script src="/js/select.js" type="text/javascript"></script>
-	<script src="/js/updateBirthdayEmbed.js" type="text/javascript"></script>
 {% endblock %}

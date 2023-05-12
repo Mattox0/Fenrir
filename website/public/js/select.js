@@ -1,6 +1,5 @@
 const selects = document.querySelectorAll('input[type=text].select');
 const selectElements = document.querySelectorAll('.select-elements > .element');
-console.log(selectElements)
 
 selects.forEach(select => {
 	select.addEventListener('focus', onSelect);
@@ -34,12 +33,17 @@ function onSelectElement(e) {
 		selector = selector.parentNode;
 	}
 	let inputSelector = selector.querySelector('.select-element').querySelector('input[type=text]')
+	let inputHidden = selector.querySelector('.select-element').querySelector('input[type=hidden]')
 	while (!element.classList.contains('element')) {
 		element = element.parentNode;
 	}
 	let id = element.firstElementChild.id;
 	let name = element.firstElementChild.querySelector('div').innerHTML;
 	selector.firstElementChild.classList.add('active');
-	inputSelector.placeholder = name;
-	inputSelector.id = id;
+	if (inputSelector.classList.contains('not-hidden')) {
+		inputSelector.value = name;
+	} else {
+		inputHidden.value = id;
+		inputSelector.placeholder = name;
+	}
 }
