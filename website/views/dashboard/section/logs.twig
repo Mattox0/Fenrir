@@ -21,10 +21,10 @@
 						<div class="part">
 							<h4 class="part-title">Salon de logs</h4>
 							<div class="channel-selector selector">
-								<div class="select-element{% if logs.logs_id is not null %} active{% endif %}">
-									{% if logs.logs_id is not null %}
-										<input type="text" autocomplete="off" name="logs_channel" class="select" placeholder="{{ logs.logs_id }}" readonly>
-										<input type="hidden" name="logs_channel_id" value="{{ logs.logs_id }}">
+								<div class="select-element{% if logs.logs_id is defined %} active{% endif %}">
+									{% if logs.logs_id is defined %}
+										<input type="text" autocomplete="off" name="logs_channel" class="select" placeholder="{{ logs.logs_id.name }}" readonly>
+										<input type="hidden" name="logs_channel_id" value="{{ logs.logs_id.id }}">
 									{% else %}
 										<input type="text" autocomplete="off" name="logs_channel" class="select" placeholder="Veuillez choisir un salon" readonly>
 										<input type="hidden" name="logs_channel_id" value="">
@@ -67,14 +67,308 @@
 						</p>
 					</div>
 					<label for="146711551868" class="switch-normal">
-						<div class="slider round{% if logs.logs_id is not null %} active{% endif %}"></div>
-						<input id="146711551868" type="checkbox" name="birthday" {% if logs.logs_id is not null %} checked{% endif %}>
+						<div class="slider round{% if logs.logs_id is defined %} active{% endif %}"></div>
+						<input id="146711551868" type="checkbox" name="logs" {% if logs.logs_id is defined %} checked {% endif %}>
 					</label>
 				</div>
-				<div class="parts logs" style="{% if logs.logs_id is not null %}height: auto; overflow: visible;{% else %}height: 0px; overflow: hidden;{% endif %}">
-					
+				<div class="parts" style="{% if logs.logs_id is defined %}height: auto; overflow: visible;{% else %}height: 0px; overflow: hidden;{% endif %}">
+					<div class="dash-parts-full">
+						<div class="log-all-btn">
+							<div class="log-module-btn" id="btn-select">
+								<p>Tout sélectionner</p>
+							</div>
+							<div class="log-module-btn" id="btn-unselect">
+								<p>Tout désélectionner</p>
+							</div>
+						</div>
+						<div class="logs-module">
+							<div class="log-module">
+								<label for="7671400560" class="module-check">
+									<div class="case">
+										<i class="fa-solid fa-check" style="display: none;"></i>
+									</div>
+									<input type="checkbox" id="7671400560" class="module-checkbox" autocomplete="off" name="logs_channel_update">
+								</label>
+								<div class="log-overlay"></div>
+								<div class="log-content">
+									<div class="log-top">
+										<div class="log-icon">
+											<i class="fas fa-hashtag"></i>
+										</div>
+										<div class="summary">
+											<h3>Salons</h3>
+											<p>Création, modification et suppression de salons sur votre serveur Discord</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="log-module">
+								<label for="3556591914" class="module-check">
+									<div class="case">
+										<i class="fa-solid fa-check" style="display: none;"></i>
+									</div>
+									<input type="checkbox" id="3556591914" class="module-checkbox" autocomplete="off" name="logs_message">
+								</label>
+								<div class="log-overlay"></div>
+								<div class="log-content">
+									<div class="log-top">
+										<div class="log-icon">
+											<i class="fa-regular fa-comments"></i>
+										</div>
+										<div class="summary">
+											<h3>Messages</h3>
+											<p>Modification ou suppression de messages sur votre serveur Discord</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="log-module">
+								<label for="4744508448" class="module-check">
+									<div class="case">
+										<i class="fa-solid fa-check" style="display: none;"></i>
+									</div>
+									<input type="checkbox" id="4744508448" class="module-checkbox" autocomplete="off" name="logs_role">
+								</label>
+								<div class="log-overlay"></div>
+								<div class="log-content">
+									<div class="log-top">
+										<div class="log-icon">
+											<i class="fa-solid fa-at"></i>
+										</div>
+										<div class="summary">
+											<h3>Rôles</h3>
+											<p>Création, modification et suppression de rôles sur votre serveur Discord</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="log-module">
+								<label for="9487081855" class="module-check">
+									<div class="case">
+										<i class="fa-solid fa-check" style="display: none;"></i>
+									</div>
+									<input type="checkbox" id="9487081855" class="module-checkbox" autocomplete="off" name="logs_emote">
+								</label>
+								<div class="log-overlay"></div>
+								<div class="log-content">
+									<div class="log-top">
+										<div class="log-icon">
+											<i class="fa-regular fa-face-smile"></i>
+										</div>
+										<div class="summary">
+											<h3>Emotes</h3>
+											<p>Création, modification et suppression des émotes sur votre serveur Discord</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="log-module">
+								<label for="3001780171" class="module-check">
+									<div class="case">
+										<i class="fa-solid fa-check" style="display: none;"></i>
+									</div>
+									<input type="checkbox" id="3001780171" class="module-checkbox" autocomplete="off" name="logs_vocal">
+								</label>
+								<div class="log-overlay"></div>
+								<div class="log-content">
+									<div class="log-top">
+										<div class="log-icon">
+											<i class="fa-solid fa-volume-high"></i>
+										</div>
+										<div class="summary">
+											<h3>Vocal</h3>
+											<p>Message lorsqu'un membre quitte ou rejoins un salon vocal</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="log-module">
+								<label for="5211888628" class="module-check">
+									<div class="case">
+										<i class="fa-solid fa-check" style="display: none;"></i>
+									</div>
+									<input type="checkbox" id="5211888628" class="module-checkbox" autocomplete="off" name="logs_role">
+								</label>
+								<div class="log-overlay"></div>
+								<div class="log-content">
+									<div class="log-top">
+										<div class="log-icon">
+											<i class="fa-solid fa-door-open"></i>
+										</div>
+										<div class="summary">
+											<h3>Arrivées et départ</h3>
+											<p>Message lorsqu'un membre quitte ou rejoins votre serveur Discord</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="log-module">
+								<label for="7845345968" class="module-check">
+									<div class="case">
+										<i class="fa-solid fa-check" style="display: none;"></i>
+									</div>
+									<input type="checkbox" id="7845345968" class="module-checkbox" autocomplete="off" name="logs_ban">
+								</label>
+								<div class="log-overlay"></div>
+								<div class="log-content">
+									<div class="log-top">
+										<div class="log-icon">
+											<i class="fa-solid fa-user-slash"></i>
+										</div>
+										<div class="summary">
+											<h3>Bans</h3>
+											<p>Message lorsqu'un membre est banni ou débanni de votre serveur Discord</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="log-module">
+								<label for="8903523925" class="module-check">
+									<div class="case">
+										<i class="fa-solid fa-check" style="display: none;"></i>
+									</div>
+									<input type="checkbox" id="8903523925" class="module-checkbox" autocomplete="off" name="logs_ban">
+								</label>
+								<div class="log-overlay"></div>
+								<div class="log-content">
+									<div class="log-top">
+										<div class="log-icon">
+											<i class="fa-regular fa-paper-plane"></i>
+										</div>
+										<div class="summary">
+											<h3>Invitations</h3>
+											<p>Création ou suppression des invitations sur votre serveur Discord</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="log-module">
+								<label for="1384031075" class="module-check">
+									<div class="case">
+										<i class="fa-solid fa-check" style="display: none;"></i>
+									</div>
+									<input type="checkbox" id="1384031075" class="module-checkbox" autocomplete="off" name="logs_stickers">
+								</label>
+								<div class="log-overlay"></div>
+								<div class="log-content">
+									<div class="log-top">
+										<div class="log-icon">
+											<i class="fa-regular fa-note-sticky"></i>
+										</div>
+										<div class="summary">
+											<h3>Autocollants</h3>
+											<p>Création, modification et suppression des autocollants sur votre serveur Discord</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="log-module">
+								<label for="2696199284" class="module-check">
+									<div class="case">
+										<i class="fa-solid fa-check" style="display: none;"></i>
+									</div>
+									<input type="checkbox" id="2696199284" class="module-checkbox" autocomplete="off" name="logs_thread">
+								</label>
+								<div class="log-overlay"></div>
+								<div class="log-content">
+									<div class="log-top">
+										<div class="log-icon">
+											<i class="fa-solid fa-chart-simple"></i>
+										</div>
+										<div class="summary">
+											<h3>Threads</h3>
+											<p>Création, modification et suppression de threads sur votre serveur Discord</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="log-module">
+								<label for="6577052391" class="module-check">
+									<div class="case">
+										<i class="fa-solid fa-check" style="display: none;"></i>
+									</div>
+									<input type="checkbox" id="6577052391" class="module-checkbox" autocomplete="off" name="logs_event">
+								</label>
+								<div class="log-overlay"></div>
+								<div class="log-content">
+									<div class="log-top">
+										<div class="log-icon">
+											<i class="fa-regular fa-calendar"></i>
+										</div>
+										<div class="summary">
+											<h3>Evenements</h3>
+											<p>Création, modification et suppression d'évènements sur votre serveur Discord</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="log-module">
+								<label for="6409362652" class="module-check">
+									<div class="case">
+										<i class="fa-solid fa-check" style="display: none;"></i>
+									</div>
+									<input type="checkbox" id="6409362652" class="module-checkbox" autocomplete="off" name="logs_pseudo">
+								</label>
+								<div class="log-overlay"></div>
+								<div class="log-content">
+									<div class="log-top">
+										<div class="log-icon">
+											<i class="fa-solid fa-pen"></i>
+										</div>
+										<div class="summary">
+											<h3>Pseudo</h3>
+											<p>Modification des pseudonymes de vos membres sur votre serveur Discord</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="log-module">
+								<label for="6409362652" class="module-check">
+									<div class="case">
+										<i class="fa-solid fa-check" style="display: none;"></i>
+									</div>
+									<input type="checkbox" id="6409362652" class="module-checkbox" autocomplete="off" name="logs_member_update">
+								</label>
+								<div class="log-overlay"></div>
+								<div class="log-content">
+									<div class="log-top">
+										<div class="log-icon">
+											<i class="fa-solid fa-right-left"></i>
+										</div>
+										<div class="summary">
+											<h3>Attribution de rôle</h3>
+											<p>Attribution ou suppression d'un rôle de vos membres de votre serveur Discord</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="log-module">
+								<label for="5378660237" class="module-check">
+									<div class="case">
+										<i class="fa-solid fa-check" style="display: none;"></i>
+									</div>
+									<input type="checkbox" id="5378660237" class="module-checkbox" autocomplete="off" name="logs_boost">
+								</label>
+								<div class="log-overlay"></div>
+								<div class="log-content">
+									<div class="log-top">
+										<div class="log-icon">
+											<i class="fa-regular fa-star"></i>
+										</div>
+										<div class="summary">
+											<h3>Boost</h3>
+											<p>Boost reçus ou perdu sur votre serveur Discord</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
+		</div>
+		<div class="savebar-container">
+			{% include 'includes/savebar.twig' %}
 		</div>
 	</form>
 </div>

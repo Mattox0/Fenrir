@@ -88,6 +88,8 @@ router.post('/servers/:id/birthday', validateGuild, async (req, res) => {
 
 router.get('/servers/:id/logs', validateGuild, async (req, res) => {
 	const guild = await sessions.guild(req.params.id);
+	let errors = req.session.errors || [];
+	req.session.errors = null;
 	let logs = await logsSession.getLogs(req.params.id);
 	if (logs) logs.logs_id = logs.logs_id ? await sessions.channel(guild, logs.logs_id) : null;
 	let channels = await sessions.channels(guild);
@@ -97,8 +99,21 @@ router.get('/servers/:id/logs', validateGuild, async (req, res) => {
 		savedGuild: guild,
 		page: 'logs',
 		logs: logs,
-		channels: channels
+		channels: channels,
+		errors: errors
 	});
+});
+
+router.post('/servers/:id/logs', validateGuild, async (req, res) => {
+	if (!req.body.logs) await logsSession.deleteLogs(req.params.id);
+	else {
+		if (!await logsSession.isValidLogs(req.body, await sessions.guild(req.params.id))) {
+			req.session.errors = ['Merci de rentrer toutes les informations nécessaires'];
+			return res.redirect(`/servers/${req.params.id}/logs`);
+		}
+		await logsSession.updateLogs(req.body, req.params.id);
+	}
+	res.redirect(`/servers/${req.params.id}/logs`);
 });
 
 router.get('/servers/:id', validateGuild, async (req, res) => {
