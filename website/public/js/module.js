@@ -27,6 +27,7 @@ function onModule(e) {
 		module.firstElementChild.querySelector('i').style.display = 'block';
 		module.parentNode.querySelector('.log-overlay').style.display = 'none';
 	}
+	module.querySelector('input').dispatchEvent(new Event('change'));
 }
 
 function onOverlay(e) {
@@ -34,6 +35,7 @@ function onOverlay(e) {
 	let parent = e.target.parentNode;
 	parent.querySelector('.module-check').querySelector('.case').classList.add('active');
 	parent.querySelector('.module-check').querySelector('.case').querySelector('i').style.display = 'block';
+	parent.querySelector('.module-check').querySelector('input').dispatchEvent(new Event('change'));
 }
 
 function onSelectModuleButton(e) {
@@ -41,6 +43,7 @@ function onSelectModuleButton(e) {
 	modulesCheck.forEach((moduleCheck) => {
 		if (!moduleCheck.querySelector('.case').classList.contains('active')) {
 			moduleCheck.querySelector('input').checked = true;
+			moduleCheck.querySelector('input').dispatchEvent(new Event('change'));
 			moduleCheck.querySelector('.case').classList.add('active');
 			moduleCheck.querySelector('.case').querySelector('i').style.display = 'block';
 			moduleCheck.parentNode.querySelector('.log-overlay').style.display = 'none';
@@ -53,6 +56,7 @@ function onUnselectModuleButton(e) {
 	modulesCheck.forEach((moduleCheck) => {
 		if (moduleCheck.querySelector('.case').classList.contains('active')) {
 			moduleCheck.querySelector('input').checked = false;
+			moduleCheck.querySelector('input').dispatchEvent(new Event('change'));
 			moduleCheck.querySelector('.case').classList.remove('active');
 			moduleCheck.querySelector('.case').querySelector('i').style.display = 'none';
 			moduleCheck.parentNode.querySelector('.log-overlay').style.display = 'block';

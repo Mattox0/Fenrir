@@ -84,12 +84,12 @@
 						<div class="logs-module">
 							<div class="log-module">
 								<label for="7671400560" class="module-check">
-									<div class="case">
-										<i class="fa-solid fa-check" style="display: none;"></i>
+									<div class="case{% if logs.channelCreate %} active{% endif %}">
+										<i class="fa-solid fa-check" style="{% if logs.channelCreate == 0 %}display: none;{% endif %}"></i>
 									</div>
-									<input type="checkbox" id="7671400560" class="module-checkbox" autocomplete="off" name="logs_channel_update">
+									<input type="checkbox" id="7671400560" class="module-checkbox" autocomplete="off" name="logs_channel_update" {% if logs.channelCreate %}checked{% endif %}>
 								</label>
-								<div class="log-overlay"></div>
+								<div class="log-overlay" style="{% if logs.channelCreate %}display: none;{% endif %}"></div>
 								<div class="log-content">
 									<div class="log-top">
 										<div class="log-icon">
@@ -104,12 +104,12 @@
 							</div>
 							<div class="log-module">
 								<label for="3556591914" class="module-check">
-									<div class="case">
-										<i class="fa-solid fa-check" style="display: none;"></i>
+									<div class="case{% if logs.messageDelete %} active{% endif %}">
+										<i class="fa-solid fa-check" style="{% if logs.messageDelete == 0 %}display: none;{% endif %}"></i>
 									</div>
-									<input type="checkbox" id="3556591914" class="module-checkbox" autocomplete="off" name="logs_message">
+									<input type="checkbox" id="3556591914" class="module-checkbox" autocomplete="off" name="logs_message" {% if logs.messageDelete %}checked{% endif %}>
 								</label>
-								<div class="log-overlay"></div>
+								<div class="log-overlay" style="{% if logs.messageDelete %}display: none;{% endif %}"></div>
 								<div class="log-content">
 									<div class="log-top">
 										<div class="log-icon">
@@ -124,12 +124,12 @@
 							</div>
 							<div class="log-module">
 								<label for="4744508448" class="module-check">
-									<div class="case">
-										<i class="fa-solid fa-check" style="display: none;"></i>
+									<div class="case{% if logs.roleCreate %} active{% endif %}">
+										<i class="fa-solid fa-check" style="{% if logs.roleCreate == 0 %}display: none;{% endif %}"></i>
 									</div>
-									<input type="checkbox" id="4744508448" class="module-checkbox" autocomplete="off" name="logs_role">
+									<input type="checkbox" id="4744508448" class="module-checkbox" autocomplete="off" name="logs_role" {% if logs.roleCreate %}checked{% endif %}>
 								</label>
-								<div class="log-overlay"></div>
+								<div class="log-overlay" style="{% if logs.roleCreate %}display: none;{% endif %}"></div>
 								<div class="log-content">
 									<div class="log-top">
 										<div class="log-icon">
@@ -144,12 +144,12 @@
 							</div>
 							<div class="log-module">
 								<label for="9487081855" class="module-check">
-									<div class="case">
-										<i class="fa-solid fa-check" style="display: none;"></i>
+									<div class="case{% if logs.emojiCreate %} active{% endif %}">
+										<i class="fa-solid fa-check" style="{% if logs.emojiCreate == 0 %}display: none;{% endif %}"></i>
 									</div>
-									<input type="checkbox" id="9487081855" class="module-checkbox" autocomplete="off" name="logs_emoji">
+									<input type="checkbox" id="9487081855" class="module-checkbox" autocomplete="off" name="logs_emoji" {% if logs.emojiCreate %}checked{% endif %}>
 								</label>
-								<div class="log-overlay"></div>
+								<div class="log-overlay" style="{% if logs.emojiCreate %}display: none;{% endif %}"></div>
 								<div class="log-content">
 									<div class="log-top">
 										<div class="log-icon">
@@ -164,12 +164,12 @@
 							</div>
 							<div class="log-module">
 								<label for="3001780171" class="module-check">
-									<div class="case">
-										<i class="fa-solid fa-check" style="display: none;"></i>
+									<div class="case{% if logs.voiceStateUpdate %} active{% endif %}">
+										<i class="fa-solid fa-check" style="{% if logs.voiceStateUpdate == 0 %}display: none;{% endif %}"></i>
 									</div>
-									<input type="checkbox" id="3001780171" class="module-checkbox" autocomplete="off" name="logs_vocal">
+									<input type="checkbox" id="3001780171" class="module-checkbox" autocomplete="off" name="logs_vocal" {% if logs.voiceStateUpdate %}checked{% endif %}>
 								</label>
-								<div class="log-overlay"></div>
+								<div class="log-overlay" style="{% if logs.voiceStateUpdate %}display: none;{% endif %}"></div>
 								<div class="log-content">
 									<div class="log-top">
 										<div class="log-icon">
@@ -184,12 +184,12 @@
 							</div>
 							<div class="log-module">
 								<label for="5211888628" class="module-check">
-									<div class="case">
-										<i class="fa-solid fa-check" style="display: none;"></i>
+									<div class="case{% if logs.guildMemberAdd %} active{% endif %}">
+										<i class="fa-solid fa-check" style="{% if logs.guildMemberAdd == 0 %}display: none;{% endif %}"></i>
 									</div>
-									<input type="checkbox" id="5211888628" class="module-checkbox" autocomplete="off" name="logs_member">
+									<input type="checkbox" id="5211888628" class="module-checkbox" autocomplete="off" name="logs_member" {% if logs.guildMemberAdd %}checked{% endif %}>
 								</label>
-								<div class="log-overlay"></div>
+								<div class="log-overlay" style="{% if logs.guildMemberAdd %}display: none;{% endif %}"></div>
 								<div class="log-content">
 									<div class="log-top">
 										<div class="log-icon">
@@ -204,12 +204,12 @@
 							</div>
 							<div class="log-module">
 								<label for="7845345968" class="module-check">
-									<div class="case">
-										<i class="fa-solid fa-check" style="display: none;"></i>
+									<div class="case{% if logs.guildBanAdd %} active{% endif %}">
+										<i class="fa-solid fa-check" style="{% if logs.guildBanAdd == 0 %}display: none;{% endif %}"></i>
 									</div>
-									<input type="checkbox" id="7845345968" class="module-checkbox" autocomplete="off" name="logs_ban">
+									<input type="checkbox" id="7845345968" class="module-checkbox" autocomplete="off" name="logs_ban" {% if logs.guildBanAdd %}checked{% endif %}>
 								</label>
-								<div class="log-overlay"></div>
+								<div class="log-overlay" style="{% if logs.guildBanAdd %}display: none;{% endif %}"></div>
 								<div class="log-content">
 									<div class="log-top">
 										<div class="log-icon">
@@ -224,12 +224,12 @@
 							</div>
 							<div class="log-module">
 								<label for="8903523925" class="module-check">
-									<div class="case">
-										<i class="fa-solid fa-check" style="display: none;"></i>
+									<div class="case{% if logs.inviteCreate %} active{% endif %}">
+										<i class="fa-solid fa-check" style="{% if logs.inviteCreate == 0 %}display: none;{% endif %}"></i>
 									</div>
-									<input type="checkbox" id="8903523925" class="module-checkbox" autocomplete="off" name="logs_invite">
+									<input type="checkbox" id="8903523925" class="module-checkbox" autocomplete="off" name="logs_invite" {% if logs.inviteCreate %}checked{% endif %}>
 								</label>
-								<div class="log-overlay"></div>
+								<div class="log-overlay" style="{% if logs.inviteCreate %}display: none;{% endif %}"></div>
 								<div class="log-content">
 									<div class="log-top">
 										<div class="log-icon">
@@ -244,12 +244,12 @@
 							</div>
 							<div class="log-module">
 								<label for="1384031075" class="module-check">
-									<div class="case">
-										<i class="fa-solid fa-check" style="display: none;"></i>
+									<div class="case{% if logs.stickerCreate %} active{% endif %}">
+										<i class="fa-solid fa-check" style="{% if logs.stickerCreate == 0 %}display: none;{% endif %}"></i>
 									</div>
-									<input type="checkbox" id="1384031075" class="module-checkbox" autocomplete="off" name="logs_sticker">
+									<input type="checkbox" id="1384031075" class="module-checkbox" autocomplete="off" name="logs_sticker" {% if logs.stickerCreate %}checked{% endif %}>
 								</label>
-								<div class="log-overlay"></div>
+								<div class="log-overlay" style="{% if logs.stickerCreate %}display: none;{% endif %}"></div>
 								<div class="log-content">
 									<div class="log-top">
 										<div class="log-icon">
@@ -264,12 +264,12 @@
 							</div>
 							<div class="log-module">
 								<label for="2696199284" class="module-check">
-									<div class="case">
-										<i class="fa-solid fa-check" style="display: none;"></i>
+									<div class="case{% if logs.threadCreate %} active{% endif %}">
+										<i class="fa-solid fa-check" style="{% if logs.threadCreate == 0 %}display: none;{% endif %}"></i>
 									</div>
-									<input type="checkbox" id="2696199284" class="module-checkbox" autocomplete="off" name="logs_thread">
+									<input type="checkbox" id="2696199284" class="module-checkbox" autocomplete="off" name="logs_thread" {% if logs.threadCreate %}checked{% endif %}>
 								</label>
-								<div class="log-overlay"></div>
+								<div class="log-overlay" style="{% if logs.threadCreate %}display: none;{% endif %}"></div>
 								<div class="log-content">
 									<div class="log-top">
 										<div class="log-icon">
@@ -284,12 +284,12 @@
 							</div>
 							<div class="log-module">
 								<label for="6577052391" class="module-check">
-									<div class="case">
-										<i class="fa-solid fa-check" style="display: none;"></i>
+									<div class="case{% if logs.guildScheduledEventCreate %} active{% endif %}">
+										<i class="fa-solid fa-check" style="{% if logs.guildScheduledEventCreate == 0 %}display: none;{% endif %}"></i>
 									</div>
-									<input type="checkbox" id="6577052391" class="module-checkbox" autocomplete="off" name="logs_event">
+									<input type="checkbox" id="6577052391" class="module-checkbox" autocomplete="off" name="logs_event" {% if logs.guildScheduledEventCreate %}checked{% endif %}>
 								</label>
-								<div class="log-overlay"></div>
+								<div class="log-overlay" style="{% if logs.guildScheduledEventCreate %}display: none;{% endif %}"></div>
 								<div class="log-content">
 									<div class="log-top">
 										<div class="log-icon">
@@ -304,12 +304,12 @@
 							</div>
 							<div class="log-module">
 								<label for="6409362652" class="module-check">
-									<div class="case">
-										<i class="fa-solid fa-check" style="display: none;"></i>
+									<div class="case{% if logs.pseudo %} active{% endif %}">
+										<i class="fa-solid fa-check" style="{% if logs.pseudo == 0 %}display: none;{% endif %}"></i>
 									</div>
-									<input type="checkbox" id="6409362652" class="module-checkbox" autocomplete="off" name="logs_pseudo">
+									<input type="checkbox" id="6409362652" class="module-checkbox" autocomplete="off" name="logs_pseudo" {% if logs.pseudo %}checked{% endif %}>
 								</label>
-								<div class="log-overlay"></div>
+								<div class="log-overlay" style="{% if logs.pseudo %}display: none;{% endif %}"></div>
 								<div class="log-content">
 									<div class="log-top">
 										<div class="log-icon">
@@ -323,13 +323,13 @@
 								</div>
 							</div>
 							<div class="log-module">
-								<label for="6409362652" class="module-check">
-									<div class="case">
-										<i class="fa-solid fa-check" style="display: none;"></i>
+								<label for="911763055453" class="module-check">
+									<div class="case{% if logs.guildMemberUpdate %} active{% endif %}">
+										<i class="fa-solid fa-check" style="{% if logs.guildMemberUpdate == 0 %}display: none;{% endif %}"></i>
 									</div>
-									<input type="checkbox" id="6409362652" class="module-checkbox" autocomplete="off" name="logs_member_update">
+									<input type="checkbox" id="911763055453" class="module-checkbox" autocomplete="off" name="logs_member_update" {% if logs.guildMemberUpdate %}checked{% endif %}>
 								</label>
-								<div class="log-overlay"></div>
+								<div class="log-overlay" style="{% if logs.guildMemberUpdate %}display: none;{% endif %}"></div>
 								<div class="log-content">
 									<div class="log-top">
 										<div class="log-icon">
@@ -344,12 +344,12 @@
 							</div>
 							<div class="log-module">
 								<label for="5378660237" class="module-check">
-									<div class="case">
-										<i class="fa-solid fa-check" style="display: none;"></i>
+									<div class="case{% if logs.boost %} active{% endif %}">
+										<i class="fa-solid fa-check" style="{% if logs.boost == 0 %}display: none;{% endif %}"></i>
 									</div>
-									<input type="checkbox" id="5378660237" class="module-checkbox" autocomplete="off" name="logs_boost">
+									<input type="checkbox" id="5378660237" class="module-checkbox" autocomplete="off" name="logs_boost" {% if logs.boost %}checked{% endif %}>
 								</label>
-								<div class="log-overlay"></div>
+								<div class="log-overlay" style="{% if logs.boost %}display: none;{% endif %}"></div>
 								<div class="log-content">
 									<div class="log-top">
 										<div class="log-icon">
@@ -358,6 +358,46 @@
 										<div class="summary">
 											<h3>Boost</h3>
 											<p>Boost reçus ou perdu sur votre serveur Discord</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="log-module">
+								<label for="679891953762" class="module-check">
+									<div class="case{% if logs.channelPinsUpdate %} active{% endif %}">
+										<i class="fa-solid fa-check" style="{% if logs.channelPinsUpdate == 0 %}display: none;{% endif %}"></i>
+									</div>
+									<input type="checkbox" id="679891953762" class="module-checkbox" autocomplete="off" name="logs_pin" {% if logs.channelPinsUpdate %}checked{% endif %}>
+								</label>
+								<div class="log-overlay" style="{% if logs.channelPinsUpdate %}display: none;{% endif %}"></div>
+								<div class="log-content">
+									<div class="log-top">
+										<div class="log-icon">
+											<i class="fa-solid fa-thumbtack"></i>
+										</div>
+										<div class="summary">
+											<h3>Messages épinglés</h3>
+											<p>Création, modification et suppression des messages épinglés de votre serveur Discord</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="log-module">
+								<label for="392830973395" class="module-check">
+									<div class="case{% if logs.webhookUpdate %} active{% endif %}">
+										<i class="fa-solid fa-check" style="{% if logs.webhookUpdate == 0 %}display: none;{% endif %}"></i>
+									</div>
+									<input type="checkbox" id="392830973395" class="module-checkbox" autocomplete="off" name="logs_webhook" {% if logs.webhookUpdate %}checked{% endif %}>
+								</label>
+								<div class="log-overlay" style="{% if logs.webhookUpdate %}display: none;{% endif %}"></div>
+								<div class="log-content">
+									<div class="log-top">
+										<div class="log-icon">
+											<i class="fa-solid fa-share-nodes"></i>
+										</div>
+										<div class="summary">
+											<h3>Webhook</h3>
+											<p>Création, modification et suppression des webhooks de votre serveur Discord</p>
 										</div>
 									</div>
 								</div>

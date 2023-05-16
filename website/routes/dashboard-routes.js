@@ -95,6 +95,7 @@ router.get('/servers/:id/logs', validateGuild, async (req, res) => {
 	let channels = await sessions.channels(guild);
 	channels = channels.filter(channel => channel.type === 0);
 	channels = await Promise.all(channels.map(async channel => await sessions.channelWithParent(guild, channel)));
+	console.log(logs)
 	res.render('dashboard/logs.twig', {
 		savedGuild: guild,
 		page: 'logs',
