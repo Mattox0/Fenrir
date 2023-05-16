@@ -95,7 +95,6 @@ router.get('/servers/:id/logs', validateGuild, async (req, res) => {
 	let channels = await sessions.channels(guild);
 	channels = channels.filter(channel => channel.type === 0);
 	channels = await Promise.all(channels.map(async channel => await sessions.channelWithParent(guild, channel)));
-	console.log(logs)
 	res.render('dashboard/logs.twig', {
 		savedGuild: guild,
 		page: 'logs',
@@ -115,6 +114,10 @@ router.post('/servers/:id/logs', validateGuild, async (req, res) => {
 		await logsSession.updateLogs(req.body, req.params.id);
 	}
 	res.redirect(`/servers/${req.params.id}/logs`);
+});
+
+router.get('/servers/:id/jail', validateGuild, async (req, res) => {
+
 });
 
 router.get('/servers/:id', validateGuild, async (req, res) => {

@@ -20,7 +20,6 @@ async function isValidLogs(body, guild) {
 
 async function updateLogs(body, id) {
 	const con = index.getDB();
-	console.log(body.logs_member_update)
 	await con.promise().query(`INSERT INTO logs (
 		guild_id,
 		logs_id,
