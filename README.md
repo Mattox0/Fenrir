@@ -32,9 +32,11 @@ Il est actuellement en développement et utilise discord.js v14.
 
 4. Aller sur l'adresse `http://localhost:8080` (PhpMyAdmin) et créer une base de donnée nommée `lmtbot` et importer le script SQL `lmtbot.sql`
 
-5. Modifier le fichier `config.json` avec le token de votre bot discord
-```bash
-"token":"{ INSERT-TOKEN-HERE }"
+5. Modifier le fichier `.env` avec le token, le clientId, et le clientSecret de votre bot discord
+```
+token= "INSERT TOKEN HERE"
+clientId="INSERT CLIENT ID HERE"
+clientSecret="INSERT CLIENT SECRET HERE"
 ```
 
 Vous pouvez maintenant lancer le bot !
