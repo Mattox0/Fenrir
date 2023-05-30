@@ -1,226 +1,442 @@
-CREATE TABLE anniversaires (
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	user_id VARCHAR(255),
-	date VARCHAR(255),
-	guild_id VARCHAR(255),
-	FOREIGN KEY (guild_id) REFERENCES servers(anniv_id)
-);
+CREATE TABLE `anniversaires` (
+  `id` int(11) NOT NULL,
+  `user_id` varchar(255) NOT NULL,
+  `date` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE bans (
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	user_id VARCHAR(255),
-	guild_id VARCHAR(255),
-	deban DATE,
-	FOREIGN KEY (guild_id) REFERENCES servers(guild_id)
-);
+--
+-- Structure de la table `bans`
+--
 
-CREATE TABLE bumps (
-	bump_id INTEGER PRIMARY KEY AUTOINCREMENT,
-	user_id VARCHAR(20) NOT NULL,
-	count_bumps INTEGER DEFAULT 0, 
-	last_bump DATE, guild_id VARCHAR(255)
-);
+CREATE TABLE `bans` (
+  `id` int(11) NOT NULL,
+  `user_id` varchar(255) DEFAULT NULL,
+  `guild_id` varchar(255) DEFAULT NULL,
+  `dateBan` date DEFAULT NULL,
+  `deban` date DEFAULT NULL,
+  `moderator_id` varchar(255) DEFAULT NULL,
+  `reason` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE giveaways (
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	message_id TEXT NOT NULL,
-	channel_id TEXT NOT NULL,
-	winners INTEGER,
-	prize TEXT,
-	duration TEXT, 
-	participants TEXT, 
-	hostedBy TEXT, 
-	past BOOLEAN, 
-	guild_id VARCHAR(255)
-);
+-- --------------------------------------------------------
 
-CREATE TABLE interserveur (
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	guild_id_1 VARCHAR(255),
-	guild_id_2 VARCHAR(255),
-	channel_id_1 VARCHAR(255),
-	channel_id_2 VARCHAR(255), code VARCHAR(10),
-	FOREIGN KEY (guild_id_1) REFERENCES servers(guild_id),
-	FOREIGN KEY (guild_id_2) REFERENCES servers(guild_id)
-);
+--
+-- Structure de la table `giveaways`
+--
 
-CREATE TABLE logs (
-	guild_id VARCHAR(255),
-	logs_id VARCHAR(255),
-	channelCreate BOOLEAN DEFAULT TRUE, 
-	channelDelete BOOLEAN DEFAULT TRUE, 
-	channelUpdate BOOLEAN DEFAULT TRUE, 
-	messageDelete BOOLEAN DEFAULT TRUE, 
-	messageUpdate BOOLEAN DEFAULT TRUE, 
-	roleCreate BOOLEAN DEFAULT TRUE, 
-	roleDelete BOOLEAN DEFAULT TRUE, 
-	emojiCreate BOOLEAN DEFAULT TRUE, 
-	emojiDelete BOOLEAN DEFAULT TRUE, 
-	emojiUpdate BOOLEAN DEFAULT TRUE, 
-	voiceStateUpdate BOOLEAN DEFAULT TRUE, 
-	guildMemberUpdate BOOLEAN DEFAULT TRUE, 
-	guildMemberRemove BOOLEAN DEFAULT TRUE, 
-	guildBanAdd BOOLEAN DEFAULT TRUE, 
-	guildBanRemove BOOLEAN DEFAULT TRUE, 
-	inviteCreate BOOLEAN DEFAULT TRUE, 
-	inviteDelete BOOLEAN DEFAULT TRUE, 
-	guildMemberAdd BOOLEAN DEFAULT TRUE, 
-	stickerCreate BOOLEAN DEFAULT TRUE, 
-	stickerDelete BOOLEAN DEFAULT TRUE, 
-	threadCreate BOOLEAN DEFAULT TRUE, 
-	threadDelete BOOLEAN DEFAULT TRUE, 
-	guildScheduledEventCreate BOOLEAN DEFAULT TRUE, 
-	roleUpdate BOOLEAN DEFAULT TRUE,
-	FOREIGN KEY (guild_id) REFERENCES servers(guild_id),
-	FOREIGN KEY (logs_id) REFERENCES servers(logs_id)
-);
+CREATE TABLE `giveaways` (
+  `id` int(11) NOT NULL,
+  `message_id` text NOT NULL,
+  `guild_id` varchar(255) DEFAULT NULL,
+  `channel_id` text NOT NULL,
+  `winners` int(11) DEFAULT NULL,
+  `prize` text,
+  `duration` text,
+  `participants` text,
+  `hostedBy` text,
+  `past` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE mute (
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	user_id VARCHAR(255),
-	guild_id VARCHAR(255),
-	end_date DATE,
-	FOREIGN KEY (guild_id) REFERENCES servers(guild_id)
-);
+-- --------------------------------------------------------
 
-CREATE TABLE poll (
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	guild_id VARCHAR(255),
-	channel_id VARCHAR(255),
-	message_id VARCHAR(255),
-	numero_1 TEXT,
-	numero_1_nb TEXT,
-	numero_2 TEXT,
-	numero_2_nb TEXT,
-	numero_3 TEXT,
-	numero_3_nb TEXT,
-	numero_4 TEXT,
-	numero_4_nb TEXT,
-	numero_5 TEXT,
-	numero_5_nb TEXT,
-	numero_6 TEXT,
-	numero_6_nb TEXT,
-	numero_7 TEXT,
-	numero_7_nb TEXT,
-	numero_8 TEXT,
-	numero_8_nb TEXT,
-	numero_9 TEXT,
-	numero_9_nb TEXT,
-	dateFin DATE, question TEXT,
-	FOREIGN KEY (guild_id) REFERENCES servers(guild_id)
-);
+--
+-- Structure de la table `interserveur`
+--
 
-CREATE TABLE privateroom (
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	guild_id VARCHAR(255),
-	user_id VARCHAR(255),
-	channel_id VARCHAR(255),
-	FOREIGN KEY (guild_id) REFERENCES servers(guild_id)
-);
+CREATE TABLE `interserveur` (
+  `id` int(11) NOT NULL,
+  `guild_id_1` varchar(255) DEFAULT NULL,
+  `guild_id_2` varchar(255) DEFAULT NULL,
+  `channel_id_1` varchar(255) DEFAULT NULL,
+  `channel_id_2` varchar(255) DEFAULT NULL,
+  `code` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE profile (
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	user_id VARCHAR(255),
-	description TEXT,
-	image TEXT,
-	footer TEXT,
-	couleur_hexa VARCHAR(10),
-	film TEXT,
-	musique TEXT,
-	couleur TEXT,
-	repas TEXT,
-	adjectifs TEXT, 
-	pseudo TEXT, 
-	likes TEXT
-);
+-- --------------------------------------------------------
 
-CREATE TABLE reminderMember (
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	guild_id VARCHAR(255),
-	user_id VARCHAR(255),
-	startDate DATE,
-	FOREIGN KEY (guild_id) REFERENCES servers(guild_id)
-);
+--
+-- Structure de la table `logs`
+--
 
-CREATE TABLE remindme (
-	remindme_id INTEGER PRIMARY KEY AUTOINCREMENT,
-	dateFin DATE,
-	user_id VARCHAR(255),
-	raison TEXT
-, message_id VARCHAR(255), guild_id VARCHAR(255));
+CREATE TABLE `logs` (
+  `guild_id` varchar(255) DEFAULT NULL,
+  `logs_id` varchar(255) DEFAULT NULL,
+  `channelCreate` tinyint(1) DEFAULT '1',
+  `channelDelete` tinyint(1) DEFAULT '1',
+  `channelUpdate` tinyint(1) DEFAULT '1',
+  `messageDelete` tinyint(1) DEFAULT '1',
+  `messageUpdate` tinyint(1) DEFAULT '1',
+  `messageDeleteBulk` tinyint(1) DEFAULT '1',
+  `roleCreate` tinyint(1) DEFAULT '1',
+  `roleDelete` tinyint(1) DEFAULT '1',
+  `roleUpdate` tinyint(1) DEFAULT '1',
+  `emojiCreate` tinyint(1) DEFAULT '1',
+  `emojiDelete` tinyint(1) DEFAULT '1',
+  `emojiUpdate` tinyint(1) DEFAULT '1',
+  `voiceStateUpdate` tinyint(1) DEFAULT '1',
+  `guildMemberUpdate` tinyint(1) DEFAULT '1',
+  `guildMemberRemove` tinyint(1) DEFAULT '1',
+  `guildBanAdd` tinyint(1) DEFAULT '1',
+  `guildBanRemove` tinyint(1) DEFAULT '1',
+  `inviteCreate` tinyint(1) DEFAULT '1',
+  `inviteDelete` tinyint(1) DEFAULT '1',
+  `guildMemberAdd` tinyint(1) DEFAULT '1',
+  `stickerCreate` tinyint(1) DEFAULT '1',
+  `stickerDelete` tinyint(1) DEFAULT '1',
+  `stickerUpdate` tinyint(1) DEFAULT '1',
+  `threadCreate` tinyint(1) DEFAULT '1',
+  `threadDelete` tinyint(1) DEFAULT '1',
+  `threadUpdate` tinyint(1) DEFAULT '1',
+  `threadMembersUpdate` tinyint(1) DEFAULT '1',
+  `threadMemberUpdate` tinyint(1) DEFAULT '1',
+  `pseudo` tinyint(1) DEFAULT '1',
+  `boost` tinyint(1) DEFAULT '1',
+  `channelPinsUpdate` tinyint(1) DEFAULT '1',
+  `guildScheduledEventCreate` tinyint(1) DEFAULT '1',
+  `guildScheduledEventDelete` tinyint(1) DEFAULT '1',
+  `guildScheduledEventUpdate` tinyint(1) DEFAULT '1',
+  `guildScheduledEventUserAdd` tinyint(1) DEFAULT '1',
+  `guildScheduledEventUserRemove` tinyint(1) DEFAULT '1',
+  `webhookUpdate` tinyint(1) DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE servers (
-	server_id INTEGER PRIMARY KEY AUTOINCREMENT,
-	guild_id VARCHAR(255) NOT NULL,
-	logs_id VARCHAR(255),
-	ticket_id VARCHAR(255),
-	stats_id VARCHAR(255),
-	bumps_id VARCHAR(255),
-	anniv_id VARCHAR(255),
-	prison_id VARCHAR(255), 
-	suggestion_id VARCHAR(255), 
-	anniv_channel_id VARCHAR(255), 
-	anniv_role_id VARCHAR(255), 
-	prison_role_id VARCHAR(255), 
-	prison_admin_id VARCHAR(255), 
-	mute_id VARCHAR(255), 
-	stats_bot_id VARCHAR(255), 
-	stats_online_id VARCHAR(255), 
-	stats_bot_message VARCHAR(30), 
-	stats_online_message VARCHAR(30), 
-	stats_message VARCHAR(30), 
-	privateroom_category_id VARCHAR(255), 
-	privateroom_channel_id VARCHAR(255)
-);
+--
+-- Structure de la table `mute`
+--
 
-CREATE TABLE sqlite_sequence(name,seq);
+CREATE TABLE `mute` (
+  `id` int(11) NOT NULL,
+  `user_id` varchar(255) DEFAULT NULL,
+  `guild_id` varchar(255) DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `dateMute` date DEFAULT NULL,
+  `reason` text,
+  `moderator_id` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE tickets (
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	guild_id VARCHAR(255),
-	user_id VARCHAR(255),
-	channel_id VARCHAR(255),
-	deleted BOOLEAN DEFAULT 0
-);
+-- --------------------------------------------------------
 
-CREATE TABLE warns (
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	warn_id VARCHAR(255),
-	user_id VARCHAR(255),
-	guild_id VARCHAR(255),
-	modo_id VARCHAR(255),
-	warn_date DATE, raison TEXT,
-	FOREIGN KEY (guild_id) REFERENCES servers(guild_id)
-);
+--
+-- Structure de la table `poll`
+--
 
+CREATE TABLE `poll` (
+  `id` int(11) NOT NULL,
+  `guild_id` varchar(255) DEFAULT NULL,
+  `channel_id` varchar(255) DEFAULT NULL,
+  `message_id` varchar(255) DEFAULT NULL,
+  `numero_1` text,
+  `numero_1_nb` text,
+  `numero_2` text,
+  `numero_2_nb` text,
+  `numero_3` text,
+  `numero_3_nb` text,
+  `numero_4` text,
+  `numero_4_nb` text,
+  `numero_5` text,
+  `numero_5_nb` text,
+  `numero_6` text,
+  `numero_6_nb` text,
+  `numero_7` text,
+  `numero_7_nb` text,
+  `numero_8` text,
+  `numero_8_nb` text,
+  `numero_9` text,
+  `numero_9_nb` text,
+  `dateFin` datetime DEFAULT NULL,
+  `question` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- --------------------------------------------------------
 
+--
+-- Structure de la table `privateroom`
+--
 
+CREATE TABLE `privateroom` (
+  `id` int(11) NOT NULL,
+  `guild_id` varchar(255) DEFAULT NULL,
+  `user_id` varchar(255) DEFAULT NULL,
+  `channel_id` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Déchargement des données de la table `privateroom`
+--
 
+-- --------------------------------------------------------
 
+--
+-- Structure de la table `profile`
+--
 
+CREATE TABLE `profile` (
+  `id` int(11) NOT NULL,
+  `user_id` varchar(255) DEFAULT NULL,
+  `description` text,
+  `image` text,
+  `footer` text,
+  `couleur_hexa` varchar(10) DEFAULT NULL,
+  `film` text,
+  `musique` text,
+  `repas` text,
+  `adjectifs` text,
+  `pseudo` text,
+  `likes` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- --------------------------------------------------------
 
+--
+-- Structure de la table `reminderMember`
+--
 
+CREATE TABLE `reminderMember` (
+  `id` int(11) NOT NULL,
+  `guild_id` varchar(255) DEFAULT NULL,
+  `user_id` varchar(255) DEFAULT NULL,
+  `startDate` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- --------------------------------------------------------
 
-INSERT INTO "servers" ("server_id", "guild_id", "logs_id", "ticket_id", "stats_id", "bumps_id", "anniv_id", "prison_id", "suggestion_id", "anniv_channel_id", "anniv_role_id", "prison_role_id", "prison_admin_id", "mute_id", "stats_bot_id", "stats_online_id", "stats_bot_message", "stats_online_message", "stats_message", "privateroom_category_id", "privateroom_channel_id") VALUES
-('8', '901980905579643001', NULL, NULL, NULL, NULL, NULL, NULL, '913227134338736158', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+--
+-- Structure de la table `remindme`
+--
 
-INSERT INTO "sqlite_sequence" ("name", "seq") VALUES
-('giveaways', '44'),
-('bumps', '11'),
-('servers', '8'),
-('tickets', '39'),
-('remindme', '14'),
-('anniversaires', '2'),
-('warns', '17'),
-('bans', '1'),
-('interserveur', '3'),
-('reminderMember', '6'),
-('privateroom', '14'),
-('profile', '7'),
-('poll', '9');
+CREATE TABLE `remindme` (
+  `remindme_id` int(11) NOT NULL,
+  `dateFin` date DEFAULT NULL,
+  `user_id` varchar(255) DEFAULT NULL,
+  `raison` text,
+  `message_id` varchar(255) DEFAULT NULL,
+  `guild_id` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- --------------------------------------------------------
 
+--
+-- Structure de la table `servers`
+--
+
+CREATE TABLE `servers` (
+  `server_id` int(11) NOT NULL,
+  `guild_id` varchar(255) NOT NULL,
+  `logs_id` varchar(255) DEFAULT NULL,
+  `ticket_id` varchar(255) DEFAULT NULL,
+  `stats_id` varchar(255) DEFAULT NULL,
+  `anniv_id` varchar(255) DEFAULT NULL,
+  `prison_id` varchar(255) DEFAULT NULL,
+  `suggestion_id` varchar(255) DEFAULT NULL,
+  `anniv_channel_id` varchar(255) DEFAULT NULL,
+  `anniv_role_id` varchar(255) DEFAULT NULL,
+  `anniv_description` text,
+  `anniv_hour` varchar(50) DEFAULT NULL,
+  `prison_role_id` varchar(255) DEFAULT NULL,
+  `prison_admin_id` varchar(255) DEFAULT NULL,
+  `mute_id` varchar(255) DEFAULT NULL,
+  `stats_bot_id` varchar(255) DEFAULT NULL,
+  `stats_online_id` varchar(255) DEFAULT NULL,
+  `stats_bot_message` varchar(30) DEFAULT NULL,
+  `stats_online_message` varchar(30) DEFAULT NULL,
+  `stats_message` varchar(30) DEFAULT NULL,
+  `privateroom_category_id` varchar(255) DEFAULT NULL,
+  `privateroom_channel_id` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Structure de la table `tickets`
+--
+
+CREATE TABLE `tickets` (
+  `id` int(11) NOT NULL,
+  `guild_id` varchar(255) DEFAULT NULL,
+  `user_id` varchar(255) DEFAULT NULL,
+  `channel_id` varchar(255) DEFAULT NULL,
+  `deleted` tinyint(1) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Structure de la table `warns`
+--
+
+CREATE TABLE `warns` (
+  `id` int(11) NOT NULL,
+  `warn_id` varchar(255) DEFAULT NULL,
+  `user_id` varchar(255) DEFAULT NULL,
+  `guild_id` varchar(255) DEFAULT NULL,
+  `modo_id` varchar(255) DEFAULT NULL,
+  `warn_date` date DEFAULT NULL,
+  `raison` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Index pour la table `anniversaires`
+--
+ALTER TABLE `anniversaires`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id` (`user_id`);
+
+--
+-- Index pour la table `bans`
+--
+ALTER TABLE `bans`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id` (`user_id`);
+
+--
+-- Index pour la table `giveaways`
+--
+ALTER TABLE `giveaways`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `interserveur`
+--
+ALTER TABLE `interserveur`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `logs`
+--
+ALTER TABLE `logs`
+  ADD UNIQUE KEY `guild_id` (`guild_id`);
+
+--
+-- Index pour la table `mute`
+--
+ALTER TABLE `mute`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `poll`
+--
+ALTER TABLE `poll`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `privateroom`
+--
+ALTER TABLE `privateroom`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `profile`
+--
+ALTER TABLE `profile`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id` (`user_id`);
+
+--
+-- Index pour la table `reminderMember`
+--
+ALTER TABLE `reminderMember`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `remindme`
+--
+ALTER TABLE `remindme`
+  ADD PRIMARY KEY (`remindme_id`);
+
+--
+-- Index pour la table `servers`
+--
+ALTER TABLE `servers`
+  ADD PRIMARY KEY (`server_id`),
+  ADD UNIQUE KEY `guild_id` (`guild_id`);
+
+--
+-- Index pour la table `tickets`
+--
+ALTER TABLE `tickets`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `warns`
+--
+ALTER TABLE `warns`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `anniversaires`
+--
+ALTER TABLE `anniversaires`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT pour la table `bans`
+--
+ALTER TABLE `bans`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT pour la table `giveaways`
+--
+ALTER TABLE `giveaways`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT pour la table `interserveur`
+--
+ALTER TABLE `interserveur`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT pour la table `mute`
+--
+ALTER TABLE `mute`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `poll`
+--
+ALTER TABLE `poll`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT pour la table `privateroom`
+--
+ALTER TABLE `privateroom`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT pour la table `profile`
+--
+ALTER TABLE `profile`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT pour la table `reminderMember`
+--
+ALTER TABLE `reminderMember`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `remindme`
+--
+ALTER TABLE `remindme`
+  MODIFY `remindme_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `servers`
+--
+ALTER TABLE `servers`
+  MODIFY `server_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT pour la table `tickets`
+--
+ALTER TABLE `tickets`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT pour la table `warns`
+--
+ALTER TABLE `warns`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
