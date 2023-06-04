@@ -4,6 +4,7 @@ const sessions = require('../modules/sessions');
 const birthdaySession = require('../modules/sessions/birthday');
 const profileSession = require('../modules/sessions/profile');
 const logsSession = require('../modules/sessions/logs');
+const jailSession = require('../modules/sessions/jail');
 
 const router = express.Router();
 
@@ -117,7 +118,17 @@ router.post('/servers/:id/logs', validateGuild, async (req, res) => {
 });
 
 router.get('/servers/:id/jail', validateGuild, async (req, res) => {
-
+	const guild = await sessions.guild(req.params.id);
+	let errors = req.session.errors || [];
+	req.session.errors = null;
+	let jail = await jailSession.getJail(req.params.id);
+	console.log(jail);
+	res.render('dashboard/jail.twig', {
+		savedGuild: await sessions.guild(req.params.id),
+		page: 'jail',
+		jail: jail,
+		errors: errors
+	});
 });
 
 router.get('/servers/:id', validateGuild, async (req, res) => {

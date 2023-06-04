@@ -1039,6 +1039,50 @@ main {
 						}
 					}
 				}
+
+				.infos-container {
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					background-color: $fr-big;
+					border-radius: 26px;
+					padding: 20px 30px 10px 10px;
+					height: 190px;
+					position: relative;
+					width: 100%;
+
+					.infos-img {
+						position: absolute;
+						left: 0;
+						max-width: 400px;
+						filter: drop-shadow(-10px 40px 30px rgba(0, 0, 0, .5));
+						transform: scale(1) perspective(1000px) rotateX(23deg) rotateY(23deg) rotate(-9.8deg) translateX(-15px) translateY(-15px);
+						transition: all .2s ease-out;
+						perspective: 484px;
+
+						&:hover {
+							width: 40%;
+							perspective: 0;
+							transform: scale(1) rotateX(0) rotateY(0) rotate(0) translateX(-45px) translateY(-25px);
+						}
+					}
+
+					div {
+						-webkit-margin-start: clamp(40%, 4vw, 200px);
+						margin-inline-start: clamp(40%, 4vw, 200px);
+					}
+
+					p {
+						font-weight: 500;
+						font-size: 14px;
+						line-height: 17px;
+						color: $fr-white;
+
+						&:not(:last-child) {
+							margin-bottom: 10px;
+						}
+					}
+				}
 			}
 
 			.log-all-btn {
@@ -1392,6 +1436,13 @@ main {
 	padding-bottom: 20px;
 	display: flex;
 	flex-wrap: wrap;
+
+	.dash-parts-infos {
+		color: hsla(0, 0%, 100%, .502);
+		font-size: 14px;
+		font-weight: 500;
+		margin: 0 0 20px 0;
+	}
 }
 
 .dash-content .button {

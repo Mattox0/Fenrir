@@ -9,11 +9,59 @@
 				<div class="dash-top">
 					<div class="dash-infos">
 						<h3>
-
+							Informations
+						</h3>
+					</div>
+				</div>
+				<div class="dash-parts" style="height: auto; overflow: visible;">
+					<div class="dash-parts-full">
+						<div class="infos-container">
+							<img src="/img/info-jail.png" alt="info-jail" class="infos-img">
+							<div>
+								<p>
+									Le système de prison permet d'isoler les membres qui ne respectent pas les règles de votre serveur.
+								</p>
+								<p>
+									Les membres qui seront emprisonnés seront automatiquement isolé et n'auront plus accès au reste du serveur.
+								</p>
+								<p>
+									Une fois la prison activée, il vous suffit de faire un
+									<code>/prison user</code>
+									pour emprisonner un membre.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="dash-module">
+				<div class="dash-top">
+					<div class="dash-infos">
+						<h3>
+							Système de prison
 						</h3>
 						<p>
-
+							Configure le système de prison de ton serveur. Les membres qui seront emprisonnés seront automatiquement isolé et n'auront plus accès au serveur.
 						</p>
+					</div>
+					<label for="9411510743" class="switch-normal">
+						<div class="slider round{% if jail.prison_id is not null %} active{% endif %}"></div>
+						<input id="9411510743" type="checkbox" name="birthday" {% if jail.prison_id is not null %} checked {% endif %}>
+					</label>
+				</div>
+				<div class="dash-parts" style="{% if birthday.anniv_channel_id is not null %}height: auto; overflow: visible;{% else %}height: 0px; overflow: hidden;{% endif %}">
+					<div class="dash-parts-full">
+						{% if jail.prison_id is not null %}
+							<p class="dash-parts-infos">Vous n'avez pas encore de prison</p>
+						{% endif %}
+						<div class="log-all-btn">
+							<div class="log-module-btn">
+								<p>Tout sélectionner</p>
+							</div>
+							<div class="log-module-btn">
+								<p>Tout désélectionner</p>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
