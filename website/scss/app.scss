@@ -1052,13 +1052,17 @@ main {
 					width: 100%;
 
 					.infos-img {
-						position: absolute;
-						left: 0;
 						max-width: 400px;
-						filter: drop-shadow(-10px 40px 30px rgba(0, 0, 0, .5));
-						transform: scale(1) perspective(1000px) rotateX(23deg) rotateY(23deg) rotate(-9.8deg) translateX(-15px) translateY(-15px);
-						transition: all .2s ease-out;
-						perspective: 484px;
+
+						&.left {
+							position: absolute;
+							left: 0;
+							width: 35%;
+							filter: drop-shadow(-10px 40px 30px rgba(0, 0, 0, .5));
+							transform: scale(1) perspective(1000px) rotateX(23deg) rotateY(23deg) rotate(-9.8deg) translateX(-15px) translateY(-15px);
+							transition: all .2s ease-out;
+							perspective: 484px;
+						}
 
 						&:hover {
 							width: 40%;
@@ -1070,11 +1074,12 @@ main {
 					div {
 						-webkit-margin-start: clamp(40%, 4vw, 200px);
 						margin-inline-start: clamp(40%, 4vw, 200px);
+						margin-right: 10%;
 					}
 
 					p {
 						font-weight: 500;
-						font-size: 14px;
+						font-size: 16px;
 						line-height: 17px;
 						color: $fr-white;
 
@@ -1113,6 +1118,12 @@ main {
 
 					&:first-child {
 						margin-right: 24px;
+					}
+
+					&.disabled {
+						cursor: not-allowed;
+						background-color: $fr-dark;
+						color: $fr-small;
 					}
 				}
 			}

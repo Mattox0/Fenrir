@@ -6,7 +6,7 @@
 				<h1 class="dash-title">Prison</h1>
 			</div>
 			<div class="dash-module">
-				<div class="dash-top">
+				<div class="dash-top" style="padding-bottom: 20px">
 					<div class="dash-infos">
 						<h3>
 							Informations
@@ -16,7 +16,7 @@
 				<div class="dash-parts" style="height: auto; overflow: visible;">
 					<div class="dash-parts-full">
 						<div class="infos-container">
-							<img src="/img/info-jail.png" alt="info-jail" class="infos-img">
+							<img src="/img/info-jail.png" alt="info-jail" class="infos-img left">
 							<div>
 								<p>
 									Le système de prison permet d'isoler les membres qui ne respectent pas les règles de votre serveur.
@@ -51,15 +51,15 @@
 				</div>
 				<div class="dash-parts" style="{% if birthday.anniv_channel_id is not null %}height: auto; overflow: visible;{% else %}height: 0px; overflow: hidden;{% endif %}">
 					<div class="dash-parts-full">
-						{% if jail.prison_id is not null %}
+						{% if jail.prison_id is null %}
 							<p class="dash-parts-infos">Vous n'avez pas encore de prison</p>
 						{% endif %}
 						<div class="log-all-btn">
-							<div class="log-module-btn">
-								<p>Tout sélectionner</p>
+							<div class="log-module-btn {% if jail.prison_id is not null %} disabled{% endif %}" id="create-jail">
+								<p>Laisser Fenrir créer votre prison</p>
 							</div>
-							<div class="log-module-btn">
-								<p>Tout désélectionner</p>
+							<div class="log-module-btn {% if jail.prison_id is null %} disabled{% endif %}" id="delete-jail">
+								<p>Supprimer la prison existante</p>
 							</div>
 						</div>
 					</div>
