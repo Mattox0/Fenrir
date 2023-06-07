@@ -56,10 +56,15 @@
 						{% endif %}
 						<div class="log-all-btn">
 							<div class="log-module-btn {% if jail.prison_id is not null %} disabled{% endif %}" id="create-jail">
-								<p>Laisser Fenrir créer votre prison</p>
+								<p class="message">Laisser Fenrir créer votre prison</p>
+								<div class="loader_discord" style="font-size: 16px;">
+									<div class="point"></div>
+									<div class="point"></div>
+									<div class="point"></div>
+								</div>
 							</div>
 							<div class="log-module-btn {% if jail.prison_id is null %} disabled{% endif %}" id="delete-jail">
-								<p>Supprimer la prison existante</p>
+								<p class="message">Supprimer la prison existante</p>
 							</div>
 						</div>
 						<div class="part">

@@ -52,8 +52,35 @@ router.post('/jail/create', async (req, res) => {
 		req.session.errors = ["Une erreur est survenue lors de la création de la prison"];
 		return res.redirect('servers/' + req.body.guild_id + '/jail');
 	}
-	req.session.success = ["La prison a bien été créée"];
-	return res.redirect('servers/' + req.body.guild_id + '/jail');
+	return res.status(200).send({
+		status : 'success',
+		message : 'La prison a bien été créée'
+	});
+});
+
+router.post('/jail/delete', async (req, res) => {
+	const client = index.getClient();
+	const con = index.getDB();
+	try {
+		let [prison] = await con.promise().query(`SELECT prison_id, prison_role_id, prison_category_id FROM servers WHERE guild_id = '${req.body.guild_id}'`);
+		prison = prison[0];
+		const guild = client.guilds.cache.get(req.body.guild_id);
+		if (!guild) {
+			res.session.errors = ['Serveur introuvable'];
+			return res.redirect('/servers/' + req.body.guild_id + '/jail');
+		}
+		let channel = guild.channels.cache.find(x => x.id === prison.prison_id)
+		if (channel) channel.delete();
+		let role = guild.roles.cache.find(x => x.id === prison.prison_role_id);
+		if (role) role.delete()
+		let category = guild.channels.cache.find(x => x.id === prison.prison_category_id);
+		if (category) category.delete()
+		con.query("UPDATE servers SET prison_id = ?, prison_role_id = ?, prison_category_id = ?, prison_admin_id = ? WHERE guild_id = ?", [null, null, null, null, req.body.guild_id], (err) => { if (err) console.log(err) });
+	} catch (e) {
+		req.session.errors = ["Une erreur est survenue lors de la suppression de la prison"];
+		return res.redirect('servers/' + req.body.guild_id + '/jail');
+	}
+	return res.status(200).send('La prison a bien été supprimée');
 });
 
 module.exports = router;
