@@ -17,13 +17,8 @@ create_jail.addEventListener('click', (e) => {
 	})
 		.then(res => res.json())
 		.then(data => {
-			if (data.status === 'success') {
-				window.location.href = '/servers/' + data.guild_id + '/jail';
-			} else {
-				window.location.href = '/servers/' + data.guild_id + '/jail';
-			}
+			window.location.href = '/servers/' + data.guild_id + '/jail';
 		})
-		.catch(err => console.log("ERR => ", err));
 });
 
 delete_jail.addEventListener('click', (e) => {
@@ -40,4 +35,8 @@ delete_jail.addEventListener('click', (e) => {
 			guild_id: window.location.pathname.split('/')[2]
 		}),
 	})
+		.then(res => res.json())
+		.then(data => {
+			window.location.href = '/servers/' + data.guild_id + '/jail';
+		})
 });

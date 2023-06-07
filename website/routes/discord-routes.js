@@ -11,7 +11,10 @@ router.post('/jail/create', async (req, res) => {
 		const guild = client.guilds.cache.get(req.body.guild_id);
 		if (!guild) {
 			res.session.errors = ['Serveur introuvable'];
-			return res.redirect('/servers/' + req.body.guild_id + '/jail');
+			return res.status(202).send({
+				status : 'error',
+				guild_id : req.body.guild_id
+			});
 		}
 		let prison = await guild.roles.create({
 			name: 'Prison',
@@ -49,8 +52,11 @@ router.post('/jail/create', async (req, res) => {
 		})
 		con.query("UPDATE servers SET prison_id = ?, prison_role_id = ?, prison_category_id = ? WHERE guild_id = ?", [chann.id, prison.id, category.id, req.body.guild_id], (err) => { if (err) console.log(err) });
 	} catch (e) {
-		req.session.errors = ["Une erreur est survenue lors de la création de la prison"];
-		return res.redirect('servers/' + req.body.guild_id + '/jail');
+		req.session.errors = ["Une erreur est survenue"];
+		return res.status(202).send({
+			status : 'error',
+			guild_id : req.body.guild_id
+		});
 	}
 	req.session.success = ["La prison a bien été créée"];
 	return res.status(200).send({
@@ -68,7 +74,10 @@ router.post('/jail/delete', async (req, res) => {
 		const guild = client.guilds.cache.get(req.body.guild_id);
 		if (!guild) {
 			res.session.errors = ['Serveur introuvable'];
-			return res.redirect('/servers/' + req.body.guild_id + '/jail');
+			return res.status(202).send({
+				status : 'error',
+				guild_id : req.body.guild_id
+			});
 		}
 		let channel = guild.channels.cache.find(x => x.id === prison.prison_id)
 		if (channel) channel.delete();
@@ -78,10 +87,13 @@ router.post('/jail/delete', async (req, res) => {
 		if (category) category.delete()
 		con.query("UPDATE servers SET prison_id = ?, prison_role_id = ?, prison_category_id = ?, prison_admin_id = ? WHERE guild_id = ?", [null, null, null, null, req.body.guild_id], (err) => { if (err) console.log(err) });
 	} catch (e) {
-		req.session.infos = ["Une erreur est survenue lors de la suppression de la prison"];
-		return res.redirect('servers/' + req.body.guild_id + '/jail');
+		req.session.errors = ["Une erreur est survenue"];
+		return res.status(202).send({
+			status : 'error',
+			guild_id : req.body.guild_id
+		});
 	}
-	req.session.infos = ["La prison a bien été supprimée"];
+	req.session.success = ["La prison a bien été supprimée"];
 	return res.status(200).send({
 		status : 'success',
 		guild_id : req.body.guild_id
