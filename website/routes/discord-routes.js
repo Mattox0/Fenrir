@@ -52,9 +52,10 @@ router.post('/jail/create', async (req, res) => {
 		req.session.errors = ["Une erreur est survenue lors de la création de la prison"];
 		return res.redirect('servers/' + req.body.guild_id + '/jail');
 	}
+	req.session.success = ["La prison a bien été créée"];
 	return res.status(200).send({
 		status : 'success',
-		message : 'La prison a bien été créée'
+		guild_id : req.body.guild_id
 	});
 });
 
@@ -77,10 +78,14 @@ router.post('/jail/delete', async (req, res) => {
 		if (category) category.delete()
 		con.query("UPDATE servers SET prison_id = ?, prison_role_id = ?, prison_category_id = ?, prison_admin_id = ? WHERE guild_id = ?", [null, null, null, null, req.body.guild_id], (err) => { if (err) console.log(err) });
 	} catch (e) {
-		req.session.errors = ["Une erreur est survenue lors de la suppression de la prison"];
+		req.session.infos = ["Une erreur est survenue lors de la suppression de la prison"];
 		return res.redirect('servers/' + req.body.guild_id + '/jail');
 	}
-	return res.status(200).send('La prison a bien été supprimée');
+	req.session.infos = ["La prison a bien été supprimée"];
+	return res.status(200).send({
+		status : 'success',
+		guild_id : req.body.guild_id
+	});
 });
 
 module.exports = router;

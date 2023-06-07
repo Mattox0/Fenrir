@@ -3,8 +3,8 @@ const delete_jail = document.querySelector('#delete-jail');
 
 create_jail.addEventListener('click', (e) => {
 	if (create_jail.classList.contains('disabled')) return;
-	// create_jail.querySelector('')
-	// ! AFFICHER LES POINTS 
+	create_jail.querySelector('.message').style.display = 'none';
+	create_jail.querySelector('.loader_discord').style.display = 'flex';
 	fetch('/jail/create', {
 		method: 'POST',
 		headers: {
@@ -15,23 +15,21 @@ create_jail.addEventListener('click', (e) => {
 			guild_id: window.location.pathname.split('/')[2]
 		}),
 	})
-	.then(res => res.json())
-	.then(data => {
-		if (data.status === 'success') {
-			create_jail.classList.add('disabled');
-			delete_jail.classList.remove('disabled');
-			req.session.success = [data.message];
-			return res.redirect('/servers/' + req.body.guild_id + '/jail');
-		} else {
-			req.session.errors = [data.message];
-			return res.redirect('/servers/' + req.body.guild_id + '/jail');
-		}
-	})
-	.catch(err => console.log("ERR => ", err));
+		.then(res => res.json())
+		.then(data => {
+			if (data.status === 'success') {
+				window.location.href = '/servers/' + data.guild_id + '/jail';
+			} else {
+				window.location.href = '/servers/' + data.guild_id + '/jail';
+			}
+		})
+		.catch(err => console.log("ERR => ", err));
 });
 
 delete_jail.addEventListener('click', (e) => {
 	if (delete_jail.classList.contains('disabled')) return;
+	delete_jail.querySelector('.message').style.display = 'none';
+	delete_jail.querySelector('.loader_discord').style.display = 'flex';
 	fetch('/jail/delete', {
 		method: 'POST',
 		headers: {

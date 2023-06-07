@@ -49,15 +49,12 @@
 						<input id="9411510743" type="checkbox" name="birthday" {% if jail.prison_id is not null %} checked {% endif %}>
 					</label>
 				</div>
-				<div class="dash-parts" style="{% if birthday.anniv_channel_id is not null %}height: auto; overflow: visible;{% else %}height: 0px; overflow: hidden;{% endif %}">
+				<div class="dash-parts" style="{% if jail.prison_id is not null %}height: auto; overflow: visible;{% else %}height: 0px; overflow: hidden;{% endif %}">
 					<div class="dash-parts-full">
-						{% if jail.prison_id is null %}
-							<p class="dash-parts-infos">Vous n'avez pas encore de prison</p>
-						{% endif %}
 						<div class="log-all-btn">
 							<div class="log-module-btn {% if jail.prison_id is not null %} disabled{% endif %}" id="create-jail">
 								<p class="message">Laisser Fenrir créer votre prison</p>
-								<div class="loader_discord" style="font-size: 16px;">
+								<div class="loader_discord" style="font-size: 16px;display: none;">
 									<div class="point"></div>
 									<div class="point"></div>
 									<div class="point"></div>
@@ -65,6 +62,11 @@
 							</div>
 							<div class="log-module-btn {% if jail.prison_id is null %} disabled{% endif %}" id="delete-jail">
 								<p class="message">Supprimer la prison existante</p>
+								<div class="loader_discord" style="font-size: 16px;display: none;">
+									<div class="point"></div>
+									<div class="point"></div>
+									<div class="point"></div>
+								</div>
 							</div>
 						</div>
 						<div class="part">
