@@ -7,3 +7,12 @@
 		<i class="fa-solid fa-xmark"></i>
 	</div>
 </div>
+<div id="message-success" class="{% if success|length < 1 %}hidden{% endif %}">
+	<div class="dash-success">
+		<i class="fas fa-check-circle" style="color: #00a651;"></i>
+		{% for message in success %}
+			<p>{{ message }}</p>
+		{% endfor %}
+		<i class="fa-solid fa-xmark"></i>
+	</div>
+</div>

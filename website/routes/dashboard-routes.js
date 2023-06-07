@@ -121,13 +121,23 @@ router.get('/servers/:id/jail', validateGuild, async (req, res) => {
 	const guild = await sessions.guild(req.params.id);
 	let errors = req.session.errors || [];
 	req.session.errors = null;
+	let success = req.session.success || [];
+	req.session.success = null;
 	let jail = await jailSession.getJail(req.params.id);
-	console.log(jail);
+	if (jail) {
+		jail.prison_id = jail.prison_id ? await sessions.channel(guild, jail.prison_id) : null;
+		jail.role_id = jail.role_id ? await sessions.role(guild, jail.role_id) : null;
+	}
+	let channels = await sessions.channels(guild);
+	channels = channels.filter(channel => channel.type === 0);
+	channels = await Promise.all(channels.map(async channel => await sessions.channelWithParent(guild, channel)));
 	res.render('dashboard/jail.twig', {
-		savedGuild: await sessions.guild(req.params.id),
+		savedGuild: guild,
 		page: 'jail',
 		jail: jail,
-		errors: errors
+		channels: channels,
+		errors: errors,
+		success: success
 	});
 });
 

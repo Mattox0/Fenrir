@@ -7,6 +7,7 @@ const session = require('express-session')
 const authRoutes = require('./routes/auth-routes');
 const rootRoutes = require('./routes/root-routes');
 const dashboardRoutes = require('./routes/dashboard-routes');
+const discordRoutes = require('./routes/discord-routes');
 
 const app = express();
 
@@ -25,13 +26,14 @@ app.set("twig options", {
     allowAsync: true
 })
 
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(cookies.express('a','b','c'))
 
 app.use('/', middleware.updateUser, rootRoutes, 
     authRoutes,
-    middleware.updateUser, middleware.validateUser, middleware.updateGuilds, dashboardRoutes
+    middleware.updateUser, middleware.validateUser, middleware.updateGuilds, dashboardRoutes, discordRoutes
 );
 
 app.get('*', (req, res) => {
