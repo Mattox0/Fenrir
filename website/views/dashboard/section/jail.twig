@@ -74,10 +74,10 @@
 							<div class="role-selector selector">
 								<div class="select-element{% if jail.prison_role_id is not null %} active{% endif %}">
 									{% if jail.prison_role_id is not null %}
-										<input type="text" autocomplete="off" name="birthday_role" class="select" placeholder="{{ jail.prison_role_id.name }}" readonly>
+										<input type="text" autocomplete="off" name="birthday_role" class="default" placeholder="{{ jail.prison_role_id.name }}" readonly>
 										<input type="hidden" name="birthday_role_id" value="{{ jail.prison_role_id.id }}">
 									{% else %}
-										<input type="text" autocomplete="off" name="birthday_role" class="select" placeholder="Laissez Fenrir créer le salon" id="" readonly>
+										<input type="text" autocomplete="off" name="birthday_role" class="default" placeholder="Laissez Fenrir créer le salon" id="" readonly>
 										<input type="hidden" name="birthday_role_id" value="">
 									{% endif %}
 								</div>
@@ -116,10 +116,10 @@
 							<div class="channel-selector selector">
 								<div class="select-element{% if jail.prison_category_id is not null %} active{% endif %}">
 									{% if jail.prison_category_id is not null %}
-										<input type="text" autocomplete="off" name="birthday_channel" placeholder="{{ jail.prison_category_id.name }}" readonly>
+										<input type="text" autocomplete="off" name="birthday_channel" class="default" placeholder="{{ jail.prison_category_id.name }}" readonly>
 										<input type="hidden" name="birthday_channel_id" value="{{ jail.prison_category_id.id }}">
 									{% else %}
-										<input type="text" autocomplete="off" name="birthday_channel" placeholder="Laissez Fenrir créer le salon" readonly>
+										<input type="text" autocomplete="off" name="birthday_channel" class="default" placeholder="Laissez Fenrir créer le salon" readonly>
 										<input type="hidden" name="birthday_channel_id" value="">
 									{% endif %}
 								</div>
@@ -130,10 +130,10 @@
 							<div class="channel-selector selector">
 								<div class="select-element{% if jail.prison_id is not null %} active{% endif %}">
 									{% if jail.prison_id is not null %}
-										<input type="text" autocomplete="off" name="birthday_channel" placeholder="{{ jail.prison_id.name }}" readonly>
+										<input type="text" autocomplete="off" name="birthday_channel" class="default" placeholder="{{ jail.prison_id.name }}" readonly>
 										<input type="hidden" name="birthday_channel_id" value="{{ jail.prison_id.id }}">
 									{% else %}
-										<input type="text" autocomplete="off" name="birthday_channel" placeholder="Laissez Fenrir créer le salon" readonly>
+										<input type="text" autocomplete="off" name="birthday_channel" class="default" placeholder="Laissez Fenrir créer le salon" readonly>
 										<input type="hidden" name="birthday_channel_id" value="">
 									{% endif %}
 								</div>
@@ -142,6 +142,10 @@
 					</div>
 				</div>
 			</div>
+		</div>
+		<div class="savebar-container">
+			<div class="spacer"></div>
+			{% include 'includes/savebar.twig' %}
 		</div>
 	</form>
 </div>

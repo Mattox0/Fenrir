@@ -778,6 +778,10 @@ main {
 								cursor: pointer;
 							}
 
+							.default {
+								cursor: default;
+							}
+
 							input {
 								background-color: transparent;
 								border: 0;
@@ -892,6 +896,10 @@ main {
 
 							.select {
 								cursor: pointer;
+							}
+
+							.default {
+								cursor: default;
 							}
 
 							input {
