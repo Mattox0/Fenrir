@@ -141,6 +141,18 @@ router.get('/servers/:id/jail', validateGuild, async (req, res) => {
 	});
 });
 
+router.post('/servers/:id/jail', validateGuild, async (req, res) => {
+	if (!req.body.jail) await jailSession.deleteJail(req.params.id);
+	else {
+		if (!await jailSession.isValidJail(req.body, await sessions.guild(req.params.id))) {
+			req.session.errors = ['Merci de rentrer toutes les informations nécessaires'];
+			return res.redirect(`/servers/${req.params.id}/jail`);
+		}
+		await jailSession.updateJail(req.body, req.params.id);
+	}
+	res.redirect(`/servers/${req.params.id}/jail`);
+});
+
 router.get('/servers/:id', validateGuild, async (req, res) => {
 	res.render('dashboard/show.twig', {
 		savedGuild: await sessions.guild(req.params.id),

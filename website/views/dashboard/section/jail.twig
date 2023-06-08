@@ -46,7 +46,7 @@
 					</div>
 					<label for="9411510743" class="switch-normal">
 						<div class="slider round{% if jail.prison_id is not null %} active{% endif %}"></div>
-						<input id="9411510743" type="checkbox" name="birthday" {% if jail.prison_id is not null %} checked {% endif %}>
+						<input id="9411510743" type="checkbox" name="jail" {% if jail.prison_id is not null %} checked {% endif %}>
 					</label>
 				</div>
 				<div class="dash-parts" style="{% if (jail.prison_id is not null or success|length > 0) %}height: auto; overflow: visible;{% else %}height: 0px; overflow: hidden;{% endif %}">
@@ -74,11 +74,11 @@
 							<div class="role-selector selector">
 								<div class="select-element{% if jail.prison_role_id is not null %} active{% endif %}">
 									{% if jail.prison_role_id is not null %}
-										<input type="text" autocomplete="off" name="birthday_role" class="default" placeholder="{{ jail.prison_role_id.name }}" readonly>
-										<input type="hidden" name="birthday_role_id" value="{{ jail.prison_role_id.id }}">
+										<input type="text" autocomplete="off" name="prison_role" class="default" placeholder="{{ jail.prison_role_id.name }}" readonly>
+										<input type="hidden" name="prison_role_id" value="{{ jail.prison_role_id.id }}">
 									{% else %}
-										<input type="text" autocomplete="off" name="birthday_role" class="default" placeholder="Laissez Fenrir créer le salon" id="" readonly>
-										<input type="hidden" name="birthday_role_id" value="">
+										<input type="text" autocomplete="off" name="prison_role" class="default" placeholder="Laissez Fenrir créer le salon" id="" readonly>
+										<input type="hidden" name="prison_role_id" value="">
 									{% endif %}
 								</div>
 							</div>
@@ -88,11 +88,11 @@
 							<div class="role-selector selector">
 								<div class="select-element{% if jail.prison_admin_id is not null %} active{% endif %}">
 									{% if jail.prison_admin_id is not null %}
-										<input type="text" autocomplete="off" name="birthday_role" class="select" placeholder="{{ jail.prison_admin_id.name }}" readonly>
-										<input type="hidden" name="birthday_role_id" value="{{ jail.prison_admin_id.id }}">
+										<input type="text" autocomplete="off" name="prison_admin_role" class="select" placeholder="{{ jail.prison_admin_id.name }}" readonly>
+										<input type="hidden" name="prison_admin_role_id" value="{{ jail.prison_admin_id.id }}">
 									{% else %}
-										<input type="text" autocomplete="off" name="birthday_role" class="select" placeholder="Veuillez choisir un rôle" id="" readonly>
-										<input type="hidden" name="birthday_role_id" value="">
+										<input type="text" autocomplete="off" name="prison_admin_role" class="select" placeholder="Veuillez choisir un rôle" id="" readonly>
+										<input type="hidden" name="prison_admin_role_id" value="">
 									{% endif %}
 									<label class="down">
 										<svg width="11" height="7" viewbox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -116,11 +116,11 @@
 							<div class="channel-selector selector">
 								<div class="select-element{% if jail.prison_category_id is not null %} active{% endif %}">
 									{% if jail.prison_category_id is not null %}
-										<input type="text" autocomplete="off" name="birthday_channel" class="default" placeholder="{{ jail.prison_category_id.name }}" readonly>
-										<input type="hidden" name="birthday_channel_id" value="{{ jail.prison_category_id.id }}">
+										<input type="text" autocomplete="off" name="prison_category" class="default" placeholder="{{ jail.prison_category_id.name }}" readonly>
+										<input type="hidden" name="prison_category_id" value="{{ jail.prison_category_id.id }}">
 									{% else %}
-										<input type="text" autocomplete="off" name="birthday_channel" class="default" placeholder="Laissez Fenrir créer le salon" readonly>
-										<input type="hidden" name="birthday_channel_id" value="">
+										<input type="text" autocomplete="off" name="prison_category" class="default" placeholder="Laissez Fenrir créer le salon" readonly>
+										<input type="hidden" name="prison_category_id" value="">
 									{% endif %}
 								</div>
 							</div>
@@ -130,11 +130,11 @@
 							<div class="channel-selector selector">
 								<div class="select-element{% if jail.prison_id is not null %} active{% endif %}">
 									{% if jail.prison_id is not null %}
-										<input type="text" autocomplete="off" name="birthday_channel" class="default" placeholder="{{ jail.prison_id.name }}" readonly>
-										<input type="hidden" name="birthday_channel_id" value="{{ jail.prison_id.id }}">
+										<input type="text" autocomplete="off" name="prison_channel" class="default" placeholder="{{ jail.prison_id.name }}" readonly>
+										<input type="hidden" name="prison_channel_id" value="{{ jail.prison_id.id }}">
 									{% else %}
-										<input type="text" autocomplete="off" name="birthday_channel" class="default" placeholder="Laissez Fenrir créer le salon" readonly>
-										<input type="hidden" name="birthday_channel_id" value="">
+										<input type="text" autocomplete="off" name="prison_channel" class="default" placeholder="Laissez Fenrir créer le salon" readonly>
+										<input type="hidden" name="prison_channel_id" value="">
 									{% endif %}
 								</div>
 							</div>
