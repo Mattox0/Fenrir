@@ -128,6 +128,7 @@ router.get('/servers/:id/jail', validateGuild, async (req, res) => {
 		jail.prison_id = jail.prison_id ? await sessions.channel(guild, jail.prison_id) ? await sessions.channel(guild, jail.prison_id) : null : null;
 		jail.prison_role_id = jail.prison_role_id ? await sessions.role(guild, jail.prison_role_id) ? await sessions.role(guild, jail.prison_role_id) : null : null;
 		jail.prison_category_id = jail.prison_category_id ? await sessions.channel(guild, jail.prison_category_id) ? await sessions.channel(guild, jail.prison_category_id) : null : null;
+		jail.prison_admin_id = jail.prison_admin_id ? await sessions.role(guild, jail.prison_admin_id) ? await sessions.role(guild, jail.prison_admin_id) : null : null;
 	}
 	let roles = await sessions.roles(guild);
 	roles = await Promise.all(roles.map(async role => await sessions.roleWithColor(role)));
