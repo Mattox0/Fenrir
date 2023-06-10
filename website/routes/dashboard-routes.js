@@ -154,6 +154,24 @@ router.post('/servers/:id/jail', validateGuild, async (req, res) => {
 	res.redirect(`/servers/${req.params.id}/jail`);
 });
 
+router.get('/servers/:id/room', validateGuild, async (req, res) => {
+	const guild = await sessions.guild(req.params.id);
+	let errors = req.session.errors || [];
+	req.session.errors = null;
+	let success = req.session.success || [];
+	req.session.success = null;
+	let channels = await sessions.channels(guild);
+	channels = channels.filter(channel => channel.type === 0);
+	channels = await Promise.all(channels.map(async channel => await sessions.channelWithParent(guild, channel)));
+	res.render('dashboard/room.twig', {
+		savedGuild: guild,
+		page: 'room',
+		channels: channels,
+		errors: errors,
+		success: success
+	});
+});
+
 router.get('/servers/:id', validateGuild, async (req, res) => {
 	res.render('dashboard/show.twig', {
 		savedGuild: await sessions.guild(req.params.id),

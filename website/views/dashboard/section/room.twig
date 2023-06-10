@@ -1,0 +1,149 @@
+<div class="dash-content">
+	{% include 'includes/error.twig' %}
+	<form action="/servers/{{ savedGuild.id }}/room" class="child" method="post">
+		<div class="dash-container">
+			<div class="dash-header">
+				<h1 class="dash-title">Salons vocaux privés</h1>
+			</div>
+			<div class="dash-module">
+				<div class="dash-top" style="padding-bottom: 20px">
+					<div class="dash-infos">
+						<h3>
+							Informations
+						</h3>
+					</div>
+				</div>
+				<div class="dash-parts" style="height: auto; overflow: visible;">
+					<div class="dash-parts-full">
+						<div class="infos-container">
+							<img src="/img/info-room.png" alt="info-room" class="infos-img left">
+							<div>
+								<p>
+									Le système de vocaux privés permet à vos membres de créer des salons vocaux privés.
+								</p>
+								<p>
+									Ceux-ci sont automatiquement supprimés lorsque le dernier membre quitte le salon.
+								</p>
+								<p>
+									Ils peuvent choisir le nom, le nombre de membres maximum et le type de salon (public ou privé).
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="dash-module">
+				<div class="dash-top">
+					<div class="dash-infos">
+						<h3>
+							Système de prison
+						</h3>
+						<p>
+							Configure le système de prison de ton serveur. Les membres qui seront emprisonnés seront automatiquement isolé et n'auront plus accès au serveur.
+						</p>
+					</div>
+					<label for="9411510743" class="switch-normal">
+						<div class="slider round{% if jail.prison_id is not null %} active{% endif %}"></div>
+						<input id="9411510743" type="checkbox" name="jail" {% if jail.prison_id is not null %} checked {% endif %}>
+					</label>
+				</div>
+				<div class="dash-parts" style="{% if (jail.prison_id is not null or success|length > 0) %}height: auto; overflow: visible;{% else %}height: 0px; overflow: hidden;{% endif %}">
+					<div class="dash-parts-full">
+						<div class="log-all-btn">
+							<div class="log-module-btn {% if jail.prison_id is not null %} disabled{% endif %}" id="create-jail">
+								<p class="message">Laisser Fenrir créer votre prison</p>
+								<div class="loader_discord" style="font-size: 16px;display: none;">
+									<div class="point"></div>
+									<div class="point"></div>
+									<div class="point"></div>
+								</div>
+							</div>
+							<div class="log-module-btn {% if jail.prison_id is null %} disabled{% endif %}" id="delete-jail">
+								<p class="message">Supprimer la prison existante</p>
+								<div class="loader_discord" style="font-size: 16px;display: none;">
+									<div class="point"></div>
+									<div class="point"></div>
+									<div class="point"></div>
+								</div>
+							</div>
+						</div>
+						<div class="part">
+							<h4 class="part-title">Rôle</h4>
+							<div class="role-selector selector">
+								<div class="select-element{% if jail.prison_role_id is not null %} active{% endif %}">
+									{% if jail.prison_role_id is not null %}
+										<input type="text" autocomplete="off" name="prison_role" class="default" placeholder="{{ jail.prison_role_id.name }}" readonly>
+										<input type="hidden" name="prison_role_id" value="{{ jail.prison_role_id.id }}">
+									{% else %}
+										<input type="text" autocomplete="off" name="prison_role" class="default" placeholder="Laissez Fenrir créer le salon" id="" readonly>
+										<input type="hidden" name="prison_role_id" value="">
+									{% endif %}
+								</div>
+							</div>
+						</div>
+						<div class="part rigth">
+							<h4 class="part-title">Rôle Administrateur</h4>
+							<div class="role-selector selector">
+								<div class="select-element{% if jail.prison_admin_id is not null %} active{% endif %}">
+									{% if jail.prison_admin_id is not null %}
+										<input type="text" autocomplete="off" name="prison_admin_role" class="select" placeholder="{{ jail.prison_admin_id.name }}" readonly>
+										<input type="hidden" name="prison_admin_role_id" value="{{ jail.prison_admin_id.id }}">
+									{% else %}
+										<input type="text" autocomplete="off" name="prison_admin_role" class="select" placeholder="Veuillez choisir un rôle" id="" readonly>
+										<input type="hidden" name="prison_admin_role_id" value="">
+									{% endif %}
+									<label class="down">
+										<svg width="11" height="7" viewbox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path fill-rude="evenodd" clip-rule="evenodd" d="M0.172823 0.796772C-0.16424 0.356727 0.00615209 0 0.558413 0H10.2474C10.7974 0 10.963 0.349113 10.6149 0.7827L5.89383 6.66255C5.54675 7.09483 4.99034 7.08615 4.65509 6.64848L0.172823 0.796772Z" fill="currentColor"></path>
+										</svg>
+									</label>
+								</div>
+								<div class="select-elements scrollbar" role="listbox" style="display: none;">
+									{% for role in roles %}
+										<div class="element">
+											<div class="role" id="{{ role.id }}">
+												<div class="role-name" style="color: {{ role.color }};">{{ role.name }}</div>
+											</div>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+						</div>
+						<div class="part">
+							<h4 class="part-title">Categorie de la prison</h4>
+							<div class="channel-selector selector">
+								<div class="select-element{% if jail.prison_category_id is not null %} active{% endif %}">
+									{% if jail.prison_category_id is not null %}
+										<input type="text" autocomplete="off" name="prison_category" class="default" placeholder="{{ jail.prison_category_id.name }}" readonly>
+										<input type="hidden" name="prison_category_id" value="{{ jail.prison_category_id.id }}">
+									{% else %}
+										<input type="text" autocomplete="off" name="prison_category" class="default" placeholder="Laissez Fenrir créer le salon" readonly>
+										<input type="hidden" name="prison_category_id" value="">
+									{% endif %}
+								</div>
+							</div>
+						</div>
+						<div class="part rigth">
+							<h4 class="part-title">Salon de la prison</h4>
+							<div class="channel-selector selector">
+								<div class="select-element{% if jail.prison_id is not null %} active{% endif %}">
+									{% if jail.prison_id is not null %}
+										<input type="text" autocomplete="off" name="prison_channel" class="default" placeholder="{{ jail.prison_id.name }}" readonly>
+										<input type="hidden" name="prison_channel_id" value="{{ jail.prison_id.id }}">
+									{% else %}
+										<input type="text" autocomplete="off" name="prison_channel" class="default" placeholder="Laissez Fenrir créer le salon" readonly>
+										<input type="hidden" name="prison_channel_id" value="">
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="savebar-container">
+			<div class="spacer"></div>
+			{% include 'includes/savebar.twig' %}
+		</div>
+	</form>
+</div>
