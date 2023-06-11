@@ -7,4 +7,17 @@ async function getRoom(id) {
 	return null;
 }
 
+async function validRoom(body, guild) {
+	if (!body.room_channel_id) return false;
+	if (!body.room_category_id) return false;
+	let channel = guild.channels.cache.find(x => x.id === body.room_channel_id);
+	let category = guild.channels.cache.find(x => x.id === body.room_category_id);
+	if (channel.parent !== category) return false;
+	return true;
+}
+async function updateRoom(body, guild) {
+	
+}
+
 module.exports.getRoom = getRoom;
+module.exports.validRoom = validRoom;

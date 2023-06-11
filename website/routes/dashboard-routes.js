@@ -170,7 +170,6 @@ router.get('/servers/:id/room', validateGuild, async (req, res) => {
 		room.privateroom_channel_id = room.privateroom_channel_id ? await sessions.channel(guild, room.privateroom_channel_id) ? await sessions.channel(guild, room.privateroom_channel_id) : null : null;
 		room.privateroom_category_id = room.privateroom_category_id ? await sessions.channel(guild, room.privateroom_category_id) ? await sessions.channel(guild, room.privateroom_category_id) : null : null;
 	}
-	console.log(room);
 	res.render('dashboard/room.twig', {
 		savedGuild: guild,
 		page: 'room',
@@ -180,6 +179,15 @@ router.get('/servers/:id/room', validateGuild, async (req, res) => {
 		errors: errors,
 		success: success
 	});
+});
+
+router.post('/servers/:id/room', validateGuild, async (req, res) => {
+	if (!await roomSession.validRoom(req.body, await sessions.guild(req.params.id))) {
+		req.session.errors = ['Merci de rentrer toutes les informations nécessaires'];
+		return res.redirect(`/servers/${req.params.id}/room`);
+	}
+	await roomSession.updateRoom(req.body, req.params.id);
+	res.redirect(`/servers/${req.params.id}/room`);
 });
 
 router.get('/servers/:id', validateGuild, async (req, res) => {
