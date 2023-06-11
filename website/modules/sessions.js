@@ -34,6 +34,10 @@ async function channels(guild) {
 	return [...guild.channels.cache.values()];
 }
 
+async function categories(guild) {
+	return [...guild.channels.cache.values()].filter(channel => channel.type === 4);
+}
+
 async function role(guild, id) {
 	return guild.roles.cache.get(id);
 }
@@ -73,5 +77,6 @@ module.exports.channel = channel;
 module.exports.role = role;
 module.exports.roles = roles;
 module.exports.channels = channels;
+module.exports.categories = categories;
 module.exports.channelWithParent = channelWithParent;
 module.exports.roleWithColor = roleWithColor;

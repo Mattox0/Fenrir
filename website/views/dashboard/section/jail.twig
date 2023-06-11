@@ -44,12 +44,8 @@
 							Configure le système de prison de ton serveur. Les membres qui seront emprisonnés seront automatiquement isolé et n'auront plus accès au serveur.
 						</p>
 					</div>
-					<label for="9411510743" class="switch-normal">
-						<div class="slider round{% if jail.prison_id is not null %} active{% endif %}"></div>
-						<input id="9411510743" type="checkbox" name="jail" {% if jail.prison_id is not null %} checked {% endif %}>
-					</label>
 				</div>
-				<div class="dash-parts" style="{% if (jail.prison_id is not null or success|length > 0) %}height: auto; overflow: visible;{% else %}height: 0px; overflow: hidden;{% endif %}">
+				<div class="dash-parts" style="height: auto; overflow: visible;">
 					<div class="dash-parts-full">
 						<div class="log-all-btn">
 							<div class="log-module-btn {% if jail.prison_id is not null %} disabled{% endif %}" id="create-jail">

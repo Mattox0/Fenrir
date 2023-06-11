@@ -5,6 +5,7 @@ const birthdaySession = require('../modules/sessions/birthday');
 const profileSession = require('../modules/sessions/profile');
 const logsSession = require('../modules/sessions/logs');
 const jailSession = require('../modules/sessions/jail');
+const roomSession = require('../modules/sessions/room');
 
 const router = express.Router();
 
@@ -161,12 +162,21 @@ router.get('/servers/:id/room', validateGuild, async (req, res) => {
 	let success = req.session.success || [];
 	req.session.success = null;
 	let channels = await sessions.channels(guild);
-	channels = channels.filter(channel => channel.type === 0);
+	channels = channels.filter(channel => channel.type === 2);
 	channels = await Promise.all(channels.map(async channel => await sessions.channelWithParent(guild, channel)));
+	let categories = await sessions.categories(guild);
+	let room = await roomSession.getRoom(req.params.id);
+	if (room) {
+		room.privateroom_channel_id = room.privateroom_channel_id ? await sessions.channel(guild, room.privateroom_channel_id) ? await sessions.channel(guild, room.privateroom_channel_id) : null : null;
+		room.privateroom_category_id = room.privateroom_category_id ? await sessions.channel(guild, room.privateroom_category_id) ? await sessions.channel(guild, room.privateroom_category_id) : null : null;
+	}
+	console.log(room);
 	res.render('dashboard/room.twig', {
 		savedGuild: guild,
 		page: 'room',
-		channels: channels,
+		voices: channels,
+		room: room,
+		categories: categories,
 		errors: errors,
 		success: success
 	});
