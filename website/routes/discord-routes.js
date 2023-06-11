@@ -129,6 +129,7 @@ router.post('/room/create', async (req, res) => {
 				allow: [PermissionsBitField.Flags.ViewChannel]
 			}]
 		});
+		console.log("oui")
 		con.query("UPDATE servers SET privateroom_category_id = ?, privateroom_channel_id = ? WHERE guild_id = ?", [category.id, room.id, req.body.guild_id], (err) => { if (err) console.log(err) });
 	} catch (e) {
 		req.session.errors = ["Une erreur est survenue"];
@@ -138,6 +139,39 @@ router.post('/room/create', async (req, res) => {
 		});
 	}
 	req.session.success = ["Le système vocal a bien été créée"];
+	return res.status(200).send({
+		status : 'success',
+		guild_id : req.body.guild_id
+	});
+});
+
+router.post('/room/delete', async (req, res) => {
+	const client = index.getClient();
+	const con = index.getDB();
+	try {
+		let [room] = await con.promise().query(`SELECT privateroom_category_id, privateroom_channel_id FROM servers WHERE guild_id = '${req.body.guild_id}'`);
+		room = room[0];
+		const guild = client.guilds.cache.get(req.body.guild_id);
+		if (!guild) {
+			res.session.errors = ['Serveur introuvable'];
+			return res.status(202).send({
+				status : 'error',
+				guild_id : req.body.guild_id
+			});
+		}
+		let channel = guild.channels.cache.find(x => x.id === room.privateroom_channel_id)
+		if (channel) channel.delete();
+		let category = guild.channels.cache.find(x => x.id === room.privateroom_category_id);
+		if (category) category.delete();
+		con.query("UPDATE servers SET privateroom_category_id = ?, privateroom_channel_id = ? WHERE guild_id = ?", [null, null, req.body.guild_id], (err) => { if (err) console.log(err) });
+	} catch (e) {
+		req.session.errors = ["Une erreur est survenue"];
+		return res.status(202).send({
+			status : 'error',
+			guild_id : req.body.guild_id
+		});
+	}
+	req.session.success = ["Le système vocal a bien été supprimée"];
 	return res.status(200).send({
 		status : 'success',
 		guild_id : req.body.guild_id

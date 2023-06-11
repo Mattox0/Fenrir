@@ -5,6 +5,7 @@ create_room.addEventListener('click', (e) => {
 	if (create_room.classList.contains('disabled')) return;
 	create_room.querySelector('.message').style.display = 'none';
 	create_room.querySelector('.loader_discord').style.display = 'flex';
+	console.log('ok')
 	fetch('/room/create', {
 		method: 'POST',
 		headers: {
