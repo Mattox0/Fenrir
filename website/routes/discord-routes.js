@@ -100,4 +100,48 @@ router.post('/jail/delete', async (req, res) => {
 	});
 });
 
+router.post('/room/create', async (req, res) => {
+	const client = index.getClient();
+	const con = index.getDB();
+	try {
+		const guild = client.guilds.cache.get(req.body.guild_id);
+		if (!guild) {
+			res.session.errors = ['Serveur introuvable'];
+			return res.status(202).send({
+				status : 'error',
+				guild_id : req.body.guild_id
+			});
+		}
+		let category = await guild.channels.create({
+			name: 'Salons privés',
+			type: ChannelType.GuildCategory,
+			permissionOverwrites: [{
+				id: guild.id,
+				allow: [PermissionsBitField.Flags.ViewChannel]
+			}]
+		});
+		let room = await guild.channels.create({
+			name: "➕ Créer votre salon",
+			type: ChannelType.GuildVoice,
+			parent: category.id,
+			permissionOverwrites: [{
+				id: guild.id,
+				allow: [PermissionsBitField.Flags.ViewChannel]
+			}]
+		});
+		con.query("UPDATE servers SET privateroom_category_id = ?, privateroom_channel_id = ? WHERE guild_id = ?", [category.id, room.id, req.body.guild_id], (err) => { if (err) console.log(err) });
+	} catch (e) {
+		req.session.errors = ["Une erreur est survenue"];
+		return res.status(202).send({
+			status : 'error',
+			guild_id : req.body.guild_id
+		});
+	}
+	req.session.success = ["Le système vocal a bien été créée"];
+	return res.status(200).send({
+		status : 'success',
+		guild_id : req.body.guild_id
+	});
+});
+
 module.exports = router;
