@@ -15,9 +15,11 @@ async function validRoom(body, guild) {
 	if (channel.parent !== category) return false;
 	return true;
 }
-async function updateRoom(body, guild) {
-	
+async function updateRoom(body, id) {
+	const con = index.getDB();
+	con.query(`UPDATE servers SET privateroom_channel_id = ?, privateroom_category_id = ? WHERE guild_id = ?`, [body.room_channel_id, body.room_category_id, id], (err) => { if (err) throw err; });
 }
 
 module.exports.getRoom = getRoom;
 module.exports.validRoom = validRoom;
+module.exports.updateRoom = updateRoom;

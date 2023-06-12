@@ -400,6 +400,26 @@ main {
 			}
 		}
 
+		.hint {
+			margin-top: 30px;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+
+			i {
+				color: $fr-white;
+				font-size: 18px;
+				margin-right: 5px;
+			}
+
+			p {
+				color: hsla(0, 0%, 100%, .502);
+				font-size: 16px;
+				font-weight: 500;
+				margin: 0;
+			}
+		}
+
 		.dash-module {
 			border-bottom: 1px solid hsla(0, 0%, 100%, .1);
 
