@@ -190,6 +190,27 @@ router.post('/servers/:id/room', validateGuild, async (req, res) => {
 	res.redirect(`/servers/${req.params.id}/room`);
 });
 
+router.get('/servers/:id/stats', validateGuild, async (req, res) => {
+	const guild = await sessions.guild(req.params.id);
+	let errors = req.session.errors || [];
+	req.session.errors = null;
+	let success = req.session.success || [];
+	req.session.success = null;
+	let stats = await statsSession.getStats(req.params.id);
+	if (stats) {
+		stats.stats_id = stats.stats_id ? await sessions.channel(guild, stats.stats_id) ? await sessions.channel(guild, stats.stats_id) : null : null;
+		stats.stats_bot_id = stats.stats_bot_id ? await sessions.channel(guild, stats.stats_bot_id) ? await sessions.channel(guild, stats.stats_bot_id) : null : null;
+		stats.stats_online_id = stats.stats_online_id ? await sessions.channel(guild, stats.stats_online_id) ? await sessions.channel(guild, stats.stats_online_id) : null : null;
+	}
+	res.render('dashboard/stats.twig', {
+		savedGuild: guild,
+		page: 'stats',
+		stats: stats,
+		errors: errors,
+		success: success
+	});
+});
+
 router.get('/servers/:id', validateGuild, async (req, res) => {
 	res.render('dashboard/show.twig', {
 		savedGuild: await sessions.guild(req.params.id),

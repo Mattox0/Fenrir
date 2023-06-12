@@ -17,7 +17,7 @@ async function validRoom(body, guild) {
 }
 async function updateRoom(body, id) {
 	const con = index.getDB();
-	con.query(`UPDATE servers SET privateroom_channel_id = ?, privateroom_category_id = ? WHERE guild_id = ?`, [body.room_channel_id, body.room_category_id, id], (err) => { if (err) throw err; });
+	await con.promise().query(`UPDATE servers SET privateroom_channel_id = ?, privateroom_category_id = ? WHERE guild_id = ?`, [body.room_channel_id, body.room_category_id, id], (err) => { if (err) throw err; });
 }
 
 module.exports.getRoom = getRoom;
