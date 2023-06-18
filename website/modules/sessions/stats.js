@@ -7,4 +7,12 @@ async function getStat(id) {
 	return null;
 }
 
+async function validStats(body, guild) {
+	if (!body.check_member || member !== '') return false;
+	if (!body.check_bot || bot !== '') return false;
+	if (!body.check_online || online !== '') return false;
+	return true;
+}
+
 module.exports.getStat = getStat;
+module.exports.validStats = validStats;

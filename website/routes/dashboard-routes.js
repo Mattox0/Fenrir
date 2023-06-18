@@ -195,8 +195,6 @@ router.get('/servers/:id/stats', validateGuild, async (req, res) => {
 	const guild = await sessions.guild(req.params.id);
 	let errors = req.session.errors || [];
 	req.session.errors = null;
-	let success = req.session.success || [];
-	req.session.success = null;
 	let stats = await statsSession.getStat(req.params.id);
 	if (stats) {
 		stats.stats_id = stats.stats_id ? await sessions.channel(guild, stats.stats_id) ? await sessions.channel(guild, stats.stats_id) : null : null;
@@ -210,14 +208,12 @@ router.get('/servers/:id/stats', validateGuild, async (req, res) => {
 		savedGuild: guild,
 		page: 'stats',
 		stats: stats,
-		errors: errors,
-		success: success
+		errors: errors
 	});
 });
 
 router.post('/servers/:id/stats', validateGuild, async (req, res) => {
 	console.log(req.body);
-	return res.redirect(`/servers/${req.params.id}/stats`);
 	if (!await statsSession.validStats(req.body, await sessions.guild(req.params.id))) {
 		req.session.errors = ['Merci de rentrer toutes les informations nécessaires'];
 		return res.redirect(`/servers/${req.params.id}/stats`);
