@@ -215,7 +215,7 @@ router.get('/servers/:id/stats', validateGuild, async (req, res) => {
 router.post('/servers/:id/stats', validateGuild, async (req, res) => {
 	console.log(req.body);
 	if (!await statsSession.validStats(req.body)) {
-		req.session.errors = ['Merci de rentrer toutes les informations nécessaires'];
+		req.session.errors = ['Vous avez oublié de mettre {nb}'];
 		return res.redirect(`/servers/${req.params.id}/stats`);
 	}
 	await statsSession.updateStats(req.body, await sessions.guild(req.params.id));
