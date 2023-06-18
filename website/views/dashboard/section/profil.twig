@@ -63,14 +63,14 @@
                     <div class="part">
                         <h4 class="part-title">Pseudonyme</h4>
                         <div class="input-container">
-                        {% if profile.pseudo is not null %}
-                            <input id="520141303837" class="dash-input" type="text" name="pseudo" maxlength="32" autocomplete="off" placeholder="{{ profile.pseudo }}">
-                        {% else %}
-                            <input id="520141303837" class="dash-input" type="text" name="pseudo" maxlength="32" autocomplete="off" placeholder="Pseudonyme">
-                        {% endif %}
-						<label for="520141303837" class="counter">
-							<span class="count">0</span>/32
-						</label>
+							{% if profile.pseudo is not null %}
+								<input id="520141303837" class="dash-input" type="text" name="pseudo" maxlength="32" autocomplete="off" placeholder="{{ profile.pseudo }}">
+							{% else %}
+								<input id="520141303837" class="dash-input" type="text" name="pseudo" maxlength="32" autocomplete="off" placeholder="Pseudonyme">
+							{% endif %}
+							<label for="520141303837" class="counter">
+								<span class="count">0</span>/32
+							</label>
                         </div>
                     </div>
                     <div class="part rigth">

@@ -24,6 +24,11 @@ $fr-semiwhite: #d3d3d3;
 	src: url('../fonts/Consolas.ttf');
 }
 
+@font-face {
+	font-family: 'Withney';
+	src: url('../fonts/Withney.otf');
+}
+
 /* SIDEBAR */
 
 body {
@@ -401,10 +406,17 @@ main {
 		}
 
 		.hint {
-			margin-top: 30px;
 			display: flex;
 			flex-direction: row;
 			align-items: center;
+
+			&.top {
+				margin-top: 30px;
+			}
+
+			&.bottom {
+				margin-bottom: 30px;
+			}
 
 			i {
 				color: $fr-white;
@@ -528,6 +540,33 @@ main {
 								background-color: #303030;
 								border-radius: 3px;
 								width: 6px;
+							}
+						}
+					}
+
+					.dash-voice-embed-previ {
+						display: flex;
+						flex-direction: row;
+
+						.voice-embed {
+							height: 45px;
+							width: calc(100% - 52px);
+							display: flex;
+							flex-direction: row;
+							align-items: center;
+							background-color: #2B2D31;
+							border-radius: 3px;
+
+							.img-voice-channel {
+								width: 36px;
+								height: 36px;
+								margin: 0px 10px 0px 10px;
+							}
+
+							.text-voice-channel {
+								font-family: 'Withney';
+								font-size: 18px;
+								color: #80848E;
 							}
 						}
 					}
@@ -1603,6 +1642,23 @@ main {
 
 	input {
 		display: none;
+	}
+
+	&.mini {
+		.slider {
+			height: 24px;
+			width: 42px;
+		}
+
+		.slider.active:before {
+			transform: translateX(16px);
+		}
+
+		.slider:before {
+			height: 18px;
+			left: 4px;
+			width: 18px;
+		}
 	}
 
 	.slider {

@@ -55,6 +55,19 @@ async function roleWithColor(role) {
 	return { ...role, color: role.color ? `rgb(${(role.color >> 16) & 255}, ${(role.color >> 8) & 255}, ${role.color & 255})` : `rgb(153, 170, 181)` }
 }
 
+async function allMembers(guild) {
+	return guild.memberCount;
+}
+
+async function onlineMembers(guild) {
+	guildWithPresence = await guild.members.fetch({withPresences : true});
+    return await guildWithPresence.filter((online) => online.presence?.status === "online" || online.presence?.status === "idle" || online.presence?.status === "dnd").size;
+}
+
+async function botMembers(guild) {
+	return guild.members.cache.filter(member => member.user.bot).size;
+}
+
 function getManageableGuilds(authGuilds) {
 	const guilds = [];
 	const bot = index.getClient();
@@ -80,3 +93,6 @@ module.exports.channels = channels;
 module.exports.categories = categories;
 module.exports.channelWithParent = channelWithParent;
 module.exports.roleWithColor = roleWithColor;
+module.exports.allMembers = allMembers;
+module.exports.onlineMembers = onlineMembers;
+module.exports.botMembers = botMembers;

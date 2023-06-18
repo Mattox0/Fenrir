@@ -1,0 +1,149 @@
+<div class="dash-content">
+	{% include 'includes/error.twig' %}
+	<form action="/servers/{{ savedGuild.id }}/stats" class="child" method="post">
+		<div class="dash-container">
+			<div class="dash-header">
+				<h1 class="dash-title">Statistiques</h1>
+			</div>
+			<div class="dash-module">
+				<div class="dash-top" style="padding-bottom: 20px">
+					<div class="dash-infos">
+						<h3>
+							Informations
+						</h3>
+					</div>
+				</div>
+				<div class="dash-parts" style="height: auto; overflow: visible;">
+					<div class="dash-parts-full">
+						<div class="infos-container">
+							<img src="/img/info-stats.png" alt="info-stats" class="infos-img left">
+							<div>
+								<p>
+									Le système de statistiques permet de suivre l'activité de votre serveur.
+								</p>
+								<p>
+									Les salons de statistiques sont mis à jour toutes les 10 minutes.
+								</p>
+								<p>
+									Vous pouvez choisir les salons que vous souhaitez ou non en cochant les cases ci-dessous. Les salons seront ensuite créés ou supprimés en conséquence.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="dash-module">
+				<div class="dash-top">
+					<div class="dash-infos">
+						<h3>
+							Système de statistiques
+						</h3>
+						<p>
+							Configure le système de statistiques de ton serveur. Personalisez les salons que vous souhaitez ou non.
+						</p>
+					</div>
+				</div>
+				<div class="dash-parts" style="height: auto; overflow: visible;">
+					<div class="hint bottom">
+						<i class="fa-regular fa-lightbulb"></i>
+						<p>
+							Mettez
+							<code>{nb}</code>
+							dans le message pour afficher le nombre correspondant.
+						</p>
+					</div>
+					<div class="dash-parts-full">
+						<div class="part">
+							<h4 class="part-title">Nombre de membres</h4>
+							<div class="input-container">
+								{% if stats.stats_id is not null %}
+									<input id="896512473215" class="dash-input" type="text" name="member" maxlength="50" autocomplete="off" placeholder="{{ stats.stats_message }}">
+								{% else %}
+									<input id="896512473215" class="dash-input" type="text" name="member" maxlength="50" autocomplete="off" placeholder="Membres : {nb}">
+								{% endif %}
+								<label for="896512473215" class="counter">
+									<span class="count">0</span>/50
+								</label>
+							</div>
+						</div>
+						<div class="part rigth">
+							<h4 class="part-title">Prévisualisation</h4>
+							<div class="dash-voice-embed-previ">
+								<div class="voice-embed">
+									<img src="/img/icon-voice.png" alt="stats" class="img-voice-channel">
+									<p voice-id="896512473215" nb="{{ stats.all_members }}" class="text-voice-channel">
+										{% if stats.stats_id is not null %}{{ stats.stats_message|replace({'{nb}':stats.all_members}) }}{% else %}Membres : {{ stats.all_members }}{% endif %}
+									</p>
+								</div>
+								<label for="731846209034" class="switch-normal mini">
+									<div class="slider round{% if stats.stats_id is not null %} active{% endif %}"></div>
+									<input id="731846209034" autocomplete="off" type="checkbox" name="check-member" {% if stats.stats_id is not null %} checked {% endif %}>
+								</label>
+							</div>
+						</div>
+						<div class="part">
+							<h4 class="part-title">Nombre en ligne</h4>
+							<div class="input-container">
+								{% if stats.stats_online_id is not null %}
+									<input id="1556821555" class="dash-input" type="text" name="online" maxlength="50" autocomplete="off" placeholder="{{ stats.stats_online_message }}">
+								{% else %}
+									<input id="1556821555" class="dash-input" type="text" name="online" maxlength="50" autocomplete="off" placeholder="Online : {nb}">
+								{% endif %}
+								<label for="1556821555" class="counter">
+									<span class="count">0</span>/50
+								</label>
+							</div>
+						</div>
+						<div class="part rigth">
+							<h4 class="part-title">Prévisualisation</h4>
+							<div class="dash-voice-embed-previ">
+								<div class="voice-embed">
+									<img src="/img/icon-voice.png" alt="stats" class="img-voice-channel">
+									<p voice-id="1556821555" nb="{{ stats.online_members }}" class="text-voice-channel">
+										{% if stats.stats_online_id is not null %}{{ stats.stats_online_message|replace({'{nb}':stats.online_members}) }}{% else %}Online : {{ stats.online_members }}{% endif %}
+									</p>
+								</div>
+								<label for="225074415" class="switch-normal mini">
+									<div class="slider round{% if stats.stats_online_id is not null %} active{% endif %}"></div>
+									<input id="225074415" autocomplete="off" type="checkbox" name="check-online" {% if stats.stats_online_id is not null %} checked {% endif %}>
+								</label>
+							</div>
+						</div>
+						<div class="part">
+							<h4 class="part-title">Nombre de bots</h4>
+							<div class="input-container">
+								{% if stats.stats_bot_id is not null %}
+									<input id="618242703" class="dash-input" type="text" name="bot" maxlength="50" autocomplete="off" placeholder="{{ stats.stats_bot_message }}">
+								{% else %}
+									<input id="618242703" class="dash-input" type="text" name="bot" maxlength="50" autocomplete="off" placeholder="Bots : {nb}">
+								{% endif %}
+								<label for="618242703" class="counter">
+									<span class="count">0</span>/50
+								</label>
+							</div>
+						</div>
+						<div class="part rigth">
+							<h4 class="part-title">Prévisualisation</h4>
+							<div class="dash-voice-embed-previ">
+								<div class="voice-embed">
+									<img src="/img/icon-voice.png" alt="stats" class="img-voice-channel">
+									<p voice-id="618242703" nb="{{ stats.bot_members }}" class="text-voice-channel">
+										{% if stats.stats_bot_id is not null %}{{ stats.stats_bot_message|replace({'{nb}':stats.bot_members}) }}{% else %}Bots : {{ stats.bot_members }}{% endif %}
+									</p>
+								</div>
+								<label for="911318052" class="switch-normal mini">
+									<div class="slider round{% if stats.stats_bot_id is not null %} active{% endif %}"></div>
+									<input id="911318052" autocomplete="off" type="checkbox" name="check-bot" {% if stats.stats_bot_id is not null %} checked {% endif %}>
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="savebar-container">
+			<div class="spacer"></div>
+			{% include 'includes/savebar.twig' %}
+		</div>
+	</form>
+</div>

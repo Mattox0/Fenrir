@@ -6,6 +6,7 @@ const profileSession = require('../modules/sessions/profile');
 const logsSession = require('../modules/sessions/logs');
 const jailSession = require('../modules/sessions/jail');
 const roomSession = require('../modules/sessions/room');
+const statsSession = require('../modules/sessions/stats');
 
 const router = express.Router();
 
@@ -196,11 +197,14 @@ router.get('/servers/:id/stats', validateGuild, async (req, res) => {
 	req.session.errors = null;
 	let success = req.session.success || [];
 	req.session.success = null;
-	let stats = await statsSession.getStats(req.params.id);
+	let stats = await statsSession.getStat(req.params.id);
 	if (stats) {
 		stats.stats_id = stats.stats_id ? await sessions.channel(guild, stats.stats_id) ? await sessions.channel(guild, stats.stats_id) : null : null;
 		stats.stats_bot_id = stats.stats_bot_id ? await sessions.channel(guild, stats.stats_bot_id) ? await sessions.channel(guild, stats.stats_bot_id) : null : null;
 		stats.stats_online_id = stats.stats_online_id ? await sessions.channel(guild, stats.stats_online_id) ? await sessions.channel(guild, stats.stats_online_id) : null : null;
+		stats.all_members = await sessions.allMembers(guild);
+		stats.online_members = await sessions.onlineMembers(guild);
+		stats.bot_members = await sessions.botMembers(guild);
 	}
 	res.render('dashboard/stats.twig', {
 		savedGuild: guild,
@@ -209,6 +213,17 @@ router.get('/servers/:id/stats', validateGuild, async (req, res) => {
 		errors: errors,
 		success: success
 	});
+});
+
+router.post('/servers/:id/stats', validateGuild, async (req, res) => {
+	console.log(req.body);
+	return res.redirect(`/servers/${req.params.id}/stats`);
+	if (!await statsSession.validStats(req.body, await sessions.guild(req.params.id))) {
+		req.session.errors = ['Merci de rentrer toutes les informations nécessaires'];
+		return res.redirect(`/servers/${req.params.id}/stats`);
+	}
+	await statsSession.updateStats(req.body, req.params.id);
+	res.redirect(`/servers/${req.params.id}/stats`);
 });
 
 router.get('/servers/:id', validateGuild, async (req, res) => {
