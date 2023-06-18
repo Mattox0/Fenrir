@@ -13,7 +13,7 @@ checkboxVoice.forEach(element => {
 function inputText(e) {
 	const element = e.target;
 	const text = document.querySelector(`p[voice-id="${element.id}"]`);
-	const checkbox = document.querySelector(`input[type="checkbox"][name="check-${element.name}"]`);
+	const checkbox = document.querySelector(`input[type="checkbox"][name="check_${element.name}"]`);
 	if (!text) return;
 	let value = element.value.replace('{nb}', text.getAttribute('nb'));
 	if (value == '') text.innerHTML = element.placeholder.replace('{nb}', text.getAttribute('nb'));

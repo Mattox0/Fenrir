@@ -214,11 +214,11 @@ router.get('/servers/:id/stats', validateGuild, async (req, res) => {
 
 router.post('/servers/:id/stats', validateGuild, async (req, res) => {
 	console.log(req.body);
-	if (!await statsSession.validStats(req.body, await sessions.guild(req.params.id))) {
+	if (!await statsSession.validStats(req.body)) {
 		req.session.errors = ['Merci de rentrer toutes les informations nécessaires'];
 		return res.redirect(`/servers/${req.params.id}/stats`);
 	}
-	await statsSession.updateStats(req.body, req.params.id);
+	await statsSession.updateStats(req.body, await sessions.guild(req.params.id));
 	res.redirect(`/servers/${req.params.id}/stats`);
 });
 
