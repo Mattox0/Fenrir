@@ -222,6 +222,18 @@ router.post('/servers/:id/stats', validateGuild, async (req, res) => {
 	res.redirect(`/servers/${req.params.id}/stats`);
 });
 
+router.get('/servers/:id/suggest', validateGuild, async (req, res) => {
+	const guild = await sessions.guild(req.params.id);
+	let errors = req.session.errors || [];
+	req.session.errors = null;
+	res.render('dashboard/suggest.twig', {
+		savedGuild: guild,
+		page: 'suggest',
+		errors: errors
+	});
+});
+
+
 router.get('/servers/:id', validateGuild, async (req, res) => {
 	res.render('dashboard/show.twig', {
 		savedGuild: await sessions.guild(req.params.id),
