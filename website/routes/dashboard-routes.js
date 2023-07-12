@@ -231,10 +231,14 @@ router.get('/servers/:id/suggest', validateGuild, async (req, res) => {
 	if (suggest) {
 		suggest.suggestion_id = suggest.suggestion_id ? await sessions.channel(guild, suggest.suggestion_id) ? await sessions.channel(guild, suggest.suggestion_id) : null : null;
 	}
+	let channels = await sessions.channels(guild);
+	channels = channels.filter(channel => channel.type === 0);
+	channels = await Promise.all(channels.map(async channel => await sessions.channelWithParent(guild, channel)));
 	res.render('dashboard/suggest.twig', {
 		savedGuild: guild,
 		page: 'suggest',
 		suggestion: suggest,
+		channels : channels,
 		errors: errors
 	});
 });
