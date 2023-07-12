@@ -9,9 +9,9 @@ module.exports = {
         .addStringOption(option => option.setName('message').setDescription('Le contenu de votre suggestion').setRequired(true)),
     async execute(...params) {
         let interaction = params[0];
-        let con = params[4];
+        let con = params[3];
         let message = interaction.options.getString('message');
-        con.query("SELECT suggestion_id FROM servers WHERE guild_id = ?",interaction.member.guild.id, async (err, rows) => {
+        con.query("SELECT suggestion_id FROM servers WHERE guild_id = ?", interaction.member.guild.id, async (err, rows) => {
             if (err) {
                 console.log(err);
                 return interaction.reply({content:'Désolé il y a eu une erreur...', ephemeral:true});

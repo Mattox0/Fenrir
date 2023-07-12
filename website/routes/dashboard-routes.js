@@ -7,6 +7,7 @@ const logsSession = require('../modules/sessions/logs');
 const jailSession = require('../modules/sessions/jail');
 const roomSession = require('../modules/sessions/room');
 const statsSession = require('../modules/sessions/stats');
+const suggestSession = require('../modules/sessions/suggest');
 
 const router = express.Router();
 
@@ -226,9 +227,14 @@ router.get('/servers/:id/suggest', validateGuild, async (req, res) => {
 	const guild = await sessions.guild(req.params.id);
 	let errors = req.session.errors || [];
 	req.session.errors = null;
+	let suggest = await suggestSession.getSuggest(req.params.id);
+	if (suggest) {
+		suggest.suggestion_id = suggest.suggestion_id ? await sessions.channel(guild, suggest.suggestion_id) ? await sessions.channel(guild, suggest.suggestion_id) : null : null;
+	}
 	res.render('dashboard/suggest.twig', {
 		savedGuild: guild,
 		page: 'suggest',
+		suggestion: suggest,
 		errors: errors
 	});
 });
