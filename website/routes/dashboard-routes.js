@@ -238,9 +238,21 @@ router.get('/servers/:id/suggest', validateGuild, async (req, res) => {
 		savedGuild: guild,
 		page: 'suggest',
 		suggestion: suggest,
-		channels : channels,
+		channels: channels,
 		errors: errors
 	});
+});
+
+router.post('/servers/:id/suggest', validateGuild, async (req, res) => {
+	if (!req.body.suggest) await suggestSession.deleteSuggest(req.params.id);
+	else {
+		if (!await suggestSession.validSuggest(req.body, await sessions.guild(req.params.id))) {
+			req.session.errors = ['Merci de rentrer un salon valide'];
+			return res.redirect(`/servers/${req.params.id}/suggest`);
+		}
+		await suggestSession.updateSuggest(req.body, req.params.id);
+	}
+	res.redirect(`/servers/${req.params.id}/suggest`);
 });
 
 
