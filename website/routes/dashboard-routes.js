@@ -8,6 +8,7 @@ const jailSession = require('../modules/sessions/jail');
 const roomSession = require('../modules/sessions/room');
 const statsSession = require('../modules/sessions/stats');
 const suggestSession = require('../modules/sessions/suggest');
+const ticketSession = require('../modules/sessions/ticket');
 
 const router = express.Router();
 
@@ -65,6 +66,7 @@ router.get('/servers/:id/birthday', validateGuild, async (req, res) => {
 	channels = channels.filter(channel => channel.type === 0);
 	channels = await Promise.all(channels.map(async channel => await sessions.channelWithParent(guild, channel)));
 	let roles = await sessions.roles(guild);
+	roles = roles.filter(role => role.name !== '@everyone');
 	roles = await Promise.all(roles.map(async role => await sessions.roleWithColor(role)));
 	hours = await birthdaySession.getHours();
 	res.render('dashboard/birthday.twig', {
@@ -253,6 +255,32 @@ router.post('/servers/:id/suggest', validateGuild, async (req, res) => {
 		await suggestSession.updateSuggest(req.body, req.params.id);
 	}
 	res.redirect(`/servers/${req.params.id}/suggest`);
+});
+
+router.get('/servers/:id/ticket', validateGuild, async (req, res) => {
+	const guild = await sessions.guild(req.params.id);
+	let errors = req.session.errors || [];
+	req.session.errors = null;
+	let ticket = await ticketSession.getTicket(req.params.id);
+	if (ticket) {
+		ticket.ticket_channel_id = ticket.ticket_id ? await sessions.channel(guild, ticket.ticket_id) ? await sessions.channel(guild, ticket.ticket_id) : null : null;
+		ticket.ticket_category_id = ticket.ticket_category_id ? await sessions.channel(guild, ticket.ticket_category_id) ? await sessions.channel(guild, ticket.ticket_category_id) : null : null;
+		ticket.ticket_role_id = ticket.ticket_role_id ? await sessions.role(guild, ticket.ticket_role_id) ? await sessions.role(guild, ticket.ticket_role_id) : null : null;
+	}
+	let channels = await sessions.channels(guild);
+	channels = channels.filter(channel => channel.type === 0);
+	channels = await Promise.all(channels.map(async channel => await sessions.channelWithParent(guild, channel)));
+	let roles = await sessions.roles(guild);
+	roles = roles.filter(role => role.name !== '@everyone');
+	roles = await Promise.all(roles.map(async role => await sessions.roleWithColor(role)));
+	res.render('dashboard/ticket.twig', {
+		savedGuild: guild,
+		page: 'ticket',
+		ticket: ticket,
+		channels: channels,
+		roles: roles,
+		errors: errors
+	});
 });
 
 

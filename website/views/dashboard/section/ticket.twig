@@ -1,0 +1,200 @@
+<div class="dash-content">
+	{% include 'includes/error.twig' %}
+	<form action="/servers/{{ savedGuild.id }}/ticket" class="child" method="post">
+		<div class="dash-container">
+			<div class="dash-header">
+				<h1 class="dash-title">Tickets</h1>
+			</div>
+			<div class="dash-module">
+				<div class="dash-top" style="padding-bottom: 20px">
+					<div class="dash-infos">
+						<h3>
+							Informations
+						</h3>
+					</div>
+				</div>
+				<div class="dash-parts" style="height: auto; overflow: visible;">
+					<div class="dash-parts-full">
+						<div class="infos-container">
+							<img src="/img/info-ticket.png" alt="info-jail" class="infos-img left">
+							<div>
+								<p>
+									Le système de ticket permet à vos membres de créer des tickets pour demander de l'aide au staff.
+								</p>
+								<p>
+									Les tickets sont créés depuis un salon dédié et ouvre une discussion avec les administrateur du serveur.
+								</p>
+								<p>
+									Le système de ticket est entièrement configurable, vous pouvez choisir le rôle adminsitrateur, le salon avec son message personalisé et la categorie où les tickets seront envoyés.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="dash-module">
+				<div class="dash-top">
+					<div class="dash-infos">
+						<h3>
+							Système de ticket
+						</h3>
+						<p>
+							Configure le système de ticket de ton serveur. Vos membres pourront ainsi créer un canal personalisé avec la modération.
+						</p>
+					</div>
+				</div>
+				<div class="dash-parts" style="height: auto; overflow: visible;">
+					<div class="dash-parts-full">
+						<div class="log-all-btn">
+							<div class="log-module-btn {% if ticket.ticket_id is not null %} disabled{% endif %}" id="create-ticket">
+								<p class="message">Laisser Fenrir créer votre système de ticket</p>
+								<div class="loader_discord" style="font-size: 16px;display: none;">
+									<div class="point"></div>
+									<div class="point"></div>
+									<div class="point"></div>
+								</div>
+							</div>
+							<div class="log-module-btn {% if ticket.ticket_id is null %} disabled{% endif %}" id="delete-ticket">
+								<p class="message">Supprimer le système de ticket existant</p>
+								<div class="loader_discord" style="font-size: 16px;display: none;">
+									<div class="point"></div>
+									<div class="point"></div>
+									<div class="point"></div>
+								</div>
+							</div>
+						</div>
+						<div class="part">
+							<h4 class="part-title">Salon</h4>
+							<div class="channel-selector selector">
+								<div class="select-element{% if ticket.ticket_channel_id is not null %} active{% endif %}">
+									{% if ticket.ticket_channel_id is not null %}
+										<input type="text" autocomplete="off" name="ticket_channel" class="select" placeholder="{{ ticket.ticket_channel_id.name }}" readonly>
+										<input type="hidden" name="ticket_channel_id" value="{{ ticket.ticket_channel_id.id }}">
+									{% else %}
+										<input type="text" autocomplete="off" name="ticket_channel" class="select" placeholder="Veuillez choisir un salon" readonly>
+										<input type="hidden" name="ticket_channel_id" value="">
+									{% endif %}
+									<label class="down">
+										<svg width="11" height="7" viewbox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path fill-rude="evenodd" clip-rule="evenodd" d="M0.172823 0.796772C-0.16424 0.356727 0.00615209 0 0.558413 0H10.2474C10.7974 0 10.963 0.349113 10.6149 0.7827L5.89383 6.66255C5.54675 7.09483 4.99034 7.08615 4.65509 6.64848L0.172823 0.796772Z" fill="currentColor"></path>
+										</svg>
+									</label>
+								</div>
+								<div class="select-elements scrollbar" role="listbox" style="display: none;">
+									{% for channel in channels %}
+										<div class="element">
+											<div class="channel" id="{{ channel.id }}">
+												<svg width="20" height="20" viewbox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="channel-icon">
+													<path fill-rude="evenodd" clip-rude="evenodd" d="M4.90527 17.5C4.64602 17.5 4.44971 17.2657 4.49502 17.0105L4.9998 14.1667H2.16239C1.90354 14.1667 1.70734 13.9332 1.75195 13.6782L1.89779 12.8448C1.93268 12.6455 2.10581 12.5 2.30822 12.5H5.29147L6.1748 7.5H3.33739C3.07854 7.5 2.88234 7.26647 2.92695 7.01151L3.07279 6.17817C3.10768 5.9788 3.28081 5.83333 3.48322 5.83333H6.46647L6.9971 2.84385C7.03241 2.64493 7.20533 2.5 7.40735 2.5H8.22766C8.48687 2.5 8.68321 2.73422 8.63788 2.98948L8.13313 5.83333H13.1331L13.6638 2.84385C13.699 2.64493 13.872 2.5 14.074 2.5H14.8943C15.1535 2.5 15.3499 2.73422 15.3045 2.98948L14.7998 5.83333H17.6372C17.896 5.83333 18.0923 6.06686 18.0476 6.32183L17.9018 7.15516C17.867 7.35453 17.6938 7.5 17.4914 7.5H14.5081L13.6248 12.5H16.4622C16.721 12.5 16.9173 12.7335 16.8726 12.9885L16.7268 13.8218C16.692 14.0212 16.5188 14.1667 16.3164 14.1667H13.3331L12.8025 17.1562C12.7672 17.3551 12.5943 17.5 12.3922 17.5H11.572C11.3127 17.5 11.1164 17.2657 11.1617 17.0105L11.6665 14.1667H6.66647L6.13583 17.1562C6.10053 17.3551 5.9276 17.5 5.72558 17.5H4.90527ZM7.84183 7.5L6.9585 12.5H11.9585L12.8418 7.5H7.84183Z" fill="white"></path>
+												</svg>
+												<div class="channel-name">{{ channel.name }}</div>
+											</div>
+											{% if channel.category is not null %}
+												<div class="guild-channel">{{ channel.category }}</div>
+											{% endif %}
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+						</div>
+						<div class="part rigth">
+							<h4 class="part-title">Categorie</h4>
+							<div class="channel-selector selector">
+								<div class="select-element{% if ticket.ticket_category_id is not null %} active{% endif %}">
+									{% if ticket.ticket_category_id is not null %}
+										<input type="text" autocomplete="off" name="ticket_category" class="default" placeholder="{{ ticket.ticket_category_id.name }}" readonly>
+										<input type="hidden" name="ticket_category_id" value="{{ ticket.ticket_category_id.id }}">
+									{% else %}
+										<input type="text" autocomplete="off" name="ticket_category" class="default" placeholder="Laissez Fenrir créer la catégorie" readonly>
+										<input type="hidden" name="ticket_category_id" value="">
+									{% endif %}
+								</div>
+							</div>
+						</div>
+						<div class="part">
+							<h4 class="part-title">Rôle</h4>
+							<div class="role-selector selector">
+								<div class="select-element{% if ticket.ticket_role_id is not null %} active{% endif %}">
+									{% if ticket.ticket_role_id is not null %}
+										<input type="text" autocomplete="off" name="tickeet_role" class="select" placeholder="{{ ticket.ticket_role_id.name }}" readonly>
+										<input type="hidden" name="tickeet_role_id" value="{{ ticket.ticket_role_id.id }}">
+									{% else %}
+										<input type="text" autocomplete="off" name="tickeet_role" class="select" placeholder="Veuillez choisir un rôle" id="" readonly>
+										<input type="hidden" name="tickeet_role_id" value="">
+									{% endif %}
+									<label class="down">
+										<svg width="11" height="7" viewbox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path fill-rude="evenodd" clip-rule="evenodd" d="M0.172823 0.796772C-0.16424 0.356727 0.00615209 0 0.558413 0H10.2474C10.7974 0 10.963 0.349113 10.6149 0.7827L5.89383 6.66255C5.54675 7.09483 4.99034 7.08615 4.65509 6.64848L0.172823 0.796772Z" fill="currentColor"></path>
+										</svg>
+									</label>
+								</div>
+								<div class="select-elements scrollbar" role="listbox" style="display: none;">
+									{% for role in roles %}
+										<div class="element">
+											<div class="role" id="{{ role.id }}">
+												<div class="role-name" style="color: {{ role.color }};">{{ role.name }}</div>
+											</div>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+						</div>
+						<div class="part rigth"></div>
+						<div class="part">
+							<h4 class="part-title">Message personalisée</h4>
+							<div class="input-container">
+								{% if ticket.ticket_message is not null %}
+									<textarea id="618247562175" class="dash-input" name="ticket_message" maxlength="1200" autocomplete="off" placeholder="{{ ticket.ticket_message }}"></textarea>
+								{% else %}
+									<textarea id="618247562175" class="dash-input" name="ticket_message" maxlength="1200" autocomplete="off" placeholder="Votre message personalisé"></textarea>
+								{% endif %}
+								<label for="618247562175" class="counter">
+									<span class="count">0</span>/1200
+								</label>
+							</div>
+						</div>
+						<div class="part rigth">
+							<h4 class="part-title">Prévisualisation</h4>
+							<div class="dash-previ">
+								<div class="message">
+									<div class="contents">
+										<img src="/img/fenrir-logo-white.png" alt="logo-fenrir" class="bot-avatar">
+										<h2 class="header-message">
+											<span class="username">Fenrir</span>
+											<span class="bot-tag">
+												<svg width="16" height="16" viewbox="0 0 16 15.2" class="bot-tag-verified">
+													<path d="M7.4,11.17,4,8.62,5,7.26l2,1.53L10.64,4l1.36,1Z" fill="currentColor"></path>
+												</svg>
+												<span class="bot-text">BOT</span>
+											</span>
+											<span class="bot-timestamp">Aujourd'hui à 12:00</span>
+										</h2>
+									</div>
+									<div class="embed">
+										<div class="left-bar" style="background-color: #6db1bf"></div>
+										<div class="embed-content">
+											<div class="embed-container">
+												<div class="embed-all">
+													{% if ticket.ticket_message is not null %}
+														<p class="embed-description" embedid="618247562175">{{ ticket.ticket_message }}</p>
+													{% else %}
+														<p class="embed-description" embedid="618247562175">Votre message personalisé</p>
+													{% endif %}
+													<p class="embed-footer">Footer</p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="savebar-container">
+			<div class="spacer"></div>
+			{% include 'includes/savebar.twig' %}
+		</div>
+	</form>
+</div>
