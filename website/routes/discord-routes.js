@@ -12,8 +12,8 @@ router.post('/jail/create', async (req, res) => {
 		if (!guild) {
 			res.session.errors = ['Serveur introuvable'];
 			return res.status(202).send({
-				status : 'error',
-				guild_id : req.body.guild_id
+				status: 'error',
+				guild_id: req.body.guild_id
 			});
 		}
 		let prison = await guild.roles.create({
@@ -54,14 +54,14 @@ router.post('/jail/create', async (req, res) => {
 	} catch (e) {
 		req.session.errors = ["Une erreur est survenue"];
 		return res.status(202).send({
-			status : 'error',
-			guild_id : req.body.guild_id
+			status: 'error',
+			guild_id: req.body.guild_id
 		});
 	}
 	req.session.success = ["La prison a bien été créée"];
 	return res.status(200).send({
-		status : 'success',
-		guild_id : req.body.guild_id
+		status: 'success',
+		guild_id: req.body.guild_id
 	});
 });
 
@@ -75,8 +75,8 @@ router.post('/jail/delete', async (req, res) => {
 		if (!guild) {
 			res.session.errors = ['Serveur introuvable'];
 			return res.status(202).send({
-				status : 'error',
-				guild_id : req.body.guild_id
+				status: 'error',
+				guild_id: req.body.guild_id
 			});
 		}
 		let channel = guild.channels.cache.find(x => x.id === prison.prison_id)
@@ -89,14 +89,14 @@ router.post('/jail/delete', async (req, res) => {
 	} catch (e) {
 		req.session.errors = ["Une erreur est survenue"];
 		return res.status(202).send({
-			status : 'error',
-			guild_id : req.body.guild_id
+			status: 'error',
+			guild_id: req.body.guild_id
 		});
 	}
 	req.session.success = ["La prison a bien été supprimée"];
 	return res.status(200).send({
-		status : 'success',
-		guild_id : req.body.guild_id
+		status: 'success',
+		guild_id: req.body.guild_id
 	});
 });
 
@@ -108,8 +108,8 @@ router.post('/room/create', async (req, res) => {
 		if (!guild) {
 			res.session.errors = ['Serveur introuvable'];
 			return res.status(202).send({
-				status : 'error',
-				guild_id : req.body.guild_id
+				status: 'error',
+				guild_id: req.body.guild_id
 			});
 		}
 		let category = await guild.channels.create({
@@ -129,19 +129,18 @@ router.post('/room/create', async (req, res) => {
 				allow: [PermissionsBitField.Flags.ViewChannel]
 			}]
 		});
-		console.log("oui")
 		con.query("UPDATE servers SET privateroom_category_id = ?, privateroom_channel_id = ? WHERE guild_id = ?", [category.id, room.id, req.body.guild_id], (err) => { if (err) console.log(err) });
 	} catch (e) {
 		req.session.errors = ["Une erreur est survenue"];
 		return res.status(202).send({
-			status : 'error',
-			guild_id : req.body.guild_id
+			status: 'error',
+			guild_id: req.body.guild_id
 		});
 	}
 	req.session.success = ["Le système vocal a bien été créée"];
 	return res.status(200).send({
-		status : 'success',
-		guild_id : req.body.guild_id
+		status: 'success',
+		guild_id: req.body.guild_id
 	});
 });
 
@@ -155,8 +154,8 @@ router.post('/room/delete', async (req, res) => {
 		if (!guild) {
 			res.session.errors = ['Serveur introuvable'];
 			return res.status(202).send({
-				status : 'error',
-				guild_id : req.body.guild_id
+				status: 'error',
+				guild_id: req.body.guild_id
 			});
 		}
 		let channel = guild.channels.cache.find(x => x.id === room.privateroom_channel_id)
@@ -167,14 +166,84 @@ router.post('/room/delete', async (req, res) => {
 	} catch (e) {
 		req.session.errors = ["Une erreur est survenue"];
 		return res.status(202).send({
-			status : 'error',
-			guild_id : req.body.guild_id
+			status: 'error',
+			guild_id: req.body.guild_id
 		});
 	}
 	req.session.success = ["Le système vocal a bien été supprimée"];
 	return res.status(200).send({
-		status : 'success',
-		guild_id : req.body.guild_id
+		status: 'success',
+		guild_id: req.body.guild_id
+	});
+});
+
+router.post('/ticket/create', async (req, res) => {
+	const client = index.getClient();
+	const con = index.getDB();
+	try {
+		const guild = client.guilds.cache.get(req.body.guild_id);
+		if (!guild) {
+			res.session.errors = ['Serveur introuvable'];
+			return res.status(202).send({
+				status: 'error',
+				guild_id: req.body.guild_id
+			});
+		}
+		let category = await guild.channels.create({
+			name: 'Tickets',
+			type: ChannelType.GuildCategory,
+			permissionOverwrites: [{
+				id: guild.id,
+				deny: [PermissionsBitField.Flags.ViewChannel]
+			}]
+		});
+		await con.promise().query("UPDATE servers SET ticket_category_id = ? WHERE guild_id = ?", [category.id, req.body.guild_id], (err) => { if (err) console.log(err) });
+	} catch (e) {
+		req.session.errors = ["Une erreur est survenue"];
+		return res.status(202).send({
+			status: 'error',
+			guild_id: req.body.guild_id
+		});
+	}
+	req.session.success = ["Le système de ticket a bien été créé"];
+	return res.status(200).send({
+		status: 'success',
+		guild_id: req.body.guild_id
+	});
+});
+
+router.post('/ticket/delete', async (req, res) => {
+	const client = index.getClient();
+	const con = index.getDB();
+	try {
+		let [ticket] = await con.promise().query(`SELECT ticket_category_id FROM servers WHERE guild_id = '${req.body.guild_id}'`);
+		ticket = ticket[0];
+		const guild = client.guilds.cache.get(req.body.guild_id);
+		if (!guild) {
+			res.session.errors = ['Serveur introuvable'];
+			return res.status(202).send({
+				status: 'error',
+				guild_id: req.body.guild_id
+			});
+		}
+		let category = guild.channels.cache.find(x => x.id === ticket.ticket_category_id);
+		let channels = guild.channels.cache.filter(x => x.parentId == ticket.ticket_category_id);
+		if (category) {
+			for (const [_, channel] of channels) channel.delete()
+			category.delete();
+		}
+		await con.promise().query("UPDATE servers SET ticket_category_id = ? WHERE guild_id = ?", [null, req.body.guild_id], (err) => { if (err) console.log(err) });
+	} catch (e) {
+		req.session.errors = ["Une erreur est survenue"];
+		return res.status(202).send({
+			status: 'error',
+			guild_id: req.body.guild_id
+		});
+	}
+	req.session.success = ["Le système de ticket a bien été supprimé"];
+	return res.status(200).send({
+		status: 'success',
+		guild_id: req.body.guild_id
 	});
 });
 

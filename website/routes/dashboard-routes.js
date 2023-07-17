@@ -283,6 +283,18 @@ router.get('/servers/:id/ticket', validateGuild, async (req, res) => {
 	});
 });
 
+router.post('/servers/:id/ticket', validateGuild, async (req, res) => {
+	if (!req.body.ticket) await ticketSession.deleteTicket(req.params.id);
+	else {
+		if (!await ticketSession.validTicket(req.body, await sessions.guild(req.params.id))) {
+			req.session.errors = ['Merci de rentrer un salon valide'];
+			return res.redirect(`/servers/${req.params.id}/ticket`);
+		}
+		await ticketSession.updateTicket(req.body, req.params.id);
+	}
+	res.redirect(`/servers/${req.params.id}/ticket`);
+})
+
 
 router.get('/servers/:id', validateGuild, async (req, res) => {
 	res.render('dashboard/show.twig', {
