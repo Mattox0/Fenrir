@@ -116,11 +116,11 @@
 							<div class="role-selector selector">
 								<div class="select-element{% if ticket.ticket_role_id is not null %} active{% endif %}">
 									{% if ticket.ticket_role_id is not null %}
-										<input type="text" autocomplete="off" name="tickeet_role" class="select" placeholder="{{ ticket.ticket_role_id.name }}" readonly>
-										<input type="hidden" name="tickeet_role_id" value="{{ ticket.ticket_role_id.id }}">
+										<input type="text" autocomplete="off" name="ticket_role" class="select" placeholder="{{ ticket.ticket_role_id.name }}" readonly>
+										<input type="hidden" name="ticket_role_id" value="{{ ticket.ticket_role_id.id }}">
 									{% else %}
-										<input type="text" autocomplete="off" name="tickeet_role" class="select" placeholder="Veuillez choisir un rôle" id="" readonly>
-										<input type="hidden" name="tickeet_role_id" value="">
+										<input type="text" autocomplete="off" name="ticket_role" class="select" placeholder="Aucun rôle" id="" readonly>
+										<input type="hidden" name="ticket_role_id" value="">
 									{% endif %}
 									<label class="down">
 										<svg width="11" height="7" viewbox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -146,7 +146,7 @@
 								{% if ticket.ticket_message is not null %}
 									<textarea id="618247562175" class="dash-input" name="ticket_message" maxlength="1200" autocomplete="off" placeholder="{{ ticket.ticket_message }}"></textarea>
 								{% else %}
-									<textarea id="618247562175" class="dash-input" name="ticket_message" maxlength="1200" autocomplete="off" placeholder="Votre message personalisé"></textarea>
+									<textarea id="618247562175" class="dash-input" name="ticket_message" maxlength="1200" autocomplete="off" placeholder="Réagissez 📩 pour ouvrir un ticket !"></textarea>
 								{% endif %}
 								<label for="618247562175" class="counter">
 									<span class="count">0</span>/1200
@@ -178,12 +178,15 @@
 													{% if ticket.ticket_message is not null %}
 														<p class="embed-description" embedid="618247562175">{{ ticket.ticket_message }}</p>
 													{% else %}
-														<p class="embed-description" embedid="618247562175">Votre message personalisé</p>
+														<p class="embed-description" embedid="618247562175">Réagissez 📩 pour ouvrir un ticket !</p>
 													{% endif %}
 													<p class="embed-footer">Footer</p>
 												</div>
 											</div>
 										</div>
+									</div>
+									<div class="embed-button">
+										<p class="embed-text-button">📩</p>
 									</div>
 								</div>
 							</div>
