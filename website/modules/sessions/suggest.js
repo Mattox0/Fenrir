@@ -10,7 +10,6 @@ async function getSuggest(id) {
 async function deleteSuggest(id) {
 	const con = index.getDB();
 	await con.promise().query(`UPDATE servers SET suggestion_id = ? WHERE guild_id = ?`, [null, id])
-	console.log("Salon de suggestion supprimé");
 }
 
 async function validSuggest(body, guild) {

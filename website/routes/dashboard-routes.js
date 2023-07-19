@@ -284,10 +284,10 @@ router.get('/servers/:id/ticket', validateGuild, async (req, res) => {
 });
 
 router.post('/servers/:id/ticket', validateGuild, async (req, res) => {
-	if (!req.body.ticket) await ticketSession.deleteTicket(req.params.id);
+	if (!req.body.ticket) await ticketSession.deleteTicket(req.params.id, req);
 	else {
 		if (!await ticketSession.validTicket(req.body, await sessions.guild(req.params.id))) {
-			req.session.errors = ['Merci de rentrer un salon valide'];
+			req.session.errors = ['Merci de rentrer toutes les informations'];
 			return res.redirect(`/servers/${req.params.id}/ticket`);
 		}
 		await ticketSession.updateTicket(req.body, req.params.id);

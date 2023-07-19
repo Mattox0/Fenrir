@@ -43,11 +43,11 @@
 						</p>
 					</div>
 					<label for="103119896" class="switch-normal ">
-						<div class="slider round{% if ticket.ticket_id is not null %} active{% endif %}"></div>
-						<input id="103119896" type="checkbox" name="suggest" {% if ticket.ticket_id is not null %} checked {% endif %}>
+						<div class="slider round{% if ticket.ticket_channel_id is not null or ticket.ticket_category_id is not null %} active{% endif %}"></div>
+						<input id="103119896" type="checkbox" name="suggest" {% if ticket.ticket_channel_id is not null or ticket.ticket_category_id is not null %} checked {% endif %}>
 					</label>
 				</div>
-				<div class="dash-parts" style="{% if ticket.ticket_id is not null %}height: auto; overflow: visible;{% else %}height: 0px; overflow: hidden;{% endif %}">
+				<div class="dash-parts" style="{% if ticket.ticket_channel_id is not null or ticket.ticket_category_id is not null %}height: auto; overflow: visible;{% else %}height: 0px; overflow: hidden;{% endif %}">
 					<div class="dash-parts-full">
 						<div class="log-all-btn">
 							<div class="log-module-btn {% if ticket.ticket_category_id is not null %} disabled{% endif %}" id="create-ticket">
