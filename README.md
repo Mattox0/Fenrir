@@ -1,5 +1,8 @@
 # LMTBot
 
+# Le bot est en cours de refonte totale, changement de JS en TS.
+# Ce repertoire n'est donc plus à jour.
+
 ## Projet 
 
 LMTBot est un bot discord multifonctions qui permet de gérer des serveurs discord de manière simple et efficace.
