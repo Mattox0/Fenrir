@@ -1,5 +1,5 @@
 import {post} from "../../requests/requests";
-import {Channel, EmbedBuilder, Guild, GuildBasedChannel, GuildMember, TextBasedChannel, TextChannel} from "discord.js";
+import {Channel, EmbedBuilder, Guild, GuildBasedChannel, GuildMember, TextChannel} from "discord.js";
 
 module.exports = {
   name:'guildCreate',
@@ -8,6 +8,7 @@ module.exports = {
     const response: Response = await post(`${process.env.API_URL}/server`, {
       guild_id: guild.id,
       name: guild.name,
+      deleted: false
     });
     if (response.status !== 201) {
       console.log(`[${date.toLocaleString()}] - guildCreate - [${response.status}] ${response.statusText}`);
