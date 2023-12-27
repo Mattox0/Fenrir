@@ -17,8 +17,11 @@ module.exports = {
     let channel: GuildBasedChannel | undefined = guild.channels.cache.find((x: Channel) => x.id === guild.systemChannelId);
     const bvn = new EmbedBuilder()
       .setColor('#2f3136')
-      .setDescription(`<a:LMT_arrow:1065548690862899240> **Merci de m'avoir invité !**\n\n> **Pour avoir un aperçu de toutes les commandes :** \`/help\`\n> **Veillez à ce que le rôle everyone aie la permissions \`Utiliser des emojis externes\`, sinon les emojis du bot ne s'afficheront pas.**\n> **Pour toutes questions, le [support](https://discord.gg/p9gNk4u) est accessible, ou les MP du bot pour nous contacter directement.**\n> **Nous sommes friant de nouvelles idées d'améliorations** <:LMT_Agg:882250214050775090>`)
-      .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
+      .setTitle('Hey ! :raised_hands::skin-tone-1:')
+      .setDescription(`Je suis un bot multifonctions français et je peux améliorer ton serveur !
+      \nJe possède de multiples commandes, tu peux aller regarder avec la commande /help
+      \n**Pour répondre au mieux à vos besoins, vous pouvez me configurer facilement avec la commande /setup**`)
+      .setFooter({text:`${process.env.BOT_NAME} ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:process.env.ICON_URL})
     if (!channel) {
       const person: GuildMember | undefined = guild.members.cache.find(x => x.user.id === guild.ownerId);
       if (!person) return;
