@@ -1,15 +1,15 @@
 {
   "name": "fenrir-bot",
   "version": "1.0.0",
-  "description": "LMTBot est un bot discord multifonctions qui permet de gérer des serveurs discord de manière simple et efficace.\r Il est développé en NodeJS et utilise une base de donnée MySQL.\r Il est actuellement en développement et utilise discord.js v14.",
-  "main": "index.ts",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=16"
+  },
   "scripts": {
     "dev": "tsx watch index.ts",
     "start": "node dist/index.js",
     "build": "tsup src/index.ts --minify"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@discordjs/builders": "^1.7.0",
     "@discordjs/rest": "^2.2.0",
@@ -28,5 +28,16 @@
   },
   "devDependencies": {
     "typescript": "^5.3.3"
-  }
+  },
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "16"
+        },
+        "modules": false
+      }
+    ]
+  ]
 }

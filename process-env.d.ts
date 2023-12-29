@@ -6,6 +6,8 @@ declare global {
       DISCORD_CLIENT_ID: string;
       API_URL: string;
       ICON_URL: string;
+      SUPPORT_URL: string;
+      BOT_NAME: string;
     }
   }
 }
