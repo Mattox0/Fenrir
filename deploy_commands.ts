@@ -15,8 +15,18 @@ module.exports = {
 
     const rest: REST = new REST().setToken(process.env.DISCORD_TOKEN as string);
 
-    await rest.put(Routes.applicationCommands("784943061616427018"), { body: commands })
-      .then(() => console.log("--- Les commandes ont été chargés ✅ ---"))
-      .catch(console.error);
+    await (async () => {
+      try {
+        console.log(`Started refreshing ${commands.length} application (/) commands.`);
+
+        // The put method is used to fully refresh all commands in the guild with the current set
+        await rest.put(Routes.applicationCommands("784943061616427018"), {body: commands})
+          .then(() => console.log("--- Les commandes ont été chargés ✅ ---"))
+          .catch(console.error);
+      } catch (error) {
+        // And of course, make sure you catch and log any errors!
+        console.error(error);
+      }
+    })();
   }
 }

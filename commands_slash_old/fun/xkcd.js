@@ -9,9 +9,10 @@ module.exports = {
     async execute(...params) {
         let interaction = params[0];
         let date = params[2];
-        fetch(`https://xkcd.com/${Math.floor(Math.random() * 2540)}/info.0.json`)
+        fetch(`https://xkcd.com/${Math.floor(Math.random() * 2873)}/info.0.json`)
         .then(response => response.json())
         .then(body => {
+            console.log(body)
             const xkcdEmbed = new EmbedBuilder()
                 .setColor('#FFFFFF')
                 .setFooter({text:`LMT-Bot ・ Aujourd'hui à ${date.toLocaleTimeString().slice(0,-3)}`, iconURL:'https://cdn.discordapp.com/avatars/784943061616427018/2dd6a7254954046ce7aa31c42f1147e4.webp'})
