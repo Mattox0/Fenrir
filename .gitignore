@@ -1,10 +1,8 @@
 node_modules/
 lmt-bot.db
-organisation.txt
 .env
 .vscode/
 old_command_slash/
 /Database
 dist/
-idees.txt
-sommaire.txt
+DA.txt
