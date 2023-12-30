@@ -19,6 +19,8 @@
     "dotenv": "^16.3.1",
     "figlet": "^1.7.0",
     "fs": "^0.0.1-security",
+    "got": "^14.0.0",
+    "jsdom": "^23.0.1",
     "mathjs": "^12.2.0",
     "moment": "^2.29.4",
     "node-fetch": "^3.3.2",
@@ -28,6 +30,8 @@
     "util": "^0.12.5"
   },
   "devDependencies": {
+    "@types/got": "^9.6.12",
+    "@types/jsdom": "^21.1.6",
     "typescript": "^5.3.3"
   },
   "presets": [
