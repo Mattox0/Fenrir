@@ -1,4 +1,4 @@
-import {ButtonBuilder, EmbedBuilder, SlashCommandBuilder, ButtonStyle} from "discord.js";
+import {EmbedBuilder, SlashCommandBuilder} from "discord.js";
 import fetch from "node-fetch";
 import {allButtons} from "../../navigation/navigation.button";
 import {pagination} from "../../navigation/navigation";
@@ -87,10 +87,10 @@ module.exports = {
         x.title.english ? title = `*${x.title.english}*\n` : title = "";
         x.title.romaji ? title += `*${x.title.romaji}*\n` : title += "";
         x.episodes ? episode = `\n\nNombres d'épisodes : **${x.episodes}**` : episode = "";
-        x.description ? description = x.description.replaceAll("<[/]?(i|b|br|strong)>", "") : description = "";
+        x.description ? description = x.description.replaceAll(/<\/?[a-zA-Z][^>]*>/g, "") : description = "";
         const page: EmbedBuilder = new EmbedBuilder()
           .setColor(color)
-          .setTitle(`Résultat pour ${text} `)
+          .setTitle(`Résultat pour ${text.slice(0, 200)} `)
           .setImage(x.coverImage.large)
           .setDescription(`${title}\n**Synopsis**:\n${description}${episode}`)
           .setTimestamp()
