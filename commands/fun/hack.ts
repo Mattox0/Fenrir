@@ -1,4 +1,4 @@
-import {ChatInputCommandInteraction, SlashCommandBuilder, User} from "discord.js";
+import {ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder, User} from "discord.js";
 const wait = require('util').promisify(setTimeout);
 
 module.exports = {
@@ -7,7 +7,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('hack')
     .setDescription('Hack un utilisateur')
-    .addUserOption(option => option.setName('user').setDescription('L\'utilisateur à hacker').setRequired(true)),
+    .addUserOption(option => option.setName('utilisateur').setDescription('L\'utilisateur à hacker').setRequired(true)),
   async execute(interaction: any) {
     let person: User = interaction.options.getUser('utilisateur') as User;
     let hacked = await interaction.member.guild.members.cache.find((x: User) => x.id === person.id);
@@ -17,7 +17,7 @@ module.exports = {
     await interaction.editReply({content:`**${step[0]}** Recherche du mot de passe ...`})
     await wait(2000)
     const mail: string[] = ['outlook.com','orange.fr','gmail.com','msn.com','psynet.net']
-    const mdp: string[] = ['jaimeleslicornes55','hackeurman34','iloveyou43','gwenjtadore12','jsuistropbg67','jesusishere666','azertyuiop34','motdepasse']
+    const mdp: string[] = ['jaimeleslicornes55','hackeurman34','iloveyou43','jsuistropbg67','jesusishere666','azertyuiop34','motdepasse']
     await interaction.editReply({content:`**${step[1]} Trouvé !**\n**Email**: ${hacked.user.username}@${mail[Math.floor(Math.random() * mail.length)]}\n**Mot de passe**: ||${mdp[Math.floor(Math.random() * mdp.length)]}||`})
     await wait(2000)
     await interaction.editReply({content:`**${step[2]}** Recuperation des dms en cours...`})
@@ -39,6 +39,9 @@ module.exports = {
     await wait(2000)
     await interaction.editReply({content:`**${step[3]}** Finition des dégats...`})
     await wait(2000)
-    await interaction.editReply({content:`Le hack totalement **vrai** et vraiment **dangereux** est complété !`})
+    const embed: EmbedBuilder = new EmbedBuilder()
+      .setColor('#2f3136')
+      .setDescription(`<:F_arrow:1190482623542341762> **${hacked.user} s'est fait hacker !**`)
+    await interaction.editReply({content:'', embeds:[embed]})
   }
 }
