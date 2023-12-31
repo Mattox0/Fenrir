@@ -4,7 +4,7 @@ import jsdom from "jsdom";
 
 module.exports = {
   name: "commit",
-  exemple: "/commit",
+  example: "/commit",
   data: new SlashCommandBuilder()
     .setName('commit')
     .setDescription('Génère un message de commit aléatoire'),

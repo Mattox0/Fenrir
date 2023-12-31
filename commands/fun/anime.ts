@@ -5,7 +5,7 @@ import {pagination} from "../../navigation/navigation";
 
 module.exports = {
   name: "anime",
-  exemple: "/anime <text>",
+  example: "/anime <text>",
   data: new SlashCommandBuilder()
     .setName('anime')
     .setDescription('Note un anime')

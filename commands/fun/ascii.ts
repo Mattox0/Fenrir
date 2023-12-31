@@ -3,7 +3,7 @@ const figlet = require('figlet');
 
 module.exports = {
   name: "ascii",
-  exemple: "/ascii <text> <?theme>",
+  example: "/ascii <text> <?theme>",
   data: new SlashCommandBuilder()
     .setName('ascii')
     .setDescription('Convertit un texte en ASCII')
