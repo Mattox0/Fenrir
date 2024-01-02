@@ -1,4 +1,4 @@
-import {ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder, User} from "discord.js";
+import {EmbedBuilder, SlashCommandBuilder, User} from "discord.js";
 const wait = require('util').promisify(setTimeout);
 
 module.exports = {
