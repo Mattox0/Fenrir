@@ -48,8 +48,20 @@ module.exports = {
     const list: number[] = [0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 30];
     let hpPlayer: number = 100;
     let hpOpponent: number = 100;
-    const filter = (i: any) => i.customId.startsWith('duel') && i.user.id === opponent.id;
-    const collector = interaction.channel.createMessageComponentCollector({filter, max: 1, time: 60000});
+    const filter = (i: any) => i.customId.startsWith('duel') && i.message.interaction.id === interaction.id;
+    const collector = interaction.channel.createMessageComponentCollector({filter, time: 60000});
+    collector.on('collect', async (collected: any) => {
+      if (collected.user.id !== opponent.id) {
+        const error: EmbedBuilder = new EmbedBuilder()
+          .setColor('#2f3136')
+          .setDescription(`<:F_arrows:1190482623542341762> **Seul ${opponent} peut répondre**`)
+          .setTimestamp()
+          .setFooter({text:`${process.env.BOT_NAME}`, iconURL:process.env.ICON_URL})
+        return collected.reply({ embeds: [error], components: [], ephemeral: true });
+      } else {
+        collector.stop();
+      }
+    });
     collector.on('end', async (collected: any) => {
       if (!collected.first()) {
         const delay: EmbedBuilder = new EmbedBuilder()
@@ -150,7 +162,7 @@ module.exports = {
               .setDescription(`${opponent} **est le grand vaincqueur !**\n\nAvec **${hpOpponent}** HP restants`)
               .setTimestamp()
               .setFooter({text:`${process.env.BOT_NAME}`, iconURL:process.env.ICON_URL})
-            await interaction.followUp({ embeds: [final] });
+            return interaction.followUp({ embeds: [final] });
           }
           break;
         case 'duel_no':
