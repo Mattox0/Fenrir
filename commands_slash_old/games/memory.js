@@ -17,7 +17,7 @@ module.exports = {
             .addChoices({ name: `15 secondes`, value: 15 })
             .addChoices({ name: `20 secondes`, value: 20 })
             .addChoices({ name: `30 secondes`, value: 30 }))
-        .addIntegerOption(option => option.setName('cartes').setDescription('Le nombre de cartes').setRequired(true)),
+        .addIntegerOption(option => option.setName('cartes').setDescription('Le nombre de cartes').setRequired(false)),
     async execute(...params) {
         let interaction = params[0];
         let date = params[2];
