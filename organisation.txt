@@ -1,0 +1,81 @@
+====== NEW COMMAND =====
+
+const { EmbedBuilder } = require("discord.js");
+
+module.exports = {
+    name:'',
+    description:'',
+    execute(...params) {
+        let message = params[0];
+        let args = params[1];
+        let date = params[2];
+    }
+}
+
+SUB_COMMAND sets the option to be a subcommand
+SUB_COMMAND_GROUP sets the option to be a subcommand group
+STRING sets the option to require a string value
+INTEGER sets the option to require an integer value
+NUMBER sets the option to require a decimal (also known as a floating point) value
+BOOLEAN sets the option to require a boolean value
+USER sets the option to require a user or snowflake as value
+CHANNEL sets the option to require a channel or snowflake as value
+ROLE sets the option to require a role or snowflake as value
+MENTIONABLE sets the option to require a user, role or snowflake as value
+#Choices
+
+<t:timestamp:t>
+17:00 - t
+17:00:00 - T
+20/06/2021 - d
+20 juin 2021 - D
+20 juin 2021 17:00 - f (Par défaut)
+dimanche 20 juin 2021 17:00 - F
+dans 4 heures - R
+
+undefined dans morpion
+
+====== BOT =====
+
+puissance4 bot à faire
+regarder api nekobot (celle du blurp)
+
+duel
+morpion
+puissance4
+rps
+poll -> si fini enlever durée
+clear -> a refaire
+colormind
+blagues => https://www.blagues-api.fr/
+
++ choisir heure d'envoi des messages
++ choisir description personalisé
++ add année + age
+Faire beau message anniversaire
+Faire /list anniv
+
+Ticket -> a repenser
+
+profile mettre localité
+profile see likes
+profile footer maxlength = 1200
+profile description maxlength = 2000
+
+message récurrents
+Auto-modération : invit discord, ban words, mentions excessives, emojis excessifs, spam
+generer un qrcode pour un site
+mettre automatiquement un role aux membres en vocal
+
+reaction de mots
+
+Role react
+
+Logs -> regrouper par thème, comme sur le site
+Logs -> séparer pseudos et Role ajouter -> guildMemberUpdate
+
+Prison -> Ajouter categorie pour la prison
+
+Stats -> Changer le système de stats pour qu'il soit plus pratique
+
+Ajouter Dealabs (draftbot)
