@@ -140,7 +140,6 @@ module.exports = {
           .setColor('#2f3136')
           .setTitle(':crown: **Victoire** :crown:')
           .setDescription(`<:F_arrows:1190482623542341762> **${currentPlayer} a gagné !**`)
-          .setImage("https://media1.tenor.com/m/zz-lKYIHQcQAAAAd/rihanna-crown.gif")
           .setTimestamp()
           .setFooter({text:`${process.env.BOT_NAME}`, iconURL:process.env.ICON_URL})
         const contentMessage: string = game.map((x: string[]) => x.join('')).join('\n');
@@ -151,7 +150,6 @@ module.exports = {
         const nobodyWinEmbed: EmbedBuilder = new EmbedBuilder()
           .setColor('#2f3136')
           .setDescription(`<:F_arrows:1190482623542341762> **Personne n'a gagné ! Deux grands esprits se sont rencontrés**`)
-          .setImage("https://tenor.com/view/theoffice-michael-scott-jim-halpert-gif-27622036")
           .setTimestamp()
           .setFooter({text:`${process.env.BOT_NAME}`, iconURL:process.env.ICON_URL})
         const contentMessage: string = game.map((x: string[]) => x.join('')).join('\n');
