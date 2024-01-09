@@ -2,7 +2,7 @@ import {
   ActionRowBuilder,
   ButtonBuilder, ButtonStyle,
   EmbedBuilder,
-  GuildMember, Interaction,
+  GuildMember, Interaction, MessageActionRowComponentBuilder, MessageActionRowComponentData,
   SlashCommandBuilder,
   SlashCommandUserOption
 } from "discord.js";
@@ -28,8 +28,7 @@ module.exports = {
     const game: string[][] = [
       [EmoteMorpion.one_num, EmoteMorpion.two_num, EmoteMorpion.three_num],
       [EmoteMorpion.four_num, EmoteMorpion.five_num, EmoteMorpion.six_num],
-      [EmoteMorpion.seven_num, EmoteMorpion.height_num, EmoteMorpion.nine_num]
-
+      [EmoteMorpion.seven_num, EmoteMorpion.eight_num, EmoteMorpion.nine_num]
     ];
     const duel: EmbedBuilder = new EmbedBuilder()
       .setColor('#2f3136')
@@ -48,12 +47,22 @@ module.exports = {
           .setStyle(ButtonStyle.Danger),
       )
     await interaction.reply({embeds:[duel], components: [row]});
-    const filter = (i: any) => i.user.id == opponent.id && i.message.interaction.id === interaction.id;
+    const filter = (i: any) => i.message.interaction.id === interaction.id;
     const collector = interaction.channel.createMessageComponentCollector({
-      filter, max: 1, time: 60000
+      filter, time: 60000
     })
+    collector.on('collect', async (collected: any) => {
+      if (collected.user.id != opponent.id) {
+        collected.deferUpdate();
+        return;
+      } else {
+        collected.deferUpdate();
+        collector.stop();
+        return;
+      }
+    });
     collector.on('end', async (collected: any) => {
-      if (!collected.first()) {
+      if (!collected.first() || collected.first().user.id != opponent.id) {
         const error: EmbedBuilder = new EmbedBuilder()
           .setColor('#2f3136')
           .setDescription(`<:F_arrows:1190482623542341762> **${opponent} n'a pas répondu**`)
@@ -71,6 +80,9 @@ module.exports = {
       }
       collected.first().deferUpdate();
       let currentPlayer: GuildMember = Math.floor(Math.random() * 2) % 2 === 0 ? player : opponent;
+      const numbersOne: ActionRowBuilder<MessageActionRowComponentBuilder> = numeros1
+      const numbersTwo: ActionRowBuilder<MessageActionRowComponentBuilder> = numeros2
+      const numbersThree: ActionRowBuilder<MessageActionRowComponentBuilder> = numeros3
       const contentMessage: string = game.map((x: string[]) => x.join('')).join('\n');
       const gameEmbed: EmbedBuilder = new EmbedBuilder()
         .setColor('#2f3136')
@@ -80,28 +92,103 @@ module.exports = {
         ⭕ ${opponent}`)
         .setTimestamp()
         .setFooter({text:`${process.env.BOT_NAME}`, iconURL:process.env.ICON_URL})
-      await interaction.editReply({content: contentMessage, embeds:[gameEmbed], components: [numeros1, numeros2, numeros3]});
-      await this.game(interaction, game, currentPlayer, player, opponent, numeros1, numeros2, numeros3);
+      await interaction.editReply({content: contentMessage, embeds:[gameEmbed], components: [numbersOne, numbersTwo, numbersThree]});
+      await this.game(interaction, game, currentPlayer, player, opponent, numbersOne, numbersTwo, numbersThree);
     })
   },
-  async game(interaction: any, game: any[], currentPlayer: GuildMember, player: GuildMember, opponent: GuildMember, numbers1: ActionRowBuilder, numbers2: ActionRowBuilder, numbers3: ActionRowBuilder) {
+  async game(interaction: any, game: any[], currentPlayer: GuildMember, player: GuildMember, opponent: GuildMember, numbersOne: ActionRowBuilder<MessageActionRowComponentBuilder>, numbersTwo: ActionRowBuilder<MessageActionRowComponentBuilder>, numbersThree: ActionRowBuilder<MessageActionRowComponentBuilder>) {
     const gameFilter = (i: any) => (i.user.id == player.id || i.user.id == opponent.id) && i.message.interaction.id === interaction.id;
     const gameCollector = interaction.channel.createMessageComponentCollector({
       gameFilter, time: 60000
     })
     gameCollector.on('collect', async (collected: any) => {
       gameCollector.resetTimer();
-      if (collected.user.id === currentPlayer.id) {
-        console.log(collected)
-      } else {
-        const error: EmbedBuilder = new EmbedBuilder()
+      if (collected.user.id !== currentPlayer.id) {
+        collected.deferUpdate();
+        return;
+      }
+      if (collected.customId === 'one') {
+        game[0][0] = currentPlayer.id === player.id ? EmoteMorpion.one_x : EmoteMorpion.one_o;
+        numbersOne.components[0].setDisabled(true);
+      } else if (collected.customId === 'two') {
+        game[0][1] = currentPlayer.id === player.id ? EmoteMorpion.two_x : EmoteMorpion.two_o;
+        numbersOne.components[1].setDisabled(true);
+      } else if (collected.customId === 'three') {
+        game[0][2] = currentPlayer.id === player.id ? EmoteMorpion.three_x : EmoteMorpion.three_o;
+        numbersOne.components[2].setDisabled(true);
+      } else if (collected.customId === 'four') {
+        game[1][0] = currentPlayer.id === player.id ? EmoteMorpion.four_x : EmoteMorpion.four_o;
+        numbersTwo.components[0].setDisabled(true);
+      } else if (collected.customId === 'five') {
+        game[1][1] = currentPlayer.id === player.id ? EmoteMorpion.five_x : EmoteMorpion.five_o;
+        numbersTwo.components[1].setDisabled(true);
+      } else if (collected.customId === 'six') {
+        game[1][2] = currentPlayer.id === player.id ? EmoteMorpion.six_x : EmoteMorpion.six_o;
+        numbersTwo.components[2].setDisabled(true);
+      } else if (collected.customId === 'seven') {
+        game[2][0] = currentPlayer.id === player.id ? EmoteMorpion.seven_x : EmoteMorpion.seven_o;
+        numbersThree.components[0].setDisabled(true);
+      } else if (collected.customId === 'eight') {
+        game[2][1] = currentPlayer.id === player.id ? EmoteMorpion.eight_x : EmoteMorpion.eight_o;
+        numbersThree.components[1].setDisabled(true);
+      } else if (collected.customId === 'nine') {
+        game[2][2] = currentPlayer.id === player.id ? EmoteMorpion.nine_x : EmoteMorpion.nine_o;
+        numbersThree.components[2].setDisabled(true);
+      }
+      if (this.checkWin(game)) {
+        const winEmbed: EmbedBuilder = new EmbedBuilder()
           .setColor('#2f3136')
-          .setDescription(`<:F_arrows:1190482623542341762> **Ce n'est pas ton tour**`)
+          .setTitle(':crown: **Victoire** :crown:')
+          .setDescription(`<:F_arrows:1190482623542341762> **${currentPlayer} a gagné !**`)
+          .setImage("https://media1.tenor.com/m/zz-lKYIHQcQAAAAd/rihanna-crown.gif")
           .setTimestamp()
           .setFooter({text:`${process.env.BOT_NAME}`, iconURL:process.env.ICON_URL})
-        await interaction.followUp({embeds:[error], ephemeral: true});
+        const contentMessage: string = game.map((x: string[]) => x.join('')).join('\n');
+        await interaction.editReply({content:contentMessage, embeds:[winEmbed], components: []});
+        gameCollector.stop();
+        return;
+      } else if (game.every((row: string[]) => row.every((cell: string) => cell.slice(4, 7) !== 'num'))) {
+        const nobodyWinEmbed: EmbedBuilder = new EmbedBuilder()
+          .setColor('#2f3136')
+          .setDescription(`<:F_arrows:1190482623542341762> **Personne n'a gagné ! Deux grands esprits se sont rencontrés**`)
+          .setImage("https://tenor.com/view/theoffice-michael-scott-jim-halpert-gif-27622036")
+          .setTimestamp()
+          .setFooter({text:`${process.env.BOT_NAME}`, iconURL:process.env.ICON_URL})
+        const contentMessage: string = game.map((x: string[]) => x.join('')).join('\n');
+        await interaction.editReply({content:contentMessage, embeds:[nobodyWinEmbed], components: []});
+        gameCollector.stop();
+        return;
       }
+      currentPlayer = currentPlayer.id === player.id ? opponent : player;
+      const contentMessage: string = game.map((x: string[]) => x.join('')).join('\n');
+      const gameEmbed: EmbedBuilder = new EmbedBuilder()
+        .setColor('#2f3136')
+        .setDescription(`C'est au tour de ${currentPlayer}
+        
+        ❌ ${player}
+        ⭕ ${opponent}`)
+        .setTimestamp()
+        .setFooter({text:`${process.env.BOT_NAME}`, iconURL:process.env.ICON_URL})
+      await interaction.editReply({content: contentMessage, embeds:[gameEmbed], components: [numbersOne, numbersTwo, numbersThree]});
+      await collected.deferUpdate();
     })
+  },
+  checkWin(game: string[][]): boolean {
+    for (let i = 0; i < 3; i++) {
+      if (game[i].every((cell: string) => cell.charAt(4) === 'x') || game.every((row: string[]) => row[i] === 'x')) {
+        return true;
+      } else if (game[i].every((cell: string) => cell.charAt(4) === 'o') || game.every((row: string[]) => row[i] === 'o')) {
+        return true;
+      }
+    }
+    if ((game[0][0].charAt(4) === 'x' && game[1][1].charAt(4) === 'x' && game[2][2].charAt(4) === 'x') ||
+      (game[0][2].charAt(4) === 'x' && game[1][1].charAt(4) === 'x' && game[2][0].charAt(4) === 'x')) {
+      return true;
+    } else if ((game[0][0].charAt(4) === 'o' && game[1][1].charAt(4) === 'o' && game[2][2].charAt(4) === 'o') ||
+      (game[0][2].charAt(4) === 'o' && game[1][1].charAt(4) === 'o' && game[2][0].charAt(4) === 'o')) {
+      return true;
+    }
+    return false
   }
 }
 

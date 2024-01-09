@@ -1,4 +1,4 @@
-import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from "discord.js";
+import {ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageActionRowComponentBuilder} from "discord.js";
 
 const firstPageButton: ButtonBuilder = new ButtonBuilder()
   .setCustomId('first')
@@ -25,7 +25,7 @@ const lastPageButton: ButtonBuilder = new ButtonBuilder()
   .setEmoji('⏭️')
   .setStyle(ButtonStyle.Primary);
 
-export const numeros1: ActionRowBuilder = new ActionRowBuilder()
+export const numeros1: ActionRowBuilder<MessageActionRowComponentBuilder> = new ActionRowBuilder<MessageActionRowComponentBuilder>()
   .addComponents(
     new ButtonBuilder()
       .setCustomId('one')
@@ -40,7 +40,7 @@ export const numeros1: ActionRowBuilder = new ActionRowBuilder()
       .setEmoji('3️⃣')
       .setStyle(ButtonStyle.Secondary),
   )
-export const numeros2: ActionRowBuilder = new ActionRowBuilder()
+export const numeros2: ActionRowBuilder<MessageActionRowComponentBuilder> = new ActionRowBuilder<MessageActionRowComponentBuilder>()
   .addComponents(
     new ButtonBuilder()
       .setCustomId('four')
@@ -55,14 +55,14 @@ export const numeros2: ActionRowBuilder = new ActionRowBuilder()
       .setEmoji('6️⃣')
       .setStyle(ButtonStyle.Secondary),
   )
-export const numeros3: ActionRowBuilder = new ActionRowBuilder()
+export const numeros3: ActionRowBuilder<MessageActionRowComponentBuilder> = new ActionRowBuilder<MessageActionRowComponentBuilder>()
   .addComponents(
     new ButtonBuilder()
       .setCustomId('seven')
       .setEmoji('7️⃣')
       .setStyle(ButtonStyle.Secondary),
     new ButtonBuilder()
-      .setCustomId('height')
+      .setCustomId('eight')
       .setEmoji('8️⃣')
       .setStyle(ButtonStyle.Secondary),
     new ButtonBuilder()

@@ -1,16 +1,3 @@
-====== NEW COMMAND =====
-
-const { EmbedBuilder } = require("discord.js");
-
-module.exports = {
-    name:'',
-    description:'',
-    execute(...params) {
-        let message = params[0];
-        let args = params[1];
-        let date = params[2];
-    }
-}
 
 SUB_COMMAND sets the option to be a subcommand
 SUB_COMMAND_GROUP sets the option to be a subcommand group
