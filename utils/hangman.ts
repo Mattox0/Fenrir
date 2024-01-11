@@ -6,7 +6,7 @@ export enum HangmanStatus {
    ||
    ||
   /||
-  //||
+ //||
 ============`,
   status_1 = `   ,==========Y===
    ||  /      |
@@ -71,4 +71,10 @@ export enum HangmanStatus {
   /||
  //||
 ============`,
+}
+
+export type HangmanStatusKey = keyof typeof HangmanStatus;
+
+export function getHangmanStatus(statusKey: HangmanStatusKey): string {
+  return HangmanStatus[statusKey];
 }
