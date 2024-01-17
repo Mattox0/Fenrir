@@ -66,3 +66,5 @@ Prison -> Ajouter categorie pour la prison
 Stats -> Changer le système de stats pour qu'il soit plus pratique
 
 Ajouter Dealabs (draftbot)
+
+Ajouter fast type à l'API et y ajouter des phrases
