@@ -22,6 +22,8 @@ module.exports = {
     opponent = await interaction.member.guild.members.cache.find((x: GuildMember) => x.id === opponent.id);
     if (!opponent) {
       throw new Error('L\'utilisateur n\'existe pas');
+    } else if (opponent.id === player.id) {
+      await interaction.reply({content: 'Tu ne peux pas jouer contre toi-même', ephemeral: true});
     }
     const playerName: string = player.nickname ?? player.user.globalName ?? player.user.username;
     const opponentName: string = opponent.nickname ?? opponent.user.globalName ?? opponent.user.username;
