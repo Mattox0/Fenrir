@@ -7,7 +7,7 @@ import {
   SlashCommandUserOption
 } from "discord.js";
 import {numeros1, numeros2, numeros3} from "../../navigation/navigation.button";
-import {EmoteMorpion} from "../../utils/emote";
+import {Emote} from "../../utils/emote";
 
 module.exports = {
   name: "morpion",
@@ -28,9 +28,9 @@ module.exports = {
     const playerName: string = player.nickname ?? player.user.globalName ?? player.user.username;
     const opponentName: string = opponent.nickname ?? opponent.user.globalName ?? opponent.user.username;
     const game: string[][] = [
-      [EmoteMorpion.one_num, EmoteMorpion.two_num, EmoteMorpion.three_num],
-      [EmoteMorpion.four_num, EmoteMorpion.five_num, EmoteMorpion.six_num],
-      [EmoteMorpion.seven_num, EmoteMorpion.eight_num, EmoteMorpion.nine_num]
+      [Emote.one_num, Emote.two_num, Emote.three_num],
+      [Emote.four_num, Emote.five_num, Emote.six_num],
+      [Emote.seven_num, Emote.eight_num, Emote.nine_num]
     ];
     const duel: EmbedBuilder = new EmbedBuilder()
       .setColor('#2f3136')
@@ -110,31 +110,31 @@ module.exports = {
         return;
       }
       if (collected.customId === 'one') {
-        game[0][0] = currentPlayer.id === player.id ? EmoteMorpion.one_x : EmoteMorpion.one_o;
+        game[0][0] = currentPlayer.id === player.id ? Emote.one_x : Emote.one_o;
         numbersOne.components[0].setDisabled(true);
       } else if (collected.customId === 'two') {
-        game[0][1] = currentPlayer.id === player.id ? EmoteMorpion.two_x : EmoteMorpion.two_o;
+        game[0][1] = currentPlayer.id === player.id ? Emote.two_x : Emote.two_o;
         numbersOne.components[1].setDisabled(true);
       } else if (collected.customId === 'three') {
-        game[0][2] = currentPlayer.id === player.id ? EmoteMorpion.three_x : EmoteMorpion.three_o;
+        game[0][2] = currentPlayer.id === player.id ? Emote.three_x : Emote.three_o;
         numbersOne.components[2].setDisabled(true);
       } else if (collected.customId === 'four') {
-        game[1][0] = currentPlayer.id === player.id ? EmoteMorpion.four_x : EmoteMorpion.four_o;
+        game[1][0] = currentPlayer.id === player.id ? Emote.four_x : Emote.four_o;
         numbersTwo.components[0].setDisabled(true);
       } else if (collected.customId === 'five') {
-        game[1][1] = currentPlayer.id === player.id ? EmoteMorpion.five_x : EmoteMorpion.five_o;
+        game[1][1] = currentPlayer.id === player.id ? Emote.five_x : Emote.five_o;
         numbersTwo.components[1].setDisabled(true);
       } else if (collected.customId === 'six') {
-        game[1][2] = currentPlayer.id === player.id ? EmoteMorpion.six_x : EmoteMorpion.six_o;
+        game[1][2] = currentPlayer.id === player.id ? Emote.six_x : Emote.six_o;
         numbersTwo.components[2].setDisabled(true);
       } else if (collected.customId === 'seven') {
-        game[2][0] = currentPlayer.id === player.id ? EmoteMorpion.seven_x : EmoteMorpion.seven_o;
+        game[2][0] = currentPlayer.id === player.id ? Emote.seven_x : Emote.seven_o;
         numbersThree.components[0].setDisabled(true);
       } else if (collected.customId === 'eight') {
-        game[2][1] = currentPlayer.id === player.id ? EmoteMorpion.eight_x : EmoteMorpion.eight_o;
+        game[2][1] = currentPlayer.id === player.id ? Emote.eight_x : Emote.eight_o;
         numbersThree.components[1].setDisabled(true);
       } else if (collected.customId === 'nine') {
-        game[2][2] = currentPlayer.id === player.id ? EmoteMorpion.nine_x : EmoteMorpion.nine_o;
+        game[2][2] = currentPlayer.id === player.id ? Emote.nine_x : Emote.nine_o;
         numbersThree.components[2].setDisabled(true);
       }
       if (this.checkWin(game)) {

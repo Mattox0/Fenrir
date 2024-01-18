@@ -1,4 +1,4 @@
-export enum EmoteMorpion {
+export enum Emote {
   one_num = "<:1_num:1192631908446785576>",
   two_num = "<:2_num:1192631906475454505>",
   three_num = "<:3_num:1192631905208762468>",
@@ -25,5 +25,14 @@ export enum EmoteMorpion {
   six_x = "<:6_x:1192632712826208296>",
   seven_x = "<:7_x:1192632710838099988>",
   eight_x = "<:8_x:1192632708480913538>",
-  nine_x = "<:9_x:1192632706350207087>"
+  nine_x = "<:9_x:1192632706350207087>",
+  yellow_circle = "<:yellow:1197098616314146837>",
+  red_circle = "<:red:1196968321237651506>",
+  grey_circle = "<:grey:1196968356012621981>",
+  arrow_yellow = "<:arrow_yellow:1197098445543055370>",
+  arrow_red = "<:arrow_red:1196965866043097159>",
+  double_arrow = "<:F_arrows:1190482623542341762>",
+  simple_arrow = "<:F_arrow:1190483592644677662>",
+  transparent = "<:transparent:1196966860915232778>",
+  clock = "<:timeup:1197312528355704922>",
 }
