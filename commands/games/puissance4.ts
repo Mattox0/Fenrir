@@ -77,11 +77,10 @@ module.exports = {
       timer.setSeconds(timer.getSeconds() + 60);
       const numbersOne: ActionRowBuilder<MessageActionRowComponentBuilder> = numbers1to4;
       const numbersTwo: ActionRowBuilder<MessageActionRowComponentBuilder> = numbers5to7;
-      const mid: string = Emote.transparent.repeat(7);
       const start: EmbedBuilder = new EmbedBuilder()
         .setColor('#2f3136')
         .setDescription(`:one::two::three::four::five::six::seven:
-        ${mid}
+        ${Emote.transparent.repeat(7)}
         ${game.map((x: string[]) => x.join('')).join('\n')}
         
         ${Emote.clock} Fin du tour ${time(timer, 'R')}
@@ -139,31 +138,62 @@ module.exports = {
         ${Emote.clock} Fin du tour ${time(newTimer, 'R')}
         
         **Joueurs**
-        ${Emote.red_circle} ${player} ${currentPlayer.id === player.id ? '**Ton tour**' : ''}
-        ${Emote.yellow_circle} ${opponent} ${currentPlayer.id === opponent.id ? '**Ton tour**' : ''}`)
+        ${Emote.red_circle} ${player} ${currentPlayer.id === opponent.id ? '**Ton tour**' : ''}
+        ${Emote.yellow_circle} ${opponent} ${currentPlayer.id === player.id ? '**Ton tour**' : ''}`)
         .setTimestamp()
         .setFooter({text: `${process.env.BOT_NAME}`, iconURL: process.env.ICON_URL})
       await interaction.editReply({embeds: [turn], components: [numbersOne, numbersTwo]});
       // verifier si gagné
       if (await this.checkWin(game, currentPlayer.id === player.id ? Emote.red_circle : Emote.yellow_circle)) {
-        const win: EmbedBuilder = new EmbedBuilder()
-          .setColor('#2f3136')
-          .setDescription(`${Emote.double_arrow} **${currentPlayer} a gagné**`)
-          .setTimestamp()
-          .setFooter({text: `${process.env.BOT_NAME}`, iconURL: process.env.ICON_URL})
-        collector.stop();
-        return interaction.followUp({embeds: [win], components: []});
+        return collector.stop();
       }
       if (await this.checkEquality(Object.values(game))) {
-        const equality: EmbedBuilder = new EmbedBuilder()
-          .setColor('#2f3136')
-          .setDescription(`${Emote.double_arrow} **Egalité**`)
-          .setTimestamp()
-          .setFooter({text: `${process.env.BOT_NAME}`, iconURL: process.env.ICON_URL})
-        collector.stop();
-        return interaction.followUp({embeds: [equality], components: []});
+        return collector.stop();
       }
       currentPlayer = currentPlayer.id === player.id ? opponent : player;
+    });
+    collector.on('end', async (collected: any) => {
+      if (collected.size === 0) {
+        const timeUp: EmbedBuilder = new EmbedBuilder()
+          .setColor('#2f3136')
+          .setDescription(`${Emote.double_arrow} **Les 60 secondes sont écoulés**`)
+          .setTimestamp()
+          .setFooter({text: `${process.env.BOT_NAME}`, iconURL: process.env.ICON_URL})
+        await interaction.followUp({embeds: [timeUp], components: []});
+      } else if (await this.checkWin(game, currentPlayer.id === player.id ? Emote.red_circle : Emote.yellow_circle)) {
+        const win: EmbedBuilder = new EmbedBuilder()
+          .setColor('#2f3136')
+          .setDescription(`${Emote.double_arrow} **${currentPlayer} a gagné**, toutes mes félicitations !`)
+          .setTimestamp()
+          .setFooter({text: `${process.env.BOT_NAME}`, iconURL: process.env.ICON_URL})
+        await interaction.followUp({embeds: [win], components: []});
+      } else if (await this.checkEquality(Object.values(game))) {
+        const equality: EmbedBuilder = new EmbedBuilder()
+          .setColor('#2f3136')
+          .setDescription(`${Emote.double_arrow} **Egalité**, deux grands esprits se sont rencontrés !`)
+          .setTimestamp()
+          .setFooter({text: `${process.env.BOT_NAME}`, iconURL: process.env.ICON_URL})
+        await interaction.followUp({embeds: [equality], components: []});
+      } else {
+        const timeUp: EmbedBuilder = new EmbedBuilder()
+          .setColor('#2f3136')
+          .setDescription(`${Emote.double_arrow} ${currentPlayer} **a déclaré forfait car il n'a pas joué à temps**`)
+          .setTimestamp()
+          .setFooter({text: `${process.env.BOT_NAME}`, iconURL: process.env.ICON_URL})
+        await interaction.followUp({embeds: [timeUp], components: []});
+      }
+      const turn: EmbedBuilder = new EmbedBuilder()
+        .setColor('#2f3136')
+        .setDescription(`:one::two::three::four::five::six::seven:
+        ${Emote.transparent.repeat(7)}
+        ${game.map((x: string[]) => x.join('')).join('\n')}
+        
+        **Joueurs**
+        ${Emote.red_circle} ${player}
+        ${Emote.yellow_circle} ${opponent}`)
+        .setTimestamp()
+        .setFooter({text: `${process.env.BOT_NAME}`, iconURL: process.env.ICON_URL})
+      await interaction.editReply({embeds: [turn], components: []});
     });
   },
   async checkColumn(game: any[], column: number) {
@@ -209,5 +239,4 @@ module.exports = {
   }
 }
 
-// faire le time Up
 // changer le gagné et le égalité
