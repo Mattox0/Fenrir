@@ -7,8 +7,7 @@ import {
   Message,
   SlashCommandBuilder
 } from "discord.js";
-import fs from "fs";
-import path from "path";
+import {get} from "../../requests/requests";
 const wait = require('util').promisify(setTimeout);
 
 module.exports = {
@@ -43,9 +42,9 @@ module.exports = {
         return interaction.editReply({ embeds: [delay], components: [] });
       }
       collected.first().deferUpdate();
-      const fileDirectory: string = path.join(__dirname, '..', '..', 'utils', 'fasttype_words.txt');
-      const allWords: string = fs.readFileSync(fileDirectory,'utf8')
-      const sentence: string = allWords.split('\n').map(x => x.replace('\r',''))[Math.floor(Math.random() * allWords.split('\n').length)];
+      const response: Response = await get(`${process.env.API_URL}/fast-type/random`);
+      const data = await response.json();
+      const sentence = data.sentence;
       const game: EmbedBuilder = new EmbedBuilder()
         .setColor('#2f3136')
         .setDescription('Tu es prêt ? Début dans : `5`')
